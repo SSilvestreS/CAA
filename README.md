@@ -2,7 +2,7 @@
 
 Um sistema avançado de simulação de cidade inteligente onde múltiplos agentes de IA atuam como cidadãos, empresas, órgãos públicos e serviços, interagindo entre si para otimizar recursos, resolver conflitos e se adaptar a mudanças no ambiente.
 
-## 🚀 Versão 1.1 - Arquitetura Multi-Linguagem
+##  Versão 1.1 - Arquitetura Multi-Linguagem
 
 A versão 1.1 introduz uma arquitetura moderna multi-linguagem com componentes especializados para máxima performance e escalabilidade:
 
@@ -288,7 +288,7 @@ Contribuições são bem-vindas! Para contribuir:
 4. Push para a branch
 5. Abra um Pull Request
 
-## 📄 Licença
+##  Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo LICENSE para detalhes.
 
