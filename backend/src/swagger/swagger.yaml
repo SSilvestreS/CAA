@@ -1,0 +1,847 @@
+openapi: 3.0.3
+info:
+  title: Smart City Simulation API
+  description: |
+    API para Simulação de Cidade Inteligente com Agentes de IA
+    
+    Esta API permite gerenciar simulações de cidade inteligente onde múltiplos agentes
+    (cidadãos, empresas, governo, infraestrutura) interagem para otimizar recursos,
+    resolver conflitos e se adaptar a mudanças no ambiente.
+    
+    ## Funcionalidades Principais
+    
+    - **Gestão de Simulações**: Criar, iniciar, parar e monitorar simulações
+    - **Gestão de Agentes**: Gerenciar agentes individuais e suas interações
+    - **Analytics**: Métricas de performance e análise de dados
+    - **Cenários**: Executar cenários pré-definidos de teste
+    - **Aprendizado Coletivo**: Sistema de IA para otimização contínua
+    
+    ## Tecnologias
+    
+    - **Backend**: Node.js/Express com TypeScript
+    - **Frontend**: React/TypeScript
+    - **IA**: Rust para algoritmos de alta performance
+    - **Microserviços**: Go para serviços especializados
+    - **Banco de Dados**: PostgreSQL
+    - **Cache**: Redis
+    - **Monitoramento**: Prometheus + Grafana
+  version: 1.1.0
+  contact:
+    name: Smart City Team
+    email: team@smartcity.com
+    url: https://github.com/SSilvestreS/CAA
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:5000/api
+    description: Servidor de desenvolvimento
+  - url: https://api.smartcity.com/api
+    description: Servidor de produção
+
+tags:
+  - name: simulations
+    description: Gestão de simulações
+  - name: agents
+    description: Gestão de agentes
+  - name: analytics
+    description: Métricas e análise de dados
+  - name: scenarios
+    description: Cenários de teste
+  - name: health
+    description: Health checks e status do sistema
+
+paths:
+  /health:
+    get:
+      tags:
+        - health
+      summary: Health Check
+      description: Verifica o status do sistema e seus serviços
+      responses:
+        '200':
+          description: Sistema funcionando normalmente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthStatus'
+        '503':
+          description: Sistema com problemas
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /simulation:
+    get:
+      tags:
+        - simulations
+      summary: Listar Simulações
+      description: Retorna lista de simulações com filtros opcionais
+      parameters:
+        - name: status
+          in: query
+          description: Filtrar por status da simulação
+          schema:
+            type: string
+            enum: [created, running, paused, completed, failed]
+        - name: limit
+          in: query
+          description: Número máximo de resultados
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+        - name: offset
+          in: query
+          description: Número de resultados para pular
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: Lista de simulações
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  simulations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Simulation'
+                  total:
+                    type: integer
+                  limit:
+                    type: integer
+                  offset:
+                    type: integer
+
+    post:
+      tags:
+        - simulations
+      summary: Criar Simulação
+      description: Cria uma nova simulação de cidade inteligente
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSimulationRequest'
+      responses:
+        '201':
+          description: Simulação criada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Simulation'
+        '400':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /simulation/{id}:
+    get:
+      tags:
+        - simulations
+      summary: Obter Simulação
+      description: Retorna detalhes de uma simulação específica
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da simulação
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Detalhes da simulação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationDetails'
+        '404':
+          description: Simulação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      tags:
+        - simulations
+      summary: Atualizar Simulação
+      description: Atualiza configurações de uma simulação
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da simulação
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSimulationRequest'
+      responses:
+        '200':
+          description: Simulação atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Simulation'
+        '404':
+          description: Simulação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    delete:
+      tags:
+        - simulations
+      summary: Deletar Simulação
+      description: Remove uma simulação e todos os seus dados
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da simulação
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '204':
+          description: Simulação removida com sucesso
+        '404':
+          description: Simulação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /simulation/{id}/start:
+    post:
+      tags:
+        - simulations
+      summary: Iniciar Simulação
+      description: Inicia uma simulação existente
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da simulação
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Simulação iniciada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationStatus'
+        '404':
+          description: Simulação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Simulação já está rodando
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /simulation/{id}/stop:
+    post:
+      tags:
+        - simulations
+      summary: Parar Simulação
+      description: Para uma simulação em execução
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID da simulação
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Simulação parada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationStatus'
+        '404':
+          description: Simulação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agents:
+    get:
+      tags:
+        - agents
+      summary: Listar Agentes
+      description: Retorna lista de agentes com filtros opcionais
+      parameters:
+        - name: simulation_id
+          in: query
+          description: Filtrar por simulação
+          schema:
+            type: string
+            format: uuid
+        - name: agent_type
+          in: query
+          description: Filtrar por tipo de agente
+          schema:
+            type: string
+            enum: [citizen, business, government, infrastructure]
+        - name: limit
+          in: query
+          description: Número máximo de resultados
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Lista de agentes
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Agent'
+                  total:
+                    type: integer
+
+    post:
+      tags:
+        - agents
+      summary: Criar Agente
+      description: Cria um novo agente na simulação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAgentRequest'
+      responses:
+        '201':
+          description: Agente criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agent'
+        '400':
+          description: Dados inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /agents/{id}:
+    get:
+      tags:
+        - agents
+      summary: Obter Agente
+      description: Retorna detalhes de um agente específico
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID do agente
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Detalhes do agente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgentDetails'
+        '404':
+          description: Agente não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /analytics/metrics:
+    get:
+      tags:
+        - analytics
+      summary: Obter Métricas
+      description: Retorna métricas de performance da simulação
+      parameters:
+        - name: simulation_id
+          in: query
+          required: true
+          description: ID da simulação
+          schema:
+            type: string
+            format: uuid
+        - name: metric_type
+          in: query
+          description: Tipo de métrica
+          schema:
+            type: string
+            enum: [system, agent, interaction, performance]
+        - name: time_range
+          in: query
+          description: Período de tempo
+          schema:
+            type: string
+            enum: [1h, 6h, 24h, 7d, 30d]
+            default: 24h
+      responses:
+        '200':
+          description: Métricas da simulação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MetricsResponse'
+
+  /scenarios:
+    get:
+      tags:
+        - scenarios
+      summary: Listar Cenários
+      description: Retorna lista de cenários disponíveis
+      responses:
+        '200':
+          description: Lista de cenários
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  scenarios:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Scenario'
+
+    post:
+      tags:
+        - scenarios
+      summary: Executar Cenário
+      description: Executa um cenário específico
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteScenarioRequest'
+      responses:
+        '201':
+          description: Cenário executado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScenarioExecution'
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+          enum: [ok, error]
+        timestamp:
+          type: string
+          format: date-time
+        version:
+          type: string
+        services:
+          type: object
+          properties:
+            database:
+              type: boolean
+            redis:
+              type: boolean
+            simulation:
+              type: boolean
+
+    Simulation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [created, running, paused, completed, failed]
+        config:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        version:
+          type: string
+
+    SimulationDetails:
+      allOf:
+        - $ref: '#/components/schemas/Simulation'
+        - type: object
+          properties:
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/Agent'
+            metrics:
+              type: object
+            events:
+              type: array
+              items:
+                $ref: '#/components/schemas/Event'
+
+    CreateSimulationRequest:
+      type: object
+      required:
+        - name
+        - config
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+        config:
+          type: object
+          properties:
+            max_agents:
+              type: integer
+              minimum: 1
+              maximum: 10000
+            simulation_duration:
+              type: integer
+              minimum: 60
+            environment_size:
+              type: object
+              properties:
+                width:
+                  type: number
+                height:
+                  type: number
+
+    UpdateSimulationRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        config:
+          type: object
+
+    SimulationStatus:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [created, running, paused, completed, failed]
+        message:
+          type: string
+
+    Agent:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        simulation_id:
+          type: string
+          format: uuid
+        agent_type:
+          type: string
+          enum: [citizen, business, government, infrastructure]
+        name:
+          type: string
+        state:
+          type: object
+        position:
+          type: object
+          properties:
+            x:
+              type: number
+            y:
+              type: number
+        energy:
+          type: number
+        resources:
+          type: object
+        goals:
+          type: array
+          items:
+            type: string
+        performance_metrics:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+
+    AgentDetails:
+      allOf:
+        - $ref: '#/components/schemas/Agent'
+        - type: object
+          properties:
+            interactions:
+              type: array
+              items:
+                $ref: '#/components/schemas/Interaction'
+            events:
+              type: array
+              items:
+                $ref: '#/components/schemas/Event'
+
+    CreateAgentRequest:
+      type: object
+      required:
+        - simulation_id
+        - agent_type
+        - name
+      properties:
+        simulation_id:
+          type: string
+          format: uuid
+        agent_type:
+          type: string
+          enum: [citizen, business, government, infrastructure]
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        initial_state:
+          type: object
+        position:
+          type: object
+          properties:
+            x:
+              type: number
+            y:
+              type: number
+        goals:
+          type: array
+          items:
+            type: string
+
+    Event:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        simulation_id:
+          type: string
+          format: uuid
+        agent_id:
+          type: string
+          format: uuid
+        event_type:
+          type: string
+        description:
+          type: string
+        data:
+          type: object
+        timestamp:
+          type: string
+          format: date-time
+        severity:
+          type: string
+          enum: [info, warning, error, critical]
+
+    Interaction:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        simulation_id:
+          type: string
+          format: uuid
+        agent_from:
+          type: string
+          format: uuid
+        agent_to:
+          type: string
+          format: uuid
+        interaction_type:
+          type: string
+        data:
+          type: object
+        result:
+          type: string
+        duration_ms:
+          type: integer
+        success:
+          type: boolean
+        timestamp:
+          type: string
+          format: date-time
+
+    MetricsResponse:
+      type: object
+      properties:
+        simulation_id:
+          type: string
+          format: uuid
+        metrics:
+          type: object
+          properties:
+            system:
+              type: object
+              properties:
+                throughput:
+                  type: number
+                efficiency:
+                  type: number
+                resource_utilization:
+                  type: object
+            agents:
+              type: array
+              items:
+                type: object
+                properties:
+                  agent_id:
+                    type: string
+                    format: uuid
+                  performance:
+                    type: object
+            interactions:
+              type: object
+              properties:
+                total:
+                  type: integer
+                success_rate:
+                  type: number
+                average_duration:
+                  type: number
+        time_range:
+          type: string
+        generated_at:
+          type: string
+          format: date-time
+
+    Scenario:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        scenario_type:
+          type: string
+          enum: [crisis, economic, health, transport, sustainability]
+        config:
+          type: object
+        expected_outcomes:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+
+    ExecuteScenarioRequest:
+      type: object
+      required:
+        - scenario_id
+        - simulation_id
+      properties:
+        scenario_id:
+          type: string
+          format: uuid
+        simulation_id:
+          type: string
+          format: uuid
+        custom_config:
+          type: object
+
+    ScenarioExecution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        scenario_id:
+          type: string
+          format: uuid
+        simulation_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [running, completed, failed]
+        started_at:
+          type: string
+          format: date-time
+        ended_at:
+          type: string
+          format: date-time
+        results:
+          type: object
+        performance_metrics:
+          type: object
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+        timestamp:
+          type: string
+          format: date-time
+        details:
+          type: object
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []

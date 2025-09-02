@@ -1,0 +1,38 @@
+[package]
+name = "smart-city-ai"
+version = "1.1.0"
+edition = "2021"
+authors = ["Smart City Team"]
+description = "Engine de IA em Rust para Simulação de Cidade Inteligente"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json"] }
+rand = "0.8"
+rayon = "1.7"
+ndarray = "0.15"
+candle-core = "0.3"
+candle-nn = "0.3"
+candle-transformers = "0.3"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+anyhow = "1.0"
+thiserror = "1.0"
+uuid = { version = "1.0", features = ["v4"] }
+chrono = { version = "0.4", features = ["serde"] }
+dashmap = "5.4"
+crossbeam-channel = "0.5"
+parking_lot = "0.12"
+
+[dependencies.reinforcement_learning]
+version = "0.1"
+path = "./reinforcement_learning"
+
+[dev-dependencies]
+criterion = "0.5"
+
+[[bench]]
+name = "ai_performance"
+harness = false

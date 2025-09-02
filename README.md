@@ -2,6 +2,18 @@
 
 Um sistema avançado de simulação de cidade inteligente onde múltiplos agentes de IA atuam como cidadãos, empresas, órgãos públicos e serviços, interagindo entre si para otimizar recursos, resolver conflitos e se adaptar a mudanças no ambiente.
 
+## 🚀 Versão 1.1 - Arquitetura Multi-Linguagem
+
+A versão 1.1 introduz uma arquitetura moderna multi-linguagem com componentes especializados para máxima performance e escalabilidade:
+
+- **Frontend**: React/TypeScript com dashboard interativo
+- **Backend**: Node.js/Express com API RESTful
+- **IA Engine**: Rust para algoritmos de alta performance
+- **Microserviços**: Go para serviços especializados
+- **Banco de Dados**: PostgreSQL com Redis para cache
+- **Containerização**: Docker e Docker Compose
+- **Monitoramento**: Prometheus + Grafana
+
 ##  Objetivo
 
 Simular (ou até aplicar em pequena escala) uma cidade inteligente onde múltiplos agentes de IA atuam como cidadãos, empresas, órgãos públicos e serviços, interagindo entre si para otimizar recursos, resolver conflitos e se adaptar a mudanças no ambiente.
@@ -24,16 +36,46 @@ Simular (ou até aplicar em pequena escala) uma cidade inteligente onde múltipl
 
 ##  Instalação Rápida
 
+### Opção 1: Docker Compose (Recomendado)
+
 ```bash
 # Clone o repositório
-git clone <repository-url>
-cd "Cidades Autônomas com Agentes de IA"
+git clone https://github.com/SSilvestreS/CAA.git
+cd CAA
 
-# Instale as dependências
-pip install -r requirements.txt
+# Inicie todos os serviços
+docker-compose up -d
 
-# Execute a simulação
-python main.py
+# Acesse o dashboard
+open http://localhost:3000
+```
+
+### Opção 2: Instalação Manual
+
+```bash
+# Clone o repositório
+git clone https://github.com/SSilvestreS/CAA.git
+cd CAA
+
+# Backend Node.js
+cd backend
+npm install
+npm run dev
+
+# Frontend React
+cd ../frontend
+npm install
+npm start
+
+# IA Engine Rust
+cd ../ai-engine
+cargo build --release
+cargo run
+
+# Microserviços Go
+cd ../microservices
+go mod tidy
+go run agent-service/main.go
 ```
 
 Para instalação detalhada, consulte [INSTALL.md](INSTALL.md).
