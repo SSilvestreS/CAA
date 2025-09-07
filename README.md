@@ -2,6 +2,19 @@
 
 Um sistema avançado de simulação de cidade inteligente onde múltiplos agentes de IA atuam como cidadãos, empresas, órgãos públicos e serviços, interagindo entre si para otimizar recursos, resolver conflitos e se adaptar a mudanças no ambiente.
 
+## Versão 1.4 - Segurança, Tempo Real e Monitoramento
+
+A versão 1.4 estabelece uma base sólida e segura para o sistema:
+
+### Novidades da Versão 1.4
+
+- **Segurança Robusta**: Autenticação JWT, autorização RBAC e criptografia
+- **Comunicação em Tempo Real**: WebSockets e Event Sourcing
+- **Monitoramento Avançado**: Métricas, alertas e observabilidade
+- **API RESTful Completa**: Interface padronizada e documentada
+- **Auditoria Completa**: Logging de segurança e detecção de anomalias
+- **Base Sólida**: Fundação para funcionalidades avançadas
+
 ## Versão 1.1 - Arquitetura Multi-Linguagem
 
 A versão 1.1 introduz uma arquitetura moderna multi-linguagem com componentes especializados para máxima performance e escalabilidade:
