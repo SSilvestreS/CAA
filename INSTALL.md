@@ -124,7 +124,7 @@ async def main():
 asyncio.run(main())
 ```
 
-## ⚙ Configurações
+## Configurações
 
 ### Personalizar Configurações
 Edite o arquivo `config.py` para ajustar:
