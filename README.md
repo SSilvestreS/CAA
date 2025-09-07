@@ -93,7 +93,7 @@ go run agent-service/main.go
 
 Para instalação detalhada, consulte [INSTALL.md](INSTALL.md).
 
-## 🎮 Demonstração Interativa
+##  Demonstração Interativa
 
 ```bash
 # Execute a demonstração completa
