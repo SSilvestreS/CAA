@@ -2,7 +2,14 @@
 Script de instalação para o projeto Cidades Autônomas com Agentes de IA.
 """
 
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages  # type: ignore
+except ImportError:
+    print("setuptools não encontrado. Instalando...")
+    import subprocess
+    import sys
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "setuptools"])
+    from setuptools import setup, find_packages  # type: ignore
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -12,7 +19,7 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="cidades-autonomas-ia",
-    version="1.0.0",
+    version="1.3.0",
     author="Sistema de Simulação de Cidade Inteligente",
     description="Simulação de cidade inteligente com múltiplos agentes de IA",
     long_description=long_description,

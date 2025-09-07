@@ -1,13 +1,13 @@
 # Guia de Instalação - Cidades Autônomas com Agentes de IA
 
-## 📋 Pré-requisitos
+## Pré-requisitos
 
 - Python 3.8 ou superior
 - pip (gerenciador de pacotes Python)
 - 4GB de RAM mínimo (8GB recomendado)
 - 2GB de espaço em disco
 
-## 🚀 Instalação Rápida
+## Instalação Rápida
 
 ### 1. Clone o Repositório
 ```bash
@@ -25,7 +25,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## 🔧 Instalação Detalhada
+## Instalação Detalhada
 
 ### Opção 1: Instalação com pip
 ```bash
@@ -67,7 +67,7 @@ pip install -r requirements.txt
 python main.py
 ```
 
-## 🎯 Executando Cenários
+## Executando Cenários
 
 ### Executar Cenário Específico
 ```bash
@@ -89,7 +89,7 @@ python run_scenarios.py --policies
 python run_scenarios.py --crises
 ```
 
-## 📊 Dashboard Interativo
+## Dashboard Interativo
 
 ### Executar Apenas o Dashboard
 ```bash
@@ -99,7 +99,7 @@ python main.py --dashboard-only
 ### Acessar Dashboard
 Abra seu navegador e acesse: http://localhost:8050
 
-## 🧪 Exemplos de Uso
+## Exemplos de Uso
 
 ### Executar Exemplos
 ```bash
@@ -112,19 +112,19 @@ import asyncio
 from src.environment.city_environment import CityEnvironment
 
 async def main():
-    environment = CityEnvironment("Minha Cidade", (50, 50))
-    await environment.initialize_city(num_citizens=50, num_businesses=10)
-    
-    # Executa 100 ciclos
-    for i in range(100):
-        await environment._simulation_cycle()
-    
-    print(environment.get_city_status())
+ environment = CityEnvironment("Minha Cidade", (50, 50))
+ await environment.initialize_city(num_citizens=50, num_businesses=10)
+ 
+ # Executa 100 ciclos
+ for i in range(100):
+ await environment._simulation_cycle()
+ 
+ print(environment.get_city_status())
 
 asyncio.run(main())
 ```
 
-## ⚙️ Configurações
+## ⚙ Configurações
 
 ### Personalizar Configurações
 Edite o arquivo `config.py` para ajustar:
@@ -137,16 +137,16 @@ Edite o arquivo `config.py` para ajustar:
 ```python
 # config.py
 CITY_CONFIG = {
-    'default_name': 'Minha Cidade Personalizada',
-    'default_size': (200, 200),
-    'max_agents': 2000
+ 'default_name': 'Minha Cidade Personalizada',
+ 'default_size': (200, 200),
+ 'max_agents': 2000
 }
 
 AGENT_CONFIG = {
-    'citizens': {
-        'default_count': 200,
-        'income_range': (2000, 15000)
-    }
+ 'citizens': {
+ 'default_count': 200,
+ 'income_range': (2000, 15000)
+ }
 }
 ```
 
@@ -184,20 +184,20 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 ```
 Cidades Autônomas com Agentes de IA/
 ├── src/
-│   ├── agents/           # Agentes (Cidadãos, Empresas, etc.)
-│   ├── environment/      # Ambiente de simulação
-│   ├── ai/              # Sistema de IA e aprendizado
-│   ├── scenarios/       # Cenários de teste
-│   └── visualization/   # Dashboard e visualização
-├── main.py              # Arquivo principal
-├── run_scenarios.py     # Executor de cenários
-├── example_usage.py     # Exemplos de uso
-├── config.py           # Configurações
-├── requirements.txt    # Dependências
-└── README.md          # Documentação
+│ ├── agents/ # Agentes (Cidadãos, Empresas, etc.)
+│ ├── environment/ # Ambiente de simulação
+│ ├── ai/ # Sistema de IA e aprendizado
+│ ├── scenarios/ # Cenários de teste
+│ └── visualization/ # Dashboard e visualização
+├── main.py # Arquivo principal
+├── run_scenarios.py # Executor de cenários
+├── example_usage.py # Exemplos de uso
+├── config.py # Configurações
+├── requirements.txt # Dependências
+└── README.md # Documentação
 ```
 
-## 🔍 Verificação da Instalação
+## Verificação da Instalação
 
 ### Teste Básico
 ```bash
@@ -205,7 +205,7 @@ python -c "
 import sys
 sys.path.append('src')
 from src.environment.city_environment import CityEnvironment
-print('✅ Instalação bem-sucedida!')
+print(' Instalação bem-sucedida!')
 "
 ```
 
@@ -223,7 +223,7 @@ Se encontrar problemas:
 3. Execute os exemplos em example_usage.py
 4. Verifique os logs de erro
 
-## 🚀 Próximos Passos
+## Próximos Passos
 
 Após a instalação:
 

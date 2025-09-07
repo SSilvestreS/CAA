@@ -1,8 +1,8 @@
-#  Cidades Autônomas com Agentes de IA
+# Cidades Autônomas com Agentes de IA
 
 Um sistema avançado de simulação de cidade inteligente onde múltiplos agentes de IA atuam como cidadãos, empresas, órgãos públicos e serviços, interagindo entre si para otimizar recursos, resolver conflitos e se adaptar a mudanças no ambiente.
 
-##  Versão 1.1 - Arquitetura Multi-Linguagem
+## Versão 1.1 - Arquitetura Multi-Linguagem
 
 A versão 1.1 introduz uma arquitetura moderna multi-linguagem com componentes especializados para máxima performance e escalabilidade:
 
@@ -14,11 +14,11 @@ A versão 1.1 introduz uma arquitetura moderna multi-linguagem com componentes e
 - **Containerização**: Docker e Docker Compose
 - **Monitoramento**: Prometheus + Grafana
 
-##  Objetivo
+## Objetivo
 
 Simular (ou até aplicar em pequena escala) uma cidade inteligente onde múltiplos agentes de IA atuam como cidadãos, empresas, órgãos públicos e serviços, interagindo entre si para otimizar recursos, resolver conflitos e se adaptar a mudanças no ambiente.
 
-##  Arquitetura do Sistema
+## Arquitetura do Sistema
 
 ### Tipos de Agentes
 
@@ -34,7 +34,7 @@ Simular (ou até aplicar em pequena escala) uma cidade inteligente onde múltipl
 - ** Aprendizado Coletivo**: Compartilhamento de experiências entre agentes
 - ** Conflitos e Negociações**: Protestos, lobby, sanções
 
-##  Instalação Rápida
+## Instalação Rápida
 
 ### Opção 1: Docker Compose (Recomendado)
 
@@ -90,20 +90,20 @@ python demo.py
 python example_usage.py
 ```
 
-##  Dashboard Interativo
+## Dashboard Interativo
 
 Acesse o dashboard em tempo real: **http://localhost:8050**
 
 ### Funcionalidades do Dashboard:
--  Métricas em tempo real da cidade
--  Mapa interativo com posicionamento dos agentes
--  Gráficos de evolução das métricas
--  Monitoramento de eventos ativos
--  Análise de mercado por setor
--  Performance das empresas
--  Log de eventos em tempo real
+- Métricas em tempo real da cidade
+- Mapa interativo com posicionamento dos agentes
+- Gráficos de evolução das métricas
+- Monitoramento de eventos ativos
+- Análise de mercado por setor
+- Performance das empresas
+- Log de eventos em tempo real
 
-##  Cenários de Teste
+## Cenários de Teste
 
 ### Políticas Públicas
 ```bash
@@ -121,17 +121,17 @@ python run_scenarios.py --innovations
 ```
 
 ### Cenários Disponíveis:
--  **Boom Econômico**: Testa crescimento econômico
--  **Crise Energética**: Simula escassez de energia
--  **Pandemia**: Modela lockdown e redução de atividade
--  **Falha de Infraestrutura**: Testa resiliência do sistema
--  **Crescimento Populacional**: Avalia impacto demográfico
--  **Regulamentação Ambiental**: Testa políticas verdes
--  **Transporte Autônomo**: Simula inovação em mobilidade
--  **Smart Grid**: Testa rede elétrica inteligente
--  **Desigualdade Social**: Modela impactos sociais
+- **Boom Econômico**: Testa crescimento econômico
+- **Crise Energética**: Simula escassez de energia
+- **Pandemia**: Modela lockdown e redução de atividade
+- **Falha de Infraestrutura**: Testa resiliência do sistema
+- **Crescimento Populacional**: Avalia impacto demográfico
+- **Regulamentação Ambiental**: Testa políticas verdes
+- **Transporte Autônomo**: Simula inovação em mobilidade
+- **Smart Grid**: Testa rede elétrica inteligente
+- **Desigualdade Social**: Modela impactos sociais
 
-##  Sistema de IA e Aprendizado
+## Sistema de IA e Aprendizado
 
 ### Reinforcement Learning
 - Agentes aprendem com experiências passadas
@@ -148,7 +148,7 @@ python run_scenarios.py --innovations
 - Análise de contexto para tomada de decisão
 - Otimização baseada em múltiplos objetivos
 
-##  Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 ### Frameworks Multi-Agente
 - **CrewAI**: Coordenação de agentes especializados
@@ -170,35 +170,35 @@ python run_scenarios.py --innovations
 - **ChromaDB**: Banco de dados vetorial
 - **Pandas**: Manipulação de dados
 
-##  Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 Cidades Autônomas com Agentes de IA/
 ├── src/
-│   ├── agents/              # Agentes da simulação
-│   │   ├── base_agent.py    # Classe base para agentes
-│   │   ├── citizen_agent.py # Agentes cidadãos
-│   │   ├── business_agent.py # Agentes empresas
-│   │   ├── government_agent.py # Agentes governo
-│   │   └── infrastructure_agent.py # Agentes infraestrutura
-│   ├── environment/         # Ambiente de simulação
-│   │   └── city_environment.py # Coordenador principal
-│   ├── ai/                  # Sistema de IA
-│   │   └── collective_learning.py # Aprendizado coletivo
-│   ├── scenarios/           # Cenários de teste
-│   │   └── scenario_manager.py # Gerenciador de cenários
-│   └── visualization/       # Dashboard e visualização
-│       └── dashboard.py     # Interface web interativa
-├── main.py                  # Arquivo principal
-├── demo.py                  # Demonstração interativa
-├── run_scenarios.py         # Executor de cenários
-├── example_usage.py         # Exemplos de uso
-├── config.py               # Configurações
-├── requirements.txt        # Dependências
-└── README.md              # Este arquivo
+│ ├── agents/ # Agentes da simulação
+│ │ ├── base_agent.py # Classe base para agentes
+│ │ ├── citizen_agent.py # Agentes cidadãos
+│ │ ├── business_agent.py # Agentes empresas
+│ │ ├── government_agent.py # Agentes governo
+│ │ └── infrastructure_agent.py # Agentes infraestrutura
+│ ├── environment/ # Ambiente de simulação
+│ │ └── city_environment.py # Coordenador principal
+│ ├── ai/ # Sistema de IA
+│ │ └── collective_learning.py # Aprendizado coletivo
+│ ├── scenarios/ # Cenários de teste
+│ │ └── scenario_manager.py # Gerenciador de cenários
+│ └── visualization/ # Dashboard e visualização
+│ └── dashboard.py # Interface web interativa
+├── main.py # Arquivo principal
+├── demo.py # Demonstração interativa
+├── run_scenarios.py # Executor de cenários
+├── example_usage.py # Exemplos de uso
+├── config.py # Configurações
+├── requirements.txt # Dependências
+└── README.md # Este arquivo
 ```
 
-##  Casos de Uso
+## Casos de Uso
 
 ### 1. Pesquisa Acadêmica
 - Estudo de sistemas complexos
@@ -220,7 +220,7 @@ Cidades Autônomas com Agentes de IA/
 - Simulação de sistemas sociais
 - Aprendizado sobre cidades inteligentes
 
-##  Exemplos de Uso
+## Exemplos de Uso
 
 ### Simulação Básica
 ```python
@@ -228,22 +228,22 @@ import asyncio
 from src.environment.city_environment import CityEnvironment
 
 async def main():
-    # Cria cidade
-    city = CityEnvironment("Minha Cidade", (100, 100))
-    
-    # Inicializa com agentes
-    await city.initialize_city(
-        num_citizens=100,
-        num_businesses=20,
-        num_infrastructure=10
-    )
-    
-    # Executa simulação
-    for i in range(100):
-        await city._simulation_cycle()
-    
-    # Exibe resultados
-    print(city.get_city_status())
+ # Cria cidade
+ city = CityEnvironment("Minha Cidade", (100, 100))
+ 
+ # Inicializa com agentes
+ await city.initialize_city(
+ num_citizens=100,
+ num_businesses=20,
+ num_infrastructure=10
+ )
+ 
+ # Executa simulação
+ for i in range(100):
+ await city._simulation_cycle()
+ 
+ # Exibe resultados
+ print(city.get_city_status())
 
 asyncio.run(main())
 ```
@@ -261,7 +261,7 @@ results = await scenario_manager.run_scenario('energy_crisis', duration=50)
 print(f"Impacto na satisfação: {results['citizen_satisfaction_change']:.3f}")
 ```
 
-##  Métricas e Indicadores
+## Métricas e Indicadores
 
 ### Métricas da Cidade
 - **População**: Número total de cidadãos
@@ -278,7 +278,7 @@ print(f"Impacto na satisfação: {results['citizen_satisfaction_change']:.3f}")
 - **Taxa de Sucesso**: Efetividade das decisões
 - **Adaptações Bem-sucedidas**: Aprendizado efetivo
 
-##  Contribuição
+## Contribuição
 
 Contribuições são bem-vindas! Para contribuir:
 
@@ -288,18 +288,18 @@ Contribuições são bem-vindas! Para contribuir:
 4. Push para a branch
 5. Abra um Pull Request
 
-##  Licença
+## Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo LICENSE para detalhes.
 
-##  Agradecimentos
+## Agradecimentos
 
 - Comunidade Python
 - Desenvolvedores dos frameworks utilizados
 - Pesquisadores em sistemas multi-agente
 - Contribuidores do projeto
 
-##  Suporte
+## Suporte
 
 Para suporte e dúvidas:
 - Abra uma issue no GitHub
@@ -308,5 +308,4 @@ Para suporte e dúvidas:
 - Teste a demonstração em `demo.py`
 
 ---
-
 

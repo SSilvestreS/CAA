@@ -119,19 +119,19 @@ go vet ./...
 ### Python
 ```python
 def exemplo_funcao(parametro: str) -> bool:
-    """
-    Descrição da função em português.
-    
-    Args:
-        parametro: Descrição do parâmetro
-        
-    Returns:
-        Descrição do retorno
-        
-    Raises:
-        ValueError: Quando o parâmetro é inválido
-    """
-    pass
+ """
+ Descrição da função em português.
+ 
+ Args:
+ parametro: Descrição do parâmetro
+ 
+ Returns:
+ Descrição do retorno
+ 
+ Raises:
+ ValueError: Quando o parâmetro é inválido
+ """
+ pass
 ```
 
 ### TypeScript
@@ -142,7 +142,7 @@ def exemplo_funcao(parametro: str) -> bool:
  * @returns Descrição do retorno
  */
 function exemploFuncao(parametro: string): boolean {
-    return true;
+ return true;
 }
 ```
 
@@ -150,16 +150,16 @@ function exemploFuncao(parametro: string): boolean {
 
 ```
 projeto/
-├── src/                    # Código fonte Python
-├── frontend/              # Frontend React/TypeScript
-├── backend/               # Backend Node.js/TypeScript
-├── ai-engine/             # Engine AI em Rust
-├── microservices/         # Microserviços em Go
-├── database/              # Scripts de banco de dados
-├── docs/                  # Documentação
-├── tests/                 # Testes
-├── .github/               # Configurações GitHub
-└── docker/                # Configurações Docker
+├── src/ # Código fonte Python
+├── frontend/ # Frontend React/TypeScript
+├── backend/ # Backend Node.js/TypeScript
+├── ai-engine/ # Engine AI em Rust
+├── microservices/ # Microserviços em Go
+├── database/ # Scripts de banco de dados
+├── docs/ # Documentação
+├── tests/ # Testes
+├── .github/ # Configurações GitHub
+└── docker/ # Configurações Docker
 ```
 
 ## Checklist de Código Limpo
