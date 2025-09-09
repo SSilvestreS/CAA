@@ -13,7 +13,7 @@ except ImportError:
     from setuptools import setup, find_packages  # type: ignore
 
 # Versão atual
-VERSION = "1.7.0"
+VERSION = "1.9.0"
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()

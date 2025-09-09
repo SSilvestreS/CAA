@@ -149,7 +149,7 @@ class PerformanceConfig(BaseModel):
     cpu_limit: float = Field(default=1.0, description="Limite de CPU")
 
 
-class V16Config(BaseModel):
+class V17Config(BaseModel):
     """Configuração principal da versão 1.7"""
 
     environment: Environment = Field(
@@ -248,17 +248,17 @@ DEFAULT_CONFIGS = {
 }
 
 
-def get_config(environment: Environment = Environment.DEVELOPMENT) -> V16Config:
+def get_config(environment: Environment = Environment.DEVELOPMENT) -> V17Config:
     """Obtém configuração para o ambiente especificado"""
     config_data = DEFAULT_CONFIGS.get(
         environment, DEFAULT_CONFIGS[Environment.DEVELOPMENT]
     )
 
     # Cria configuração com valores padrão
-    return V16Config(**config_data)
+    return V17Config(**config_data)
 
 
-def load_config_from_env() -> V16Config:
+def load_config_from_env() -> V17Config:
     """Carrega configuração das variáveis de ambiente"""
     import os
 
@@ -297,4 +297,4 @@ def load_config_from_env() -> V16Config:
         ),
     }
 
-    return V16Config(**config_data)
+    return V17Config(**config_data)

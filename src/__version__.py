@@ -2,8 +2,8 @@
 Informações de versão do projeto Cidades Autônomas com Agentes de IA
 """
 
-__version__ = "1.7.0"
-__version_info__ = (1, 7, 0)
+__version__ = "1.9.0"
+__version_info__ = (1, 9, 0)
 __author__ = "Sistema de Simulação de Cidade Inteligente"
 __email__ = "contato@cidadesautonomas.com"
 __description__ = "Simulação de cidade inteligente com múltiplos agentes de IA"

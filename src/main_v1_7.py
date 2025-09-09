@@ -41,13 +41,13 @@ from src.analytics import (  # noqa: E402
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler(), logging.FileHandler("cities_ai_v1_6.log")],
+    handlers=[logging.StreamHandler(), logging.FileHandler("cities_ai_v1_7.log")],
 )
 
 logger = logging.getLogger(__name__)
 
 
-class CitiesAIV16:
+class CitiesAIV17:
     """Classe principal da versão 1.7"""
 
     def __init__(self, environment: Environment = Environment.DEVELOPMENT):
@@ -83,7 +83,7 @@ class CitiesAIV16:
     async def initialize(self):
         """Inicializa todos os componentes"""
         try:
-            logger.info("Inicializando Cidades Autônomas v1.6...")
+            logger.info("Inicializando Cidades Autônomas v1.7...")
 
             # Inicializa gerenciadores de microserviços
             await self._initialize_microservices()
@@ -321,7 +321,7 @@ class CitiesAIV16:
     async def get_system_status(self):
         """Obtém status do sistema"""
         status = {
-            "version": "1.6.0",
+            "version": "1.7.0",
             "environment": self.environment.value,
             "running": self.running,
             "components": {},
@@ -354,7 +354,7 @@ async def main():
     """Função principal"""
     import argparse
 
-    parser = argparse.ArgumentParser(description="Cidades Autônomas v1.6")
+    parser = argparse.ArgumentParser(description="Cidades Autônomas v1.7")
     parser.add_argument(
         "--environment",
         choices=["development", "staging", "production"],
@@ -371,7 +371,7 @@ async def main():
     environment = Environment(args.environment)
 
     # Cria e inicia o sistema
-    cities_ai = CitiesAIV16(environment)
+    cities_ai = CitiesAIV17(environment)
 
     try:
         await cities_ai.start()

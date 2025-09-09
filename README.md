@@ -2,7 +2,15 @@
 
 Sistema de simulação de cidade inteligente onde múltiplos agentes de IA interagem para otimizar recursos, resolver conflitos e se adaptar a mudanças no ambiente.
 
-## Versão Atual: 1.8 - Integração Rust para Performance
+## Versão Atual: 1.9 - Limpeza e Organização
+
+### Versão 1.9 - Limpeza e Organização do Projeto
+- Remoção de arquivos inúteis e duplicados
+- Consolidação da documentação no README.md
+- Estrutura de projeto limpa e organizada
+- Metodologia de desenvolvimento padronizada
+- Análise sistemática de erros implementada
+- Base sólida para futuras versões
 
 ### Versão 1.8 - Engine Rust de Alta Performance
 - Integração Rust completa para operações críticas
@@ -271,6 +279,28 @@ print(f"Impacto na satisfação: {results['citizen_satisfaction_change']:.3f}")
 
 MIT License - veja [LICENSE](LICENSE) para detalhes.
 
+## Metodologia de Desenvolvimento
+
+### Padrões de Qualidade
+- Clean Code aplicado em todo o projeto
+- KISS (Keep It Simple, Stupid) para simplicidade
+- DRY (Don't Repeat Yourself) para evitar duplicação
+- Análise sistemática de erros após cada versão
+- Documentação consolidada no README.md
+
+### Versionamento
+- Todas as mudanças documentadas no README.md
+- Nenhum arquivo de versão .md separado
+- Commits em português com descrição clara
+- Análise completa de arquivos após cada versão
+
+### Estrutura do Projeto
+- Código fonte organizado em `src/`
+- Exemplos funcionais em `examples/`
+- Testes automatizados em `tests/`
+- Documentação principal no README.md
+- Configuração em `setup.py` e `requirements.txt`
+
 ## Suporte
 
 - Abra uma issue no GitHub
@@ -280,4 +310,4 @@ MIT License - veja [LICENSE](LICENSE) para detalhes.
 
 ---
 
-**Desenvolvido com amor para pesquisa e educação em IA e sistemas complexos**
+**Desenvolvido para pesquisa e educação em IA e sistemas complexos**
