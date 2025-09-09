@@ -12,8 +12,21 @@ except ImportError:
     subprocess.check_call([sys.executable, "-m", "pip", "install", "setuptools"])
     from setuptools import setup, find_packages  # type: ignore
 
-# Versão atual
-VERSION = "1.7.0"
+# Importa informações de versão
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent))
+
+try:
+    from src.__version__ import get_version, __author__, __email__, __description__, __license__
+except ImportError:
+    # Fallback se não conseguir importar
+    def get_version():
+        return "1.7.0"
+    __author__ = "Sistema de Simulação de Cidade Inteligente"
+    __email__ = "contato@cidadesautonomas.com"
+    __description__ = "Simulação de cidade inteligente com múltiplos agentes de IA"
+    __license__ = "MIT"
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
@@ -25,10 +38,10 @@ with open("requirements.txt", "r", encoding="utf-8") as fh:
 
 setup(
     name="cidades-autonomas-ia",
-    version=VERSION,
-    author="Sistema de Simulação de Cidade Inteligente",
-    author_email="contato@cidadesautonomas.com",
-    description="Simulação de cidade inteligente com múltiplos agentes de IA",
+    version=get_version(),
+    author=__author__,
+    author_email=__email__,
+    description=__description__,
     long_description=long_description,
     long_description_content_type="text/markdown",
     packages=find_packages(),

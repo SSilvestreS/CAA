@@ -1,6 +1,6 @@
 """
 Gerenciador de agentes para o microserviço
-Versão 1.6 - MLOps e Escalabilidade
+versão 1.7 - MLOps e Escalabilidade
 """
 
 import logging

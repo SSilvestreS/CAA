@@ -150,7 +150,7 @@ class PerformanceConfig(BaseModel):
 
 
 class V16Config(BaseModel):
-    """Configuração principal da versão 1.6"""
+    """Configuração principal da versão 1.7"""
 
     environment: Environment = Field(
         default=Environment.DEVELOPMENT, description="Ambiente de execução"

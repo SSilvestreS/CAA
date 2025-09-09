@@ -1,6 +1,6 @@
 """
 Sistema de Otimização Avançado - Clean Code & KISS
-Versão 1.6 - Refatorado para Clean Code
+versão 1.7 - Refatorado para Clean Code
 """
 
 import threading

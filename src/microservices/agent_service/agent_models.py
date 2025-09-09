@@ -1,6 +1,6 @@
 """
 Modelos de dados para o Agent Service
-Versão 1.6 - MLOps e Escalabilidade
+versão 1.7 - MLOps e Escalabilidade
 """
 
 from enum import Enum

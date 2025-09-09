@@ -1,6 +1,6 @@
 """
 Analytics Avançado
-Versão 1.6 - MLOps e Escalabilidade
+versão 1.7 - MLOps e Escalabilidade
 """
 
 from .dashboard_manager import DashboardManager, DashboardType, WidgetType, Widget

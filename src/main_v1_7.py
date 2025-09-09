@@ -1,5 +1,5 @@
 """
-Script principal da Versão 1.6 - MLOps e Escalabilidade
+Script principal da versão 1.7 - MLOps e Escalabilidade
 Cidades Autônomas com Agentes de IA
 """
 
@@ -48,7 +48,7 @@ logger = logging.getLogger(__name__)
 
 
 class CitiesAIV16:
-    """Classe principal da Versão 1.6"""
+    """Classe principal da versão 1.7"""
 
     def __init__(self, environment: Environment = Environment.DEVELOPMENT):
         self.environment = environment

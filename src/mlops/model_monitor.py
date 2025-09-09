@@ -1,6 +1,6 @@
 """
 Model Monitor para MLOps
-Versão 1.6 - MLOps e Escalabilidade
+versão 1.7 - MLOps e Escalabilidade
 """
 
 import logging

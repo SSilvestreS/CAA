@@ -1,6 +1,6 @@
 """
 Notification Service - Microserviço para notificações
-Versão 1.6 - MLOps e Escalabilidade
+versão 1.7 - MLOps e Escalabilidade
 """
 
 from .notification_manager import NotificationManager

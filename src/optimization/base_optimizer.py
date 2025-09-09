@@ -1,6 +1,6 @@
 """
 Base Optimizer - Clean Code & KISS
-Versão 1.6 - Classe base para otimizadores
+versão 1.7 - Classe base para otimizadores
 """
 
 import threading

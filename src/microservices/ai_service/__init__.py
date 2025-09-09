@@ -1,6 +1,6 @@
 """
 AI Service - Microserviço para processamento de IA
-Versão 1.6 - MLOps e Escalabilidade
+versão 1.7 - MLOps e Escalabilidade
 """
 
 from .ai_manager import AIManager

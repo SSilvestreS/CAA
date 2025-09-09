@@ -1,6 +1,6 @@
 """
 Agent Service - Microserviço para gerenciamento de agentes
-Versão 1.6 - MLOps e Escalabilidade
+versão 1.7 - MLOps e Escalabilidade
 """
 
 from .agent_manager import AgentManager
