@@ -6,7 +6,6 @@ Versão 1.1 - Persistência de dados e histórico de simulações
 import sqlite3
 import json
 import logging
-from datetime import datetime
 from typing import Dict, List, Any, Optional
 from pathlib import Path
 

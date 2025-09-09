@@ -102,23 +102,23 @@ A versão 1.4 foca nas funcionalidades críticas que formam a base sólida para 
 ## Arquitetura da Versão 1.4
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    CAMADA DE SEGURANÇA                     │
-├─────────────────────────────────────────────────────────────┤
-│  Autenticação  │  Autorização  │  Criptografia  │  Auditoria │
-├─────────────────────────────────────────────────────────────┤
-│                    CAMADA DE COMUNICAÇÃO                   │
-├─────────────────────────────────────────────────────────────┤
-│  WebSockets  │  Event Sourcing  │  API REST  │  Notificações │
-├─────────────────────────────────────────────────────────────┤
-│                    CAMADA DE MONITORAMENTO                 │
-├─────────────────────────────────────────────────────────────┤
-│  Métricas  │  Alertas  │  Logs  │  Dashboards  │  Tracing   │
-├─────────────────────────────────────────────────────────────┤
-│                    CAMADA DE APLICAÇÃO                     │
-├─────────────────────────────────────────────────────────────┤
-│  Simulação  │  Agentes  │  Eventos  │  Configurações      │
-└─────────────────────────────────────────────────────────────┘
+
+                    CAMADA DE SEGURANÇA                     
+
+  Autenticação    Autorização    Criptografia    Auditoria 
+
+                    CAMADA DE COMUNICAÇÃO                   
+
+  WebSockets    Event Sourcing    API REST    Notificações 
+
+                    CAMADA DE MONITORAMENTO                 
+
+  Métricas    Alertas    Logs    Dashboards    Tracing   
+
+                    CAMADA DE APLICAÇÃO                     
+
+  Simulação    Agentes    Eventos    Configurações      
+
 ```
 
 ## Componentes Principais

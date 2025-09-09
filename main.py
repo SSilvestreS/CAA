@@ -41,7 +41,7 @@ class SmartCitySimulation:
         self.dashboard = CityDashboard(self.environment)
 
         print("✅ Simulação inicializada com sucesso!")
-        print(f"📊 Dashboard disponível em: http://localhost:8050")
+        print("📊 Dashboard disponível em: http://localhost:8050")
         print("=" * 60)
 
     async def run_simulation(self, duration_hours: Optional[int] = None):

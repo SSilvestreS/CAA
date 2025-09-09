@@ -32,7 +32,7 @@ def discover_and_run_tests():
     print("EXECUTANDO TESTES - CIDADES AUTÔNOMAS COM AGENTES DE IA")
     print("=" * 70)
     print(f"Diretório de testes: {test_dir}")
-    print(f"Padrão de arquivos: test_*.py")
+    print("Padrão de arquivos: test_*.py")
     print("=" * 70)
 
     result = runner.run(suite)

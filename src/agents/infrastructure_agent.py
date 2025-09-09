@@ -3,9 +3,7 @@ Agente Infraestrutura - Controla sistemas críticos da cidade.
 Gerencia energia, trânsito, saneamento, saúde e outros serviços essenciais.
 """
 
-import asyncio
 import random
-from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime, timedelta
 import numpy as np
 from .base_agent import BaseAgent, AgentMessage
@@ -337,8 +335,6 @@ class InfrastructureAgent(BaseAgent):
     async def _optimize_energy_consumption(self, situation: Dict[str, Any]) -> float:
         """Otimiza consumo de energia"""
         # Simula otimização baseada em carga e eficiência
-        current_consumption = self.energy_consumption * (situation["load_percentage"] + 0.5)
-
         # Potencial de economia baseado na eficiência atual
         efficiency_improvement = (1 - situation["efficiency"]) * 0.3
 

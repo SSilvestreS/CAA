@@ -106,7 +106,7 @@
 ### Demografia
 - Crescimento populacional
 
-## 🎮 Interfaces de Uso
+##  Interfaces de Uso
 
 ### 1. Simulação Principal
 ```bash
@@ -164,26 +164,26 @@ python example_usage.py
 - Pandas
 - JSON
 
-## 📁 Estrutura Final do Projeto
+##  Estrutura Final do Projeto
 
 ```
 Cidades Autônomas com Agentes de IA/
-├── src/
-│ ├── agents/ # 5 arquivos implementados
-│ ├── environment/ # 1 arquivo implementado
-│ ├── ai/ # 1 arquivo implementado
-│ ├── scenarios/ # 1 arquivo implementado
-│ └── visualization/ # 1 arquivo implementado
-├── main.py # Arquivo principal
-├── demo.py # Demonstração interativa
-├── run_scenarios.py # Executor de cenários
-├── example_usage.py # Exemplos de uso
-├── config.py # Configurações
-├── setup.py # Instalação
-├── requirements.txt # Dependências
-├── README.md # Documentação completa
-├── INSTALL.md # Guia de instalação
-└── PROJECT_SUMMARY.md # Este resumo
+ src/
+  agents/ # 5 arquivos implementados
+  environment/ # 1 arquivo implementado
+  ai/ # 1 arquivo implementado
+  scenarios/ # 1 arquivo implementado
+  visualization/ # 1 arquivo implementado
+ main.py # Arquivo principal
+ demo.py # Demonstração interativa
+ run_scenarios.py # Executor de cenários
+ example_usage.py # Exemplos de uso
+ config.py # Configurações
+ setup.py # Instalação
+ requirements.txt # Dependências
+ README.md # Documentação completa
+ INSTALL.md # Guia de instalação
+ PROJECT_SUMMARY.md # Este resumo
 ```
 
 ## Casos de Uso Atendidos

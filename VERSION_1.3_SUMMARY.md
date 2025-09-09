@@ -85,19 +85,19 @@ A versão 1.3 representa um marco significativo no desenvolvimento do sistema, c
 ## **Arquitetura da Versão 1.3**
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ CAMADA DE APRESENTAÇÃO │
-├─────────────────────────────────────────────────────────────┤
-│ Dashboard 3D │ Visualização 2D │ Relatórios │ API │
-├─────────────────────────────────────────────────────────────┤
-│ CAMADA DE LÓGICA │
-├─────────────────────────────────────────────────────────────┤
-│ DQN Avançado │ Otimização │ Eventos │ Cenários │
-├─────────────────────────────────────────────────────────────┤
-│ CAMADA DE DADOS │
-├─────────────────────────────────────────────────────────────┤
-│ Banco de Dados │ Cache │ Logs │ Configurações │
-└─────────────────────────────────────────────────────────────┘
+
+ CAMADA DE APRESENTAÇÃO 
+
+ Dashboard 3D  Visualização 2D  Relatórios  API 
+
+ CAMADA DE LÓGICA 
+
+ DQN Avançado  Otimização  Eventos  Cenários 
+
+ CAMADA DE DADOS 
+
+ Banco de Dados  Cache  Logs  Configurações 
+
 ```
 
 ## **Componentes Principais**

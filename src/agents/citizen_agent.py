@@ -3,11 +3,7 @@ Agente Cidadão - Representa um cidadão da cidade inteligente.
 Possui personalidade, rotina, necessidades e capacidade de aprendizado.
 """
 
-import asyncio
 import random
-from typing import Dict, List, Any, Optional
-from datetime import datetime, timedelta
-import numpy as np
 from .base_agent import BaseAgent, AgentMessage
 
 
@@ -142,7 +138,7 @@ class CitizenAgent(BaseAgent):
         """Decisões de lazer e entretenimento"""
         if self.stress_level > 0.7:
             return {
-                "action": "stress_relief",
+                "action": "stress_relie",
                 "activity": "exercise" if self.personality["innovation"] > 0.5 else "relaxation",
                 "duration": random.randint(1, 3),
             }
@@ -242,9 +238,7 @@ class CitizenAgent(BaseAgent):
         return {"action": "decline_offer"}
 
     async def _react_to_policy(self, policy: Dict[str, Any]) -> Dict[str, Any]:
-        """Reage a políticas públicas"""
-        policy_type = policy.get("type")
-        impact = policy.get("impact", 0)
+        """Reage a políticas públicas"""        impact = policy.get("impact", 0)
 
         # Calcula impacto na satisfação
         satisfaction_change = impact * self.personality["conservatism"]

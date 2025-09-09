@@ -93,7 +93,7 @@ go run agent-service/main.go
 
 Para instalação detalhada, consulte [INSTALL.md](INSTALL.md).
 
-## 🎮 Demonstração Interativa
+##  Demonstração Interativa
 
 ```bash
 # Execute a demonstração completa
@@ -187,28 +187,28 @@ python run_scenarios.py --innovations
 
 ```
 Cidades Autônomas com Agentes de IA/
-├── src/
-│ ├── agents/ # Agentes da simulação
-│ │ ├── base_agent.py # Classe base para agentes
-│ │ ├── citizen_agent.py # Agentes cidadãos
-│ │ ├── business_agent.py # Agentes empresas
-│ │ ├── government_agent.py # Agentes governo
-│ │ └── infrastructure_agent.py # Agentes infraestrutura
-│ ├── environment/ # Ambiente de simulação
-│ │ └── city_environment.py # Coordenador principal
-│ ├── ai/ # Sistema de IA
-│ │ └── collective_learning.py # Aprendizado coletivo
-│ ├── scenarios/ # Cenários de teste
-│ │ └── scenario_manager.py # Gerenciador de cenários
-│ └── visualization/ # Dashboard e visualização
-│ └── dashboard.py # Interface web interativa
-├── main.py # Arquivo principal
-├── demo.py # Demonstração interativa
-├── run_scenarios.py # Executor de cenários
-├── example_usage.py # Exemplos de uso
-├── config.py # Configurações
-├── requirements.txt # Dependências
-└── README.md # Este arquivo
+ src/
+  agents/ # Agentes da simulação
+   base_agent.py # Classe base para agentes
+   citizen_agent.py # Agentes cidadãos
+   business_agent.py # Agentes empresas
+   government_agent.py # Agentes governo
+   infrastructure_agent.py # Agentes infraestrutura
+  environment/ # Ambiente de simulação
+   city_environment.py # Coordenador principal
+  ai/ # Sistema de IA
+   collective_learning.py # Aprendizado coletivo
+  scenarios/ # Cenários de teste
+   scenario_manager.py # Gerenciador de cenários
+  visualization/ # Dashboard e visualização
+  dashboard.py # Interface web interativa
+ main.py # Arquivo principal
+ demo.py # Demonstração interativa
+ run_scenarios.py # Executor de cenários
+ example_usage.py # Exemplos de uso
+ config.py # Configurações
+ requirements.txt # Dependências
+ README.md # Este arquivo
 ```
 
 ## Casos de Uso

@@ -3,11 +3,8 @@ Gerenciador de cenários para testar diferentes situações na cidade inteligent
 Implementa cenários como políticas públicas, crises, trânsito autônomo, etc.
 """
 
-import asyncio
 import random
 from typing import Dict, List, Any, Optional, Callable
-from datetime import datetime, timedelta
-import numpy as np
 
 from ..environment.city_environment import CityEnvironment, MarketEvent
 

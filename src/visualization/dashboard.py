@@ -4,16 +4,11 @@ Usa Dash e Plotly para criar interface web em tempo real.
 """
 
 import dash
-from dash import dcc, html, Input, Output, callback, State
 import plotly.graph_objs as go
-import plotly.express as px
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
 import asyncio
 import threading
-import json
-from typing import Dict, List, Any, Optional
 
 import dash_bootstrap_components as dbc
 

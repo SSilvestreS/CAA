@@ -32,19 +32,19 @@ O sistema de Cidades Autônomas com Agentes de IA é uma simulação complexa qu
 ### Diagrama de Arquitetura
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ CAMADA DE APRESENTAÇÃO │
-├─────────────────────────────────────────────────────────────┤
-│ Dashboard 3D │ Visualização 2D │ Relatórios │ API │
-├─────────────────────────────────────────────────────────────┤
-│ CAMADA DE LÓGICA │
-├─────────────────────────────────────────────────────────────┤
-│ Agentes IA │ Otimização │ Eventos │ Cenários │
-├─────────────────────────────────────────────────────────────┤
-│ CAMADA DE DADOS │
-├─────────────────────────────────────────────────────────────┤
-│ Banco de Dados │ Cache │ Logs │ Configurações │
-└─────────────────────────────────────────────────────────────┘
+
+ CAMADA DE APRESENTAÇÃO 
+
+ Dashboard 3D  Visualização 2D  Relatórios  API 
+
+ CAMADA DE LÓGICA 
+
+ Agentes IA  Otimização  Eventos  Cenários 
+
+ CAMADA DE DADOS 
+
+ Banco de Dados  Cache  Logs  Configurações 
+
 ```
 
 ### Componentes Principais
@@ -257,10 +257,10 @@ def create_particle_system(self, position, particle_type, count, duration):
 
 ```
 tests/
-├── __init__.py
-├── test_advanced_dqn.py
-├── test_advanced_optimizer.py
-└── test_visualization.py
+ __init__.py
+ test_advanced_dqn.py
+ test_advanced_optimizer.py
+ test_visualization.py
 ```
 
 ### Executando Testes

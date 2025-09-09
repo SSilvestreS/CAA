@@ -3,25 +3,16 @@ Sistema de Aprendizado Coletivo para agentes da cidade inteligente.
 Implementa Reinforcement Learning e compartilhamento de conhecimento entre agentes.
 """
 
-import asyncio
 import numpy as np
 import random
-from typing import Dict, List, Any, Optional, Tuple
-from datetime import datetime, timedelta
+from typing import Dict, List, Any
+from datetime import datetime
 from dataclasses import dataclass, field
 import json
-import pickle
 from collections import defaultdict, deque
 
-try:
-    import torch
-    import torch.nn as nn
-    import torch.optim as optim
-
-    TORCH_AVAILABLE = True
-except ImportError:
-    TORCH_AVAILABLE = False
-    print("⚠️ PyTorch não disponível. Usando implementação simplificada.")
+# PyTorch não é usado neste arquivo - implementação simplificada
+TORCH_AVAILABLE = False
 
 
 @dataclass
@@ -451,7 +442,7 @@ class AgentLearningModule:
             predicted_action = self.collective_system.get_model_prediction(self.agent_type, state)
             if predicted_action in available_actions:
                 return predicted_action
-        except:
+        except Exception:
             pass
 
         # Usa conhecimento compartilhado

@@ -150,7 +150,7 @@ AGENT_CONFIG = {
 }
 ```
 
-## 🐛 Solução de Problemas
+##  Solução de Problemas
 
 ### Erro de Dependências
 ```bash
@@ -179,22 +179,22 @@ python main.py --citizens 50 --businesses 10 --infrastructure 5
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 ```
 
-## 📁 Estrutura do Projeto
+##  Estrutura do Projeto
 
 ```
 Cidades Autônomas com Agentes de IA/
-├── src/
-│ ├── agents/ # Agentes (Cidadãos, Empresas, etc.)
-│ ├── environment/ # Ambiente de simulação
-│ ├── ai/ # Sistema de IA e aprendizado
-│ ├── scenarios/ # Cenários de teste
-│ └── visualization/ # Dashboard e visualização
-├── main.py # Arquivo principal
-├── run_scenarios.py # Executor de cenários
-├── example_usage.py # Exemplos de uso
-├── config.py # Configurações
-├── requirements.txt # Dependências
-└── README.md # Documentação
+ src/
+  agents/ # Agentes (Cidadãos, Empresas, etc.)
+  environment/ # Ambiente de simulação
+  ai/ # Sistema de IA e aprendizado
+  scenarios/ # Cenários de teste
+  visualization/ # Dashboard e visualização
+ main.py # Arquivo principal
+ run_scenarios.py # Executor de cenários
+ example_usage.py # Exemplos de uso
+ config.py # Configurações
+ requirements.txt # Dependências
+ README.md # Documentação
 ```
 
 ## Verificação da Instalação
@@ -214,7 +214,7 @@ print(' Instalação bem-sucedida!')
 python example_usage.py
 ```
 
-## 📞 Suporte
+##  Suporte
 
 Se encontrar problemas:
 

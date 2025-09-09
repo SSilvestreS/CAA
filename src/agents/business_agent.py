@@ -3,10 +3,7 @@ Agente Empresa - Representa empresas que fornecem produtos e serviços.
 Usa IA para precificação dinâmica, previsão de demanda e logística.
 """
 
-import asyncio
 import random
-from typing import Dict, List, Any, Optional, Tuple
-from datetime import datetime, timedelta
 import numpy as np
 from .base_agent import BaseAgent, AgentMessage
 
@@ -104,8 +101,6 @@ class BusinessAgent(BaseAgent):
         competitive_pressure = self._calculate_competitive_pressure()
 
         # Avalia capacidade de produção
-        capacity_utilization = self.current_production / self.production_capacity
-
         # Calcula saúde financeira
         financial_health = self._calculate_financial_health()
 
@@ -180,9 +175,7 @@ class BusinessAgent(BaseAgent):
     async def _dynamic_pricing(self, situation: Dict[str, Any], competitor_actions: List[Dict]) -> float:
         """Precificação dinâmica usando IA"""
         # Fatores que influenciam o preço
-        demand_factor = situation["current_demand"] / 100  # Normaliza demanda
-        competition_factor = 1 - situation["competitive_pressure"]
-        capacity_factor = situation["capacity_utilization"]
+        demand_factor = situation["current_demand"] / 100  # Normaliza demanda        capacity_factor = situation["capacity_utilization"]
 
         # Ajusta preço baseado nos fatores
         price_multiplier = 1.0
@@ -208,8 +201,6 @@ class BusinessAgent(BaseAgent):
         """Precificação baseada no mercado"""
         # Preço baseado na demanda e satisfação do cliente
         demand_factor = situation["current_demand"] / 100
-        satisfaction_factor = situation["customer_satisfaction"]
-
         # Ajusta preço baseado na demanda
         if demand_factor > 0.8:
             return self.current_price * 1.1
@@ -244,8 +235,6 @@ class BusinessAgent(BaseAgent):
     async def _make_production_decision(self, situation: Dict[str, Any]) -> Dict[str, Any]:
         """Decide sobre níveis de produção"""
         current_demand = situation["current_demand"]
-        capacity_utilization = situation["capacity_utilization"]
-
         # Calcula produção ideal baseada na demanda
         target_production = min(current_demand, self.production_capacity)
 
@@ -434,9 +423,7 @@ class BusinessAgent(BaseAgent):
                 return {"action": "price_too_low", "minimum_price": self.current_price}
 
     async def _handle_partnership_proposal(self, proposal: Dict[str, Any]) -> Dict[str, Any]:
-        """Processa proposta de parceria"""
-        partner_type = proposal.get("partner_type")
-        benefits = proposal.get("benefits", {})
+        """Processa proposta de parceria"""        benefits = proposal.get("benefits", {})
 
         # Avalia proposta baseada na estratégia
         if self.strategy["cooperation"] > 0.6:

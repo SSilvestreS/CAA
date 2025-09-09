@@ -8,6 +8,7 @@ except ImportError:
     print("setuptools não encontrado. Instalando...")
     import subprocess
     import sys
+
     subprocess.check_call([sys.executable, "-m", "pip", "install", "setuptools"])
     from setuptools import setup, find_packages  # type: ignore
 

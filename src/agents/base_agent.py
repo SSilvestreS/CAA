@@ -4,7 +4,6 @@ Define a interface comum e funcionalidades básicas.
 """
 
 import uuid
-import asyncio
 from abc import ABC, abstractmethod
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass, field

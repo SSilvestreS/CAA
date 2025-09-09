@@ -150,16 +150,16 @@ function exemploFuncao(parametro: string): boolean {
 
 ```
 projeto/
-├── src/ # Código fonte Python
-├── frontend/ # Frontend React/TypeScript
-├── backend/ # Backend Node.js/TypeScript
-├── ai-engine/ # Engine AI em Rust
-├── microservices/ # Microserviços em Go
-├── database/ # Scripts de banco de dados
-├── docs/ # Documentação
-├── tests/ # Testes
-├── .github/ # Configurações GitHub
-└── docker/ # Configurações Docker
+ src/ # Código fonte Python
+ frontend/ # Frontend React/TypeScript
+ backend/ # Backend Node.js/TypeScript
+ ai-engine/ # Engine AI em Rust
+ microservices/ # Microserviços em Go
+ database/ # Scripts de banco de dados
+ docs/ # Documentação
+ tests/ # Testes
+ .github/ # Configurações GitHub
+ docker/ # Configurações Docker
 ```
 
 ## Checklist de Código Limpo

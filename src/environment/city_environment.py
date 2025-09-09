@@ -5,7 +5,6 @@ Gerencia interações, eventos aleatórios e mecânicas de mercado.
 
 import asyncio
 import random
-from typing import Dict, List, Any, Optional, Tuple
 from datetime import datetime, timedelta
 import numpy as np
 from dataclasses import dataclass, field

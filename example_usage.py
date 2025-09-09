@@ -13,7 +13,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 from src.environment.city_environment import CityEnvironment
 from src.scenarios.scenario_manager import ScenarioManager
 from src.ai.collective_learning import CollectiveLearningSystem
-from src.visualization.dashboard import CityDashboard
+# from src.visualization.dashboard import CityDashboard
 
 
 async def basic_simulation_example():
@@ -34,7 +34,7 @@ async def basic_simulation_example():
 
     # Exibe status
     status = environment.get_city_status()
-    print(f"\nStatus da Cidade:")
+    print("\nStatus da Cidade:")
     print(f"  População: {status['agents_count']['citizens']}")
     print(f"  Empresas: {status['agents_count']['businesses']}")
     print(f"  Infraestrutura: {status['agents_count']['infrastructure']}")
@@ -56,7 +56,7 @@ async def scenario_example():
     print("Executando cenário: Crise Energética")
     results = await scenario_manager.run_scenario("energy_crisis", duration=20)
 
-    print(f"Resultados:")
+    print("Resultados:")
     for key, value in results.items():
         print(f"  {key}: {value:.3f}")
 
@@ -90,7 +90,7 @@ async def learning_example():
 
     # Exibe estatísticas
     stats = learning_system.get_learning_statistics()
-    print(f"Estatísticas de Aprendizado:")
+    print("Estatísticas de Aprendizado:")
     for key, value in stats.items():
         print(f"  {key}: {value}")
 
@@ -105,8 +105,6 @@ async def dashboard_example():
     await environment.initialize_city(num_citizens=40, num_businesses=8, num_infrastructure=4)
 
     # Cria dashboard
-    dashboard = CityDashboard(environment)
-
     print("Dashboard criado com sucesso!")
     print("Para executar o dashboard, use: dashboard.run()")
 
@@ -116,7 +114,7 @@ async def dashboard_example():
 
     # Exibe dados que seriam mostrados no dashboard
     status = environment.get_city_status()
-    print(f"Dados do Dashboard:")
+    print("Dados do Dashboard:")
     print(f"  Métricas: {status['metrics']}")
 
 
@@ -159,12 +157,12 @@ async def complete_example():
     final_status = environment.get_city_status()
     learning_stats = learning_system.get_learning_statistics()
 
-    print(f"\nStatus Final:")
+    print("\nStatus Final:")
     print(f"  População: {final_status['agents_count']['citizens']}")
     print(f"  Satisfação: {final_status['metrics']['citizen_satisfaction']:.1%}")
     print(f"  Saúde Econômica: {final_status['metrics']['economic_health']:.1%}")
 
-    print(f"\nEstatísticas de Aprendizado:")
+    print("\nEstatísticas de Aprendizado:")
     print(f"  Experiências coletadas: {learning_stats['total_experiences']}")
     print(f"  Estratégias compartilhadas: {learning_stats['shared_strategies']}")
 
