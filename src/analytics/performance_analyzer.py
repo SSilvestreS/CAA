@@ -50,7 +50,9 @@ class PerformanceAnalyzer:
     def start_monitoring(self):
         """Inicia o monitoramento de performance"""
         self.start_time = time.time()
-        self.log_metric("simulation_start", 0, {"timestamp": datetime.now().isoformat()})
+        self.log_metric(
+            "simulation_start", 0, {"timestamp": datetime.now().isoformat()}
+        )
 
     def stop_monitoring(self):
         """Para o monitoramento e gera relatório final"""
@@ -61,10 +63,19 @@ class PerformanceAnalyzer:
 
     def log_metric(self, name: str, value: float, metadata: Optional[Dict] = None):
         """Registra uma métrica"""
-        metric = PerformanceMetric(name=name, value=value, timestamp=datetime.now(), metadata=metadata)
+        metric = PerformanceMetric(
+            name=name, value=value, timestamp=datetime.now(), metadata=metadata
+        )
         self.metrics_history[name].append(metric)
 
-    def log_agent_action(self, agent_id: str, agent_type: str, action: str, duration: float, success: bool):
+    def log_agent_action(
+        self,
+        agent_id: str,
+        agent_type: str,
+        action: str,
+        duration: float,
+        success: bool,
+    ):
         """Registra ação de agente"""
         self.agent_metrics[agent_id].append(
             {
@@ -105,9 +116,13 @@ class PerformanceAnalyzer:
         self.log_metric("data_transferred", data_transferred)
         self.log_metric("interaction_success_rate", 1.0 if success else 0.0)
 
-    def log_system_metric(self, metric_name: str, value: float, component: str = "system"):
+    def log_system_metric(
+        self, metric_name: str, value: float, component: str = "system"
+    ):
         """Registra métrica do sistema"""
-        self.system_metrics[component].append({"timestamp": datetime.now(), "metric_name": metric_name, "value": value})
+        self.system_metrics[component].append(
+            {"timestamp": datetime.now(), "metric_name": metric_name, "value": value}
+        )
         self.log_metric(f"{component}_{metric_name}", value)
 
     def calculate_agent_performance(self, agent_id: str) -> AgentPerformance:
@@ -143,7 +158,9 @@ class PerformanceAnalyzer:
         energy_efficiency = success_rate / (avg_response_time + 0.1)
 
         # Calcular score de colaboração (baseado em interações)
-        collaboration_count = len([k for k in self.interaction_metrics.keys() if agent_id in k])
+        collaboration_count = len(
+            [k for k in self.interaction_metrics.keys() if agent_id in k]
+        )
         collaboration_score = min(collaboration_count / 10.0, 1.0)
 
         return AgentPerformance(
@@ -178,7 +195,9 @@ class PerformanceAnalyzer:
             return {"efficiency": 0.0, "latency": 0.0, "throughput": 0.0}
 
         avg_latency = statistics.mean([i["duration"] for i in all_interactions])
-        success_rate = sum(1 for i in all_interactions if i["success"]) / len(all_interactions)
+        success_rate = sum(1 for i in all_interactions if i["success"]) / len(
+            all_interactions
+        )
         total_data = sum(i["data_transferred"] for i in all_interactions)
 
         # Throughput em dados por segundo
@@ -188,14 +207,21 @@ class PerformanceAnalyzer:
         else:
             throughput = 0.0
 
-        return {"efficiency": success_rate, "latency": avg_latency, "throughput": throughput}
+        return {
+            "efficiency": success_rate,
+            "latency": avg_latency,
+            "throughput": throughput,
+        }
 
     def get_resource_utilization(self) -> Dict[str, float]:
         """Calcula utilização de recursos"""
         utilization = {}
 
         # CPU (baseado em tempo de processamento)
-        total_processing_time = sum(sum(a["duration"] for a in actions) for actions in self.agent_metrics.values())
+        total_processing_time = sum(
+            sum(a["duration"] for a in actions)
+            for actions in self.agent_metrics.values()
+        )
 
         if self.start_time:
             total_time = time.time() - self.start_time
@@ -205,12 +231,15 @@ class PerformanceAnalyzer:
 
         # Memória (baseado em número de agentes e interações)
         total_agents = len(self.agent_metrics)
-        total_interactions = sum(len(interactions) for interactions in self.interaction_metrics.values())
+        total_interactions = sum(
+            len(interactions) for interactions in self.interaction_metrics.values()
+        )
         utilization["memory"] = min((total_agents + total_interactions) / 1000.0, 1.0)
 
         # Rede (baseado em transferência de dados)
         total_data = sum(
-            sum(i["data_transferred"] for i in interactions) for interactions in self.interaction_metrics.values()
+            sum(i["data_transferred"] for i in interactions)
+            for interactions in self.interaction_metrics.values()
         )
         utilization["network"] = min(total_data / 1000000.0, 1.0)  # Normalizado para MB
 
@@ -220,7 +249,9 @@ class PerformanceAnalyzer:
         """Gera relatório completo de performance"""
         report = {
             "timestamp": datetime.now().isoformat(),
-            "simulation_duration": time.time() - self.start_time if self.start_time else 0,
+            "simulation_duration": (
+                time.time() - self.start_time if self.start_time else 0
+            ),
             "system_metrics": {
                 "throughput": self.get_system_throughput(),
                 "network_efficiency": self.get_network_efficiency(),
@@ -233,7 +264,9 @@ class PerformanceAnalyzer:
 
         # Performance dos agentes
         for agent_id in self.agent_metrics.keys():
-            report["agent_performance"][agent_id] = self.calculate_agent_performance(agent_id).__dict__
+            report["agent_performance"][agent_id] = self.calculate_agent_performance(
+                agent_id
+            ).__dict__
 
         # Top métricas
         for metric_name, metrics in self.metrics_history.items():
@@ -260,9 +293,13 @@ class PerformanceAnalyzer:
         # Análise de throughput
         throughput = report["system_metrics"]["throughput"]
         if throughput < 1.0:
-            recommendations.append("Considerar otimização de algoritmos - throughput baixo")
+            recommendations.append(
+                "Considerar otimização de algoritmos - throughput baixo"
+            )
         elif throughput > 10.0:
-            recommendations.append("Sistema com alta performance - considerar aumento de complexidade")
+            recommendations.append(
+                "Sistema com alta performance - considerar aumento de complexidade"
+            )
 
         # Análise de eficiência de rede
         network_eff = report["system_metrics"]["network_efficiency"]["efficiency"]
@@ -272,13 +309,21 @@ class PerformanceAnalyzer:
         # Análise de utilização de recursos
         cpu_util = report["system_metrics"]["resource_utilization"]["cpu"]
         if cpu_util > 0.8:
-            recommendations.append("Alta utilização de CPU - considerar distribuição de carga")
+            recommendations.append(
+                "Alta utilização de CPU - considerar distribuição de carga"
+            )
 
         # Análise de performance dos agentes
         agent_perfs = report["agent_performance"]
-        low_performers = [agent_id for agent_id, perf in agent_perfs.items() if perf["success_rate"] < 0.5]
+        low_performers = [
+            agent_id
+            for agent_id, perf in agent_perfs.items()
+            if perf["success_rate"] < 0.5
+        ]
         if low_performers:
-            recommendations.append(f"Agentes com baixa performance: {', '.join(low_performers)}")
+            recommendations.append(
+                f"Agentes com baixa performance: {', '.join(low_performers)}"
+            )
 
         return recommendations
 
@@ -292,7 +337,9 @@ class PerformanceAnalyzer:
         return {
             "timestamp": datetime.now().isoformat(),
             "active_agents": len(self.agent_metrics),
-            "total_interactions": sum(len(interactions) for interactions in self.interaction_metrics.values()),
+            "total_interactions": sum(
+                len(interactions) for interactions in self.interaction_metrics.values()
+            ),
             "system_throughput": self.get_system_throughput(),
             "network_efficiency": self.get_network_efficiency(),
             "resource_utilization": self.get_resource_utilization(),

@@ -1,0 +1,285 @@
+# Docker Compose para Cidades Autônomas com Agentes de IA v1.6
+# MLOps e Escalabilidade
+
+version: '3.8'
+
+services:
+  # API Principal
+  api:
+    build:
+      context: ../..
+      dockerfile: src/infrastructure/docker/Dockerfile
+      target: production
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/cities_db
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - db
+      - redis
+      - kafka
+    networks:
+      - cities_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Agent Service
+  agent-service:
+    build:
+      context: ../..
+      dockerfile: src/infrastructure/docker/Dockerfile
+      target: production
+    ports:
+      - "8001:8000"
+    environment:
+      - SERVICE_NAME=agent-service
+      - DATABASE_URL=postgresql://postgres:password@db:5432/cities_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # AI Service
+  ai-service:
+    build:
+      context: ../..
+      dockerfile: src/infrastructure/docker/Dockerfile
+      target: production
+    ports:
+      - "8002:8000"
+    environment:
+      - SERVICE_NAME=ai-service
+      - DATABASE_URL=postgresql://postgres:password@db:5432/cities_db
+      - REDIS_URL=redis://redis:6379
+      - MODEL_PATH=/app/models
+    volumes:
+      - models_volume:/app/models
+    depends_on:
+      - db
+      - redis
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Data Service
+  data-service:
+    build:
+      context: ../..
+      dockerfile: src/infrastructure/docker/Dockerfile
+      target: production
+    ports:
+      - "8003:8000"
+    environment:
+      - SERVICE_NAME=data-service
+      - DATABASE_URL=postgresql://postgres:password@db:5432/cities_db
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - db
+      - redis
+      - kafka
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Analytics Service
+  analytics-service:
+    build:
+      context: ../..
+      dockerfile: src/infrastructure/docker/Dockerfile
+      target: production
+    ports:
+      - "8004:8000"
+    environment:
+      - SERVICE_NAME=analytics-service
+      - DATABASE_URL=postgresql://postgres:password@db:5432/cities_db
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Notification Service
+  notification-service:
+    build:
+      context: ../..
+      dockerfile: src/infrastructure/docker/Dockerfile
+      target: production
+    ports:
+      - "8005:8000"
+    environment:
+      - SERVICE_NAME=notification-service
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - redis
+      - kafka
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_DB=cities_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Redis Cache
+  redis:
+    image: redis:6-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Apache Kafka
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    ports:
+      - "9092:9092"
+    depends_on:
+      - zookeeper
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Zookeeper (para Kafka)
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - "2181:2181"
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Prometheus (Monitoring)
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Grafana (Dashboards)
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    depends_on:
+      - prometheus
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Jaeger (Tracing)
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686"
+      - "14268:14268"
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Elasticsearch (Logs)
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.15.0
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Kibana (Log Analysis)
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.15.0
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+  # Logstash (Log Processing)
+  logstash:
+    image: docker.elastic.co/logstash/logstash:7.15.0
+    volumes:
+      - ./monitoring/logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5044:5044"
+    depends_on:
+      - elasticsearch
+    networks:
+      - cities_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  models_volume:
+  prometheus_data:
+  grafana_data:
+  elasticsearch_data:
+
+networks:
+  cities_network:
+    driver: bridge
+

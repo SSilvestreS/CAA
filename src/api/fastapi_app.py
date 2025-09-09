@@ -51,7 +51,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=["*"])  # Em produção, especificar hosts permitidos
+app.add_middleware(
+    TrustedHostMiddleware, allowed_hosts=["*"]
+)  # Em produção, especificar hosts permitidos
 
 # Security
 security = HTTPBearer()
@@ -62,7 +64,15 @@ security = HTTPBearer()
 async def auth_middleware(request: Request, call_next):
     """Middleware de autenticação para rotas protegidas."""
     # Rotas públicas que não precisam de autenticação
-    public_routes = ["/docs", "/redoc", "/openapi.json", "/health", "/metrics", "/auth/login", "/auth/register"]
+    public_routes = [
+        "/docs",
+        "/redoc",
+        "/openapi.json",
+        "/health",
+        "/metrics",
+        "/auth/login",
+        "/auth/register",
+    ]
 
     if request.url.path in public_routes:
         response = await call_next(request)
@@ -72,14 +82,18 @@ async def auth_middleware(request: Request, call_next):
     authorization = request.headers.get("Authorization")
     if not authorization or not authorization.startswith("Bearer "):
         return JSONResponse(
-            status_code=status.HTTP_401_UNAUTHORIZED, content={"detail": "Token de autenticação necessário"}
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={"detail": "Token de autenticação necessário"},
         )
 
     token = authorization.split(" ")[1]
     token_payload = auth_service.verify_token(token)
 
     if not token_payload:
-        return JSONResponse(status_code=status.HTTP_401_UNAUTHORIZED, content={"detail": "Token inválido ou expirado"})
+        return JSONResponse(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            content={"detail": "Token inválido ou expirado"},
+        )
 
     # Adiciona informações do usuário ao request
     request.state.user_id = token_payload.user_id
@@ -102,7 +116,10 @@ async def metrics_middleware(request: Request, call_next):
 
     # Registra métricas
     metrics_collector.record_request(
-        method=request.method, endpoint=request.url.path, duration=duration, status=response.status_code
+        method=request.method,
+        endpoint=request.url.path,
+        duration=duration,
+        status=response.status_code,
     )
 
     return response
@@ -153,7 +170,9 @@ def require_permission(permission: Permission, resource: Resource):
     def permission_checker(request: Request):
         user_id = request.state.user_id
         if not rbac_service.has_resource_permission(user_id, resource, permission):
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente")
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+            )
         return True
 
     return permission_checker
@@ -163,7 +182,11 @@ def require_permission(permission: Permission, resource: Resource):
 @app.get("/health")
 async def health_check():
     """Verifica saúde da aplicação."""
-    return {"status": "healthy", "timestamp": datetime.now().isoformat(), "version": "1.4.0"}
+    return {
+        "status": "healthy",
+        "timestamp": datetime.now().isoformat(),
+        "version": "1.4.0",
+    }
 
 
 @app.get("/metrics")
@@ -180,7 +203,10 @@ async def login(credentials: Dict[str, str]):
     password = credentials.get("password")
 
     if not username or not password:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Username e password são obrigatórios")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username e password são obrigatórios",
+        )
 
     # Aqui você validaria as credenciais no banco de dados
     # Por simplicidade, vamos criar um usuário mock
@@ -194,7 +220,9 @@ async def login(credentials: Dict[str, str]):
 
     # Verifica senha
     if not auth_service.verify_password(password, user.password_hash):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Credenciais inválidas"
+        )
 
     # Gera tokens
     tokens = auth_service.generate_tokens(user)
@@ -213,7 +241,9 @@ async def refresh_token(refresh_token: str):
     tokens = auth_service.refresh_access_token(refresh_token)
 
     if not tokens:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token inválido")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token inválido"
+        )
 
     return tokens
 
@@ -224,14 +254,18 @@ async def logout(token: str = Depends(security)):
     success = auth_service.revoke_token(token.credentials)
 
     if not success:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Token inválido")
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Token inválido"
+        )
 
     return {"message": "Logout realizado com sucesso"}
 
 
 # Rotas de simulação
 @app.get("/simulation/status")
-async def get_simulation_status(current_user: Dict[str, Any] = Depends(get_current_user)):
+async def get_simulation_status(
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
     """Retorna status da simulação."""
     require_permission(Permission.READ_SIMULATION, Resource.SIMULATION)
 
@@ -263,7 +297,10 @@ async def stop_simulation(current_user: Dict[str, Any] = Depends(get_current_use
     require_permission(Permission.STOP_SIMULATION, Resource.SIMULATION)
 
     # Lógica para parar simulação
-    return {"message": "Simulação parada com sucesso", "stopped_at": datetime.now().isoformat()}
+    return {
+        "message": "Simulação parada com sucesso",
+        "stopped_at": datetime.now().isoformat(),
+    }
 
 
 @app.post("/simulation/pause")
@@ -272,7 +309,10 @@ async def pause_simulation(current_user: Dict[str, Any] = Depends(get_current_us
     require_permission(Permission.PAUSE_SIMULATION, Resource.SIMULATION)
 
     # Lógica para pausar simulação
-    return {"message": "Simulação pausada com sucesso", "paused_at": datetime.now().isoformat()}
+    return {
+        "message": "Simulação pausada com sucesso",
+        "paused_at": datetime.now().isoformat(),
+    }
 
 
 # Rotas de agentes
@@ -290,7 +330,9 @@ async def list_agents(
     agents = [
         {
             "id": f"agent_{i}",
-            "type": "citizen" if i % 3 == 0 else "business" if i % 3 == 1 else "government",
+            "type": (
+                "citizen" if i % 3 == 0 else "business" if i % 3 == 1 else "government"
+            ),
             "status": "active",
             "created_at": datetime.now().isoformat(),
         }
@@ -300,11 +342,16 @@ async def list_agents(
     if agent_type:
         agents = [a for a in agents if a["type"] == agent_type]
 
-    return {"agents": agents, "pagination": {"page": page, "limit": limit, "total": len(agents)}}
+    return {
+        "agents": agents,
+        "pagination": {"page": page, "limit": limit, "total": len(agents)},
+    }
 
 
 @app.get("/agents/{agent_id}")
-async def get_agent(agent_id: str, current_user: Dict[str, Any] = Depends(get_current_user)):
+async def get_agent(
+    agent_id: str, current_user: Dict[str, Any] = Depends(get_current_user)
+):
     """Obtém detalhes de um agente."""
     require_permission(Permission.READ_AGENT, Resource.AGENTS)
 
@@ -320,34 +367,51 @@ async def get_agent(agent_id: str, current_user: Dict[str, Any] = Depends(get_cu
 
 
 @app.post("/agents")
-async def create_agent(agent_data: Dict[str, Any], current_user: Dict[str, Any] = Depends(get_current_user)):
+async def create_agent(
+    agent_data: Dict[str, Any], current_user: Dict[str, Any] = Depends(get_current_user)
+):
     """Cria novo agente."""
     require_permission(Permission.CREATE_AGENT, Resource.AGENTS)
 
     # Lógica para criar agente
     agent_id = f"agent_{int(datetime.now().timestamp())}"
 
-    return {"id": agent_id, "message": "Agente criado com sucesso", "created_at": datetime.now().isoformat()}
+    return {
+        "id": agent_id,
+        "message": "Agente criado com sucesso",
+        "created_at": datetime.now().isoformat(),
+    }
 
 
 @app.put("/agents/{agent_id}")
 async def update_agent(
-    agent_id: str, agent_data: Dict[str, Any], current_user: Dict[str, Any] = Depends(get_current_user)
+    agent_id: str,
+    agent_data: Dict[str, Any],
+    current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     """Atualiza agente."""
     require_permission(Permission.UPDATE_AGENT, Resource.AGENTS)
 
     # Lógica para atualizar agente
-    return {"id": agent_id, "message": "Agente atualizado com sucesso", "updated_at": datetime.now().isoformat()}
+    return {
+        "id": agent_id,
+        "message": "Agente atualizado com sucesso",
+        "updated_at": datetime.now().isoformat(),
+    }
 
 
 @app.delete("/agents/{agent_id}")
-async def delete_agent(agent_id: str, current_user: Dict[str, Any] = Depends(get_current_user)):
+async def delete_agent(
+    agent_id: str, current_user: Dict[str, Any] = Depends(get_current_user)
+):
     """Deleta agente."""
     require_permission(Permission.DELETE_AGENT, Resource.AGENTS)
 
     # Lógica para deletar agente
-    return {"message": "Agente deletado com sucesso", "deleted_at": datetime.now().isoformat()}
+    return {
+        "message": "Agente deletado com sucesso",
+        "deleted_at": datetime.now().isoformat(),
+    }
 
 
 # Rotas de relatórios
@@ -363,14 +427,21 @@ async def list_reports(current_user: Dict[str, Any] = Depends(get_current_user))
             "type": "performance",
             "created_at": datetime.now().isoformat(),
         },
-        {"id": "report_2", "name": "Relatório de Agentes", "type": "agents", "created_at": datetime.now().isoformat()},
+        {
+            "id": "report_2",
+            "name": "Relatório de Agentes",
+            "type": "agents",
+            "created_at": datetime.now().isoformat(),
+        },
     ]
 
     return {"reports": reports}
 
 
 @app.get("/reports/{report_id}")
-async def get_report(report_id: str, current_user: Dict[str, Any] = Depends(get_current_user)):
+async def get_report(
+    report_id: str, current_user: Dict[str, Any] = Depends(get_current_user)
+):
     """Obtém relatório específico."""
     require_permission(Permission.READ_REPORTS, Resource.REPORTS)
 
@@ -378,7 +449,10 @@ async def get_report(report_id: str, current_user: Dict[str, Any] = Depends(get_
     return {
         "id": report_id,
         "name": "Relatório de Performance",
-        "data": {"metrics": metrics_registry.get_all_metrics_data(), "generated_at": datetime.now().isoformat()},
+        "data": {
+            "metrics": metrics_registry.get_all_metrics_data(),
+            "generated_at": datetime.now().isoformat(),
+        },
     }
 
 
@@ -393,14 +467,18 @@ async def list_alerts(current_user: Dict[str, Any] = Depends(get_current_user)):
 
 
 @app.post("/alerts/{alert_id}/acknowledge")
-async def acknowledge_alert(alert_id: str, current_user: Dict[str, Any] = Depends(get_current_user)):
+async def acknowledge_alert(
+    alert_id: str, current_user: Dict[str, Any] = Depends(get_current_user)
+):
     """Reconhece alerta."""
     require_permission(Permission.READ_LOGS, Resource.LOGS)
 
     success = alert_manager.acknowledge_alert(alert_id, current_user["user_id"])
 
     if not success:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Alerta não encontrado")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Alerta não encontrado"
+        )
 
     return {"message": "Alerta reconhecido com sucesso"}
 
@@ -418,18 +496,26 @@ async def get_config(current_user: Dict[str, Any] = Depends(get_current_user)):
 
 
 @app.put("/config")
-async def update_config(config_data: Dict[str, Any], current_user: Dict[str, Any] = Depends(get_current_user)):
+async def update_config(
+    config_data: Dict[str, Any],
+    current_user: Dict[str, Any] = Depends(get_current_user),
+):
     """Atualiza configurações do sistema."""
     require_permission(Permission.UPDATE_CONFIG, Resource.CONFIG)
 
     # Lógica para atualizar configurações
-    return {"message": "Configurações atualizadas com sucesso", "updated_at": datetime.now().isoformat()}
+    return {
+        "message": "Configurações atualizadas com sucesso",
+        "updated_at": datetime.now().isoformat(),
+    }
 
 
 # Rotas de eventos
 @app.get("/events")
 async def list_events(
-    event_type: Optional[str] = None, limit: int = 100, current_user: Dict[str, Any] = Depends(get_current_user)
+    event_type: Optional[str] = None,
+    limit: int = 100,
+    current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     """Lista eventos do sistema."""
     require_permission(Permission.READ_LOGS, Resource.LOGS)
@@ -463,7 +549,8 @@ async def general_exception_handler(request: Request, exc: Exception):
     """Handler para exceções gerais."""
     logger.error(f"Erro não tratado: {exc}")
     return JSONResponse(
-        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"detail": "Erro interno do servidor"}
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": "Erro interno do servidor"},
     )
 
 

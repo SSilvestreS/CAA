@@ -71,7 +71,9 @@ class Metric:
             for name, val in labels.items():
                 metric_labels.append(MetricLabel(name, val))
 
-        self.values.append(MetricValue(value=value, timestamp=datetime.now(), labels=metric_labels))
+        self.values.append(
+            MetricValue(value=value, timestamp=datetime.now(), labels=metric_labels)
+        )
 
         # Mantém apenas últimos 1000 valores
         if len(self.values) > 1000:
@@ -158,7 +160,16 @@ class Histogram:
         """Retorna estatísticas do histograma."""
         with self._lock:
             if not self._values:
-                return {"count": 0, "sum": 0.0, "mean": 0.0, "min": 0.0, "max": 0.0, "p50": 0.0, "p95": 0.0, "p99": 0.0}
+                return {
+                    "count": 0,
+                    "sum": 0.0,
+                    "mean": 0.0,
+                    "min": 0.0,
+                    "max": 0.0,
+                    "p50": 0.0,
+                    "p95": 0.0,
+                    "p99": 0.0,
+                }
 
             values = list(self._values)
             return {
@@ -185,7 +196,13 @@ class Histogram:
 class Summary:
     """Métrica resumo."""
 
-    def __init__(self, name: str, description: str, quantiles: List[float] = None, max_age: int = 600):
+    def __init__(
+        self,
+        name: str,
+        description: str,
+        quantiles: List[float] = None,
+        max_age: int = 600,
+    ):
         self.name = name
         self.description = description
         self.quantiles = quantiles or [0.5, 0.9, 0.95, 0.99]
@@ -249,7 +266,9 @@ class MetricsRegistry:
         self._metrics: Dict[str, Any] = {}
         self._lock = threading.Lock()
 
-    def register_counter(self, name: str, description: str, labels: List[str] = None) -> Counter:
+    def register_counter(
+        self, name: str, description: str, labels: List[str] = None
+    ) -> Counter:
         """Registra métrica contador."""
         with self._lock:
             if name in self._metrics:
@@ -259,7 +278,9 @@ class MetricsRegistry:
             self._metrics[name] = counter
             return counter
 
-    def register_gauge(self, name: str, description: str, labels: List[str] = None) -> Gauge:
+    def register_gauge(
+        self, name: str, description: str, labels: List[str] = None
+    ) -> Gauge:
         """Registra métrica gauge."""
         with self._lock:
             if name in self._metrics:
@@ -269,7 +290,9 @@ class MetricsRegistry:
             self._metrics[name] = gauge
             return gauge
 
-    def register_histogram(self, name: str, description: str, buckets: List[float] = None) -> Histogram:
+    def register_histogram(
+        self, name: str, description: str, buckets: List[float] = None
+    ) -> Histogram:
         """Registra métrica histograma."""
         with self._lock:
             if name in self._metrics:
@@ -279,7 +302,9 @@ class MetricsRegistry:
             self._metrics[name] = histogram
             return histogram
 
-    def register_summary(self, name: str, description: str, quantiles: List[float] = None) -> Summary:
+    def register_summary(
+        self, name: str, description: str, quantiles: List[float] = None
+    ) -> Summary:
         """Registra métrica resumo."""
         with self._lock:
             if name in self._metrics:
@@ -326,35 +351,49 @@ class MetricsCollector:
         """Configura métricas do sistema."""
         # Métricas de performance
         self.request_duration = self.registry.register_histogram(
-            "request_duration_seconds", "Duração das requisições em segundos", [0.1, 0.5, 1.0, 2.5, 5.0, 10.0]
+            "request_duration_seconds",
+            "Duração das requisições em segundos",
+            [0.1, 0.5, 1.0, 2.5, 5.0, 10.0],
         )
 
         self.request_count = self.registry.register_counter(
             "requests_total", "Total de requisições", ["method", "endpoint", "status"]
         )
 
-        self.active_connections = self.registry.register_gauge("active_connections", "Conexões ativas")
+        self.active_connections = self.registry.register_gauge(
+            "active_connections", "Conexões ativas"
+        )
 
         # Métricas de simulação
         self.simulation_cycles = self.registry.register_counter(
             "simulation_cycles_total", "Total de ciclos de simulação"
         )
 
-        self.agent_count = self.registry.register_gauge("agents_total", "Número total de agentes", ["type"])
+        self.agent_count = self.registry.register_gauge(
+            "agents_total", "Número total de agentes", ["type"]
+        )
 
         self.agent_actions = self.registry.register_counter(
-            "agent_actions_total", "Total de ações de agentes", ["agent_type", "action_type"]
+            "agent_actions_total",
+            "Total de ações de agentes",
+            ["agent_type", "action_type"],
         )
 
         # Métricas de sistema
-        self.memory_usage = self.registry.register_gauge("memory_usage_bytes", "Uso de memória em bytes")
+        self.memory_usage = self.registry.register_gauge(
+            "memory_usage_bytes", "Uso de memória em bytes"
+        )
 
-        self.cpu_usage = self.registry.register_gauge("cpu_usage_percent", "Uso de CPU em percentual")
+        self.cpu_usage = self.registry.register_gauge(
+            "cpu_usage_percent", "Uso de CPU em percentual"
+        )
 
     def record_request(self, method: str, endpoint: str, duration: float, status: int):
         """Registra métrica de requisição."""
         self.request_duration.observe(duration)
-        self.request_count.inc(labels={"method": method, "endpoint": endpoint, "status": str(status)})
+        self.request_count.inc(
+            labels={"method": method, "endpoint": endpoint, "status": str(status)}
+        )
 
     def update_agent_count(self, agent_type: str, count: int):
         """Atualiza contagem de agentes."""
@@ -362,7 +401,9 @@ class MetricsCollector:
 
     def record_agent_action(self, agent_type: str, action_type: str):
         """Registra ação de agente."""
-        self.agent_actions.inc(labels={"agent_type": agent_type, "action_type": action_type})
+        self.agent_actions.inc(
+            labels={"agent_type": agent_type, "action_type": action_type}
+        )
 
     def update_system_metrics(self, memory_bytes: int, cpu_percent: float):
         """Atualiza métricas do sistema."""
@@ -402,7 +443,11 @@ class MetricsExporter:
 
                 # Adiciona buckets
                 for bucket in [0.1, 0.5, 1.0, 2.5, 5.0, 10.0, float("in")]:
-                    count = sum(1 for v in [stats["p50"], stats["p95"], stats["p99"]] if v <= bucket)
+                    count = sum(
+                        1
+                        for v in [stats["p50"], stats["p95"], stats["p99"]]
+                        if v <= bucket
+                    )
                     lines.append(f'{name}_bucket{{le="{bucket}"}} {count}')
                 lines.append(f"{name}_bucket{{le=\"+Inf\"}} {stats['count']}")
 
@@ -440,6 +485,8 @@ class MetricsExporter:
             elif metric_type in ["histogram", "summary"]:
                 stats = metric_data["stats"]
                 for stat_name, stat_value in stats.items():
-                    lines.append(f"{name}_{stat_name},{metric_type},{stat_value},{timestamp}")
+                    lines.append(
+                        f"{name}_{stat_name},{metric_type},{stat_value},{timestamp}"
+                    )
 
         return "\n".join(lines)

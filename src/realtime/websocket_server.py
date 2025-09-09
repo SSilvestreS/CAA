@@ -226,7 +226,9 @@ class WebSocketServer:
                 handler = self.message_handlers[message_type]
                 await handler(connection, message_data)
             else:
-                await connection.send_error(f"Tipo de mensagem não suportado: {message_type}")
+                await connection.send_error(
+                    f"Tipo de mensagem não suportado: {message_type}"
+                )
 
         except json.JSONDecodeError:
             await connection.send_error("Mensagem JSON inválida")
@@ -271,7 +273,9 @@ class WebSocketServer:
                 await self._cleanup_connection(connection)
                 self.logger.info(f"Conexão inativa removida: {connection_id}")
 
-    async def broadcast_message(self, message: WebSocketMessage, topic: Optional[str] = None):
+    async def broadcast_message(
+        self, message: WebSocketMessage, topic: Optional[str] = None
+    ):
         """Envia mensagem para todas as conexões ou tópico específico."""
         target_connections = []
 
@@ -320,7 +324,9 @@ class WebSocketServer:
         """Retorna estatísticas das conexões."""
         return {
             "total_connections": len(self.connections),
-            "authenticated_connections": len([c for c in self.connections.values() if c.is_authenticated()]),
+            "authenticated_connections": len(
+                [c for c in self.connections.values() if c.is_authenticated()]
+            ),
             "topics": len(self.topic_subscribers),
             "users_online": len(self.user_connections),
         }

@@ -275,10 +275,18 @@ class AdvancedScenarioManager:
         """Registra handlers para os cenários"""
 
         self.scenario_handlers[ScenarioType.PANDEMIA] = self._handle_pandemic_scenario
-        self.scenario_handlers[ScenarioType.CRISE_ECONOMICA] = self._handle_economic_crisis_scenario
-        self.scenario_handlers[ScenarioType.DESASTRE_NATURAL] = self._handle_natural_disaster_scenario
-        self.scenario_handlers[ScenarioType.CRESCIMENTO_URBANO] = self._handle_urban_growth_scenario
-        self.scenario_handlers[ScenarioType.INOVACAO_TECNOLOGICA] = self._handle_tech_innovation_scenario
+        self.scenario_handlers[ScenarioType.CRISE_ECONOMICA] = (
+            self._handle_economic_crisis_scenario
+        )
+        self.scenario_handlers[ScenarioType.DESASTRE_NATURAL] = (
+            self._handle_natural_disaster_scenario
+        )
+        self.scenario_handlers[ScenarioType.CRESCIMENTO_URBANO] = (
+            self._handle_urban_growth_scenario
+        )
+        self.scenario_handlers[ScenarioType.INOVACAO_TECNOLOGICA] = (
+            self._handle_tech_innovation_scenario
+        )
 
     def start(self):
         """Inicia o gerenciador de cenários"""
@@ -332,7 +340,9 @@ class AdvancedScenarioManager:
                 # Atualizar métricas
                 self._update_scenario_metrics(scenario)
 
-    def _update_scenario_phase(self, scenario: ScenarioExecution, current_time: datetime):
+    def _update_scenario_phase(
+        self, scenario: ScenarioExecution, current_time: datetime
+    ):
         """Atualiza a fase atual do cenário"""
         phase_duration = scenario.config.duration_hours / len(scenario.config.phases)
         elapsed_hours = (current_time - scenario.start_time).total_seconds() / 3600
@@ -346,7 +356,9 @@ class AdvancedScenarioManager:
         if new_phase != scenario.current_phase:
             scenario.current_phase = new_phase
             scenario.phase_start_time = current_time
-            logger.info(f"Cenário {scenario.config.name} entrou na fase: {new_phase.value}")
+            logger.info(
+                f"Cenário {scenario.config.name} entrou na fase: {new_phase.value}"
+            )
 
     def _update_scenario_metrics(self, scenario: ScenarioExecution):
         """Atualiza métricas do cenário"""
@@ -444,7 +456,9 @@ class AdvancedScenarioManager:
             }
         )
 
-        logger.info(f"Cenário completado: {scenario.config.name} (Sucesso: {scenario.success})")
+        logger.info(
+            f"Cenário completado: {scenario.config.name} (Sucesso: {scenario.success})"
+        )
 
     # Handlers específicos para cada cenário
 
@@ -752,7 +766,11 @@ class AdvancedScenarioManager:
     def get_active_scenarios(self) -> List[ScenarioExecution]:
         """Retorna lista de cenários ativos"""
         with self.lock:
-            return [scenario for scenario in self.active_scenarios.values() if scenario.is_active]
+            return [
+                scenario
+                for scenario in self.active_scenarios.values()
+                if scenario.is_active
+            ]
 
     def get_scenario_statistics(self) -> Dict[str, Any]:
         """Retorna estatísticas dos cenários"""
@@ -761,10 +779,16 @@ class AdvancedScenarioManager:
             "successful_scenarios": self.successful_scenarios,
             "failed_scenarios": self.failed_scenarios,
             "active_scenarios": len(self.active_scenarios),
-            "success_rate": (self.successful_scenarios / self.total_scenarios if self.total_scenarios > 0 else 0),
+            "success_rate": (
+                self.successful_scenarios / self.total_scenarios
+                if self.total_scenarios > 0
+                else 0
+            ),
             "scenario_types": {
                 scenario_type.value: sum(
-                    1 for scenario in self.scenario_history if scenario["type"] == scenario_type.value
+                    1
+                    for scenario in self.scenario_history
+                    if scenario["type"] == scenario_type.value
                 )
                 for scenario_type in ScenarioType
             },

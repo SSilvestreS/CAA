@@ -73,14 +73,18 @@ class AuthService:
     def hash_password(self, password: str) -> str:
         """Gera hash seguro da senha usando PBKDF2."""
         salt = secrets.token_hex(32)
-        pwd_hash = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), 100000)
+        pwd_hash = hashlib.pbkdf2_hmac(
+            "sha256", password.encode("utf-8"), salt.encode("utf-8"), 100000
+        )
         return f"{salt}:{pwd_hash.hex()}"
 
     def verify_password(self, password: str, password_hash: str) -> bool:
         """Verifica se a senha está correta."""
         try:
             salt, hash_part = password_hash.split(":")
-            pwd_hash = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), 100000)
+            pwd_hash = hashlib.pbkdf2_hmac(
+                "sha256", password.encode("utf-8"), salt.encode("utf-8"), 100000
+            )
             return pwd_hash.hex() == hash_part
         except ValueError:
             return False
@@ -100,7 +104,9 @@ class AuthService:
             jti=jti,
         )
 
-        access_token = jwt.encode(access_payload.__dict__, self.secret_key, algorithm=self.algorithm)
+        access_token = jwt.encode(
+            access_payload.__dict__, self.secret_key, algorithm=self.algorithm
+        )
 
         # Refresh token (7 dias)
         refresh_jti = secrets.token_urlsafe(32)
@@ -112,7 +118,9 @@ class AuthService:
             "type": "refresh",
         }
 
-        refresh_token = jwt.encode(refresh_payload, self.secret_key, algorithm=self.algorithm)
+        refresh_token = jwt.encode(
+            refresh_payload, self.secret_key, algorithm=self.algorithm
+        )
 
         # Armazena refresh token
         self.refresh_tokens[refresh_jti] = user.id
@@ -150,7 +158,9 @@ class AuthService:
     def refresh_access_token(self, refresh_token: str) -> Optional[Dict[str, str]]:
         """Gera novo access token usando refresh token."""
         try:
-            payload = jwt.decode(refresh_token, self.secret_key, algorithms=[self.algorithm])
+            payload = jwt.decode(
+                refresh_token, self.secret_key, algorithms=[self.algorithm]
+            )
 
             if payload.get("type") != "refresh":
                 return None
@@ -184,7 +194,12 @@ class AuthService:
     def revoke_token(self, token: str) -> bool:
         """Adiciona token à blacklist."""
         try:
-            payload = jwt.decode(token, self.secret_key, algorithms=[self.algorithm], options={"verify_exp": False})
+            payload = jwt.decode(
+                token,
+                self.secret_key,
+                algorithms=[self.algorithm],
+                options={"verify_exp": False},
+            )
 
             jti = payload.get("jti")
             if jti:
@@ -200,7 +215,9 @@ class AuthService:
         revoked_count = 0
 
         # Remove refresh tokens
-        tokens_to_remove = [jti for jti, uid in self.refresh_tokens.items() if uid == user_id]
+        tokens_to_remove = [
+            jti for jti, uid in self.refresh_tokens.items() if uid == user_id
+        ]
 
         for jti in tokens_to_remove:
             del self.refresh_tokens[jti]
@@ -246,7 +263,9 @@ class PasswordPolicy:
         if self.require_numbers and not any(c.isdigit() for c in password):
             errors.append("Senha deve conter pelo menos um número")
 
-        if self.require_special and not any(c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password):
+        if self.require_special and not any(
+            c in "!@#$%^&*()_+-=[]{}|;:,.<>?" for c in password
+        ):
             errors.append("Senha deve conter pelo menos um caractere especial")
 
         return errors
@@ -269,7 +288,9 @@ class PasswordPolicy:
         user.failed_attempts += 1
 
         if user.failed_attempts >= self.max_attempts:
-            user.locked_until = datetime.utcnow() + timedelta(minutes=self.lockout_duration)
+            user.locked_until = datetime.utcnow() + timedelta(
+                minutes=self.lockout_duration
+            )
             return True  # Conta bloqueada
 
         return False  # Conta ainda ativa

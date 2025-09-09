@@ -96,7 +96,9 @@ class Alert:
             "triggered_at": self.triggered_at.isoformat(),
             "resolved_at": self.resolved_at.isoformat() if self.resolved_at else None,
             "acknowledged_by": self.acknowledged_by,
-            "acknowledged_at": self.acknowledged_at.isoformat() if self.acknowledged_at else None,
+            "acknowledged_at": (
+                self.acknowledged_at.isoformat() if self.acknowledged_at else None
+            ),
             "labels": self.labels,
         }
 
@@ -139,7 +141,9 @@ class AlertManager:
 
             return True
 
-    def update_metric_value(self, metric_name: str, value: float, timestamp: Optional[datetime] = None):
+    def update_metric_value(
+        self, metric_name: str, value: float, timestamp: Optional[datetime] = None
+    ):
         """Atualiza valor de métrica."""
         if timestamp is None:
             timestamp = datetime.now()
@@ -292,7 +296,11 @@ class AlertManager:
     def get_active_alerts(self) -> List[Alert]:
         """Retorna alertas ativos."""
         with self._lock:
-            return [alert for alert in self.active_alerts.values() if alert.status == AlertStatus.ACTIVE]
+            return [
+                alert
+                for alert in self.active_alerts.values()
+                if alert.status == AlertStatus.ACTIVE
+            ]
 
     def get_alert_history(self, limit: int = 100) -> List[Alert]:
         """Retorna histórico de alertas."""
@@ -355,7 +363,9 @@ class FileNotificationChannel(NotificationChannel):
 
         try:
             with open(self.filename, "a", encoding="utf-8") as f:
-                f.write(f"{alert.triggered_at.isoformat()} [{alert.severity.value}] {alert.message}\n")
+                f.write(
+                    f"{alert.triggered_at.isoformat()} [{alert.severity.value}] {alert.message}\n"
+                )
             return True
         except Exception as e:
             print(f"Erro ao escrever no arquivo: {e}")
@@ -384,9 +394,21 @@ class WebhookNotificationChannel(NotificationChannel):
                         "color": self._get_color(alert.severity),
                         "fields": [
                             {"title": "Regra", "value": alert.rule_name, "short": True},
-                            {"title": "Severidade", "value": alert.severity.value, "short": True},
-                            {"title": "Valor", "value": str(alert.value), "short": True},
-                            {"title": "Limite", "value": str(alert.threshold), "short": True},
+                            {
+                                "title": "Severidade",
+                                "value": alert.severity.value,
+                                "short": True,
+                            },
+                            {
+                                "title": "Valor",
+                                "value": str(alert.value),
+                                "short": True,
+                            },
+                            {
+                                "title": "Limite",
+                                "value": str(alert.threshold),
+                                "short": True,
+                            },
                         ],
                     }
                 ],

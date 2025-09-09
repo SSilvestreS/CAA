@@ -109,7 +109,13 @@ class RBACService:
             name="operator",
             description="Operador de simulação",
             permissions=operator_permissions,
-            resources={Resource.AGENTS, Resource.SIMULATION, Resource.CONFIG, Resource.REPORTS, Resource.LOGS},
+            resources={
+                Resource.AGENTS,
+                Resource.SIMULATION,
+                Resource.CONFIG,
+                Resource.REPORTS,
+                Resource.LOGS,
+            },
             is_system=True,
         )
         self.roles["operator"] = operator_role
@@ -126,13 +132,22 @@ class RBACService:
             name="viewer",
             description="Visualizador com acesso apenas de leitura",
             permissions=viewer_permissions,
-            resources={Resource.AGENTS, Resource.SIMULATION, Resource.CONFIG, Resource.REPORTS},
+            resources={
+                Resource.AGENTS,
+                Resource.SIMULATION,
+                Resource.CONFIG,
+                Resource.REPORTS,
+            },
             is_system=True,
         )
         self.roles["viewer"] = viewer_role
 
         # Agent - permissões limitadas para agentes IA
-        agent_permissions = {Permission.READ_AGENT, Permission.READ_SIMULATION, Permission.READ_CONFIG}
+        agent_permissions = {
+            Permission.READ_AGENT,
+            Permission.READ_SIMULATION,
+            Permission.READ_CONFIG,
+        }
 
         agent_role = Role(
             name="agent",
@@ -200,7 +215,9 @@ class RBACService:
 
         return False
 
-    def has_resource_permission(self, user_id: str, resource: Resource, permission: Permission) -> bool:
+    def has_resource_permission(
+        self, user_id: str, resource: Resource, permission: Permission
+    ) -> bool:
         """Verifica se usuário tem permissão em recurso específico."""
         # Verifica se a permissão é válida para o recurso
         if resource not in self.resource_permissions:
@@ -236,18 +253,34 @@ class RBACService:
 
         return permissions
 
-    def create_role(self, name: str, description: str, permissions: Set[Permission], resources: Set[Resource]) -> bool:
+    def create_role(
+        self,
+        name: str,
+        description: str,
+        permissions: Set[Permission],
+        resources: Set[Resource],
+    ) -> bool:
         """Cria nova role personalizada."""
         if name in self.roles:
             return False  # Role já existe
 
-        role = Role(name=name, description=description, permissions=permissions, resources=resources, is_system=False)
+        role = Role(
+            name=name,
+            description=description,
+            permissions=permissions,
+            resources=resources,
+            is_system=False,
+        )
 
         self.roles[name] = role
         return True
 
     def update_role(
-        self, name: str, description: str = None, permissions: Set[Permission] = None, resources: Set[Resource] = None
+        self,
+        name: str,
+        description: str = None,
+        permissions: Set[Permission] = None,
+        resources: Set[Resource] = None,
     ) -> bool:
         """Atualiza role existente."""
         if name not in self.roles:
@@ -309,7 +342,9 @@ class AccessControl:
     def __init__(self, rbac_service: RBACService):
         self.rbac = rbac_service
 
-    def check_access(self, user_id: str, resource: Resource, action: Permission, context: Dict = None) -> bool:
+    def check_access(
+        self, user_id: str, resource: Resource, action: Permission, context: Dict = None
+    ) -> bool:
         """Verifica acesso com contexto adicional."""
         # Verificação básica de permissão
         if not self.rbac.has_resource_permission(user_id, resource, action):
@@ -327,7 +362,9 @@ class AccessControl:
 
         return True
 
-    def filter_resources(self, user_id: str, resources: List[Resource]) -> List[Resource]:
+    def filter_resources(
+        self, user_id: str, resources: List[Resource]
+    ) -> List[Resource]:
         """Filtra recursos que o usuário pode acessar."""
         accessible = []
         for resource in resources:

@@ -118,22 +118,39 @@ class CitizenAgent(BaseAgent):
                 "expected_income": self.income * 0.1 * productivity,
             }
         else:
-            return {"action": "work_normal", "duration": 8, "expected_income": self.income * 0.1 * productivity}
+            return {
+                "action": "work_normal",
+                "duration": 8,
+                "expected_income": self.income * 0.1 * productivity,
+            }
 
     async def _make_shopping_decision(self, context: Dict[str, Any]) -> Dict[str, Any]:
         """Decisões de compra baseadas em necessidades e orçamento"""
         # Prioriza necessidades mais urgentes
-        urgent_needs = {k: v for k, v in self.needs.items() if v > 0.7 and k in ["food", "healthcare", "housing"]}
+        urgent_needs = {
+            k: v
+            for k, v in self.needs.items()
+            if v > 0.7 and k in ["food", "healthcare", "housing"]
+        }
 
         if urgent_needs:
             need = max(urgent_needs, key=urgent_needs.get)
             budget = min(self.income * 0.1, self.state.resources.get("money", 0))
 
-            return {"action": "purchase", "item": need, "budget": budget, "priority": "high"}
+            return {
+                "action": "purchase",
+                "item": need,
+                "budget": budget,
+                "priority": "high",
+            }
 
         # Compra por prazer/entretenimento
         if self.personality["social_orientation"] > 0.6:
-            return {"action": "social_purchase", "budget": self.income * 0.05, "priority": "low"}
+            return {
+                "action": "social_purchase",
+                "budget": self.income * 0.05,
+                "priority": "low",
+            }
 
         return {"action": "no_purchase"}
 
@@ -142,14 +159,24 @@ class CitizenAgent(BaseAgent):
         if self.stress_level > 0.7:
             return {
                 "action": "stress_relie",
-                "activity": "exercise" if self.personality["innovation"] > 0.5 else "relaxation",
+                "activity": (
+                    "exercise" if self.personality["innovation"] > 0.5 else "relaxation"
+                ),
                 "duration": random.randint(1, 3),
             }
 
         if self.personality["social_orientation"] > 0.6:
-            return {"action": "social_activity", "activity": "meet_friends", "duration": random.randint(2, 4)}
+            return {
+                "action": "social_activity",
+                "activity": "meet_friends",
+                "duration": random.randint(2, 4),
+            }
 
-        return {"action": "personal_leisure", "activity": "hobby", "duration": random.randint(1, 2)}
+        return {
+            "action": "personal_leisure",
+            "activity": "hobby",
+            "duration": random.randint(1, 2),
+        }
 
     async def _make_basic_decision(self, context: Dict[str, Any]) -> Dict[str, Any]:
         """Decisões básicas quando não há atividade específica"""
@@ -165,7 +192,9 @@ class CitizenAgent(BaseAgent):
 
         return {"action": "rest"}
 
-    def _learn_from_decision(self, decision: Dict[str, Any], context: Dict[str, Any]) -> None:
+    def _learn_from_decision(
+        self, decision: Dict[str, Any], context: Dict[str, Any]
+    ) -> None:
         """Aprende com decisões passadas usando reforço"""
         # Armazena decisão no histórico
         self.decision_history.append(
@@ -235,7 +264,8 @@ class CitizenAgent(BaseAgent):
                 return {
                     "action": "accept_offer",
                     "service_type": service_type,
-                    "negotiated_price": price * (1 - self.personality["risk_tolerance"] * 0.1),
+                    "negotiated_price": price
+                    * (1 - self.personality["risk_tolerance"] * 0.1),
                 }
 
         return {"action": "decline_offer"}
@@ -251,9 +281,17 @@ class CitizenAgent(BaseAgent):
         # Pode gerar reclamação ou sugestão
         if abs(impact) > 0.3:
             if impact < 0:
-                self.complaints.append({"policy": policy, "timestamp": datetime.now(), "severity": abs(impact)})
+                self.complaints.append(
+                    {
+                        "policy": policy,
+                        "timestamp": datetime.now(),
+                        "severity": abs(impact),
+                    }
+                )
             else:
-                self.suggestions.append({"policy": policy, "timestamp": datetime.now(), "support": impact})
+                self.suggestions.append(
+                    {"policy": policy, "timestamp": datetime.now(), "support": impact}
+                )
 
         return {
             "action": "policy_reaction",

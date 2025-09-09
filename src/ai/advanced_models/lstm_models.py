@@ -55,7 +55,9 @@ class TimeSeriesLSTM(nn.Module):
             nn.Linear(hidden_size // 2, output_size),
         )
 
-        self.attention = nn.MultiheadAttention(embed_dim=lstm_output_size, num_heads=4, batch_first=True)
+        self.attention = nn.MultiheadAttention(
+            embed_dim=lstm_output_size, num_heads=4, batch_first=True
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         # batch_size removido - não utilizado
@@ -338,8 +340,12 @@ class LSTMTrainer:
     ):
         self.model = model.to(device)
         self.device = device
-        self.optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
-        self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(self.optimizer, mode="min", patience=5, factor=0.5)
+        self.optimizer = torch.optim.Adam(
+            model.parameters(), lr=learning_rate, weight_decay=weight_decay
+        )
+        self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            self.optimizer, mode="min", patience=5, factor=0.5
+        )
         self.criterion = nn.MSELoss()
 
     def train_epoch(self, dataloader) -> float:
@@ -448,7 +454,9 @@ class LSTMModelManager:
         """Inicializa todos os modelos LSTM"""
         # Preditor de tráfego
         self.models["traffic"] = TrafficPredictor()
-        self.trainers["traffic"] = LSTMTrainer(self.models["traffic"], device=self.device)
+        self.trainers["traffic"] = LSTMTrainer(
+            self.models["traffic"], device=self.device
+        )
 
         # Preditor de demanda de energia
         self.models["energy"] = EnergyDemandPredictor()
@@ -456,7 +464,9 @@ class LSTMModelManager:
 
         # Preditor de crescimento populacional
         self.models["population"] = PopulationGrowthPredictor()
-        self.trainers["population"] = LSTMTrainer(self.models["population"], device=self.device)
+        self.trainers["population"] = LSTMTrainer(
+            self.models["population"], device=self.device
+        )
 
     def train_model(self, model_name: str, dataloader, epochs: int = 50) -> List[float]:
         """Treina um modelo específico"""
@@ -484,7 +494,10 @@ class LSTMModelManager:
         model.eval()
 
         with torch.no_grad():
-            args = [arg.to(self.device) if isinstance(arg, torch.Tensor) else arg for arg in args]
+            args = [
+                arg.to(self.device) if isinstance(arg, torch.Tensor) else arg
+                for arg in args
+            ]
             return model(*args)
 
     def get_model_info(self) -> Dict[str, Any]:
@@ -493,7 +506,9 @@ class LSTMModelManager:
         for name, model in self.models.items():
             info[name] = {
                 "parameters": sum(p.numel() for p in model.parameters()),
-                "trainable_parameters": sum(p.numel() for p in model.parameters() if p.requires_grad),
+                "trainable_parameters": sum(
+                    p.numel() for p in model.parameters() if p.requires_grad
+                ),
                 "device": next(model.parameters()).device,
             }
         return info

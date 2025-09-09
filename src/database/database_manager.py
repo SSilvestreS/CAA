@@ -121,7 +121,9 @@ class DatabaseManager:
             self.logger.info(f"Simulação '{name}' criada com ID {simulation_id}")
             return simulation_id
 
-    def update_simulation_status(self, simulation_id: int, status: str, metrics: Optional[Dict] = None):
+    def update_simulation_status(
+        self, simulation_id: int, status: str, metrics: Optional[Dict] = None
+    ):
         """Atualiza o status de uma simulação"""
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
@@ -145,7 +147,9 @@ class DatabaseManager:
                 )
             conn.commit()
 
-    def save_agent_state(self, simulation_id: int, agent_type: str, agent_id: str, state: Dict[str, Any]):
+    def save_agent_state(
+        self, simulation_id: int, agent_type: str, agent_id: str, state: Dict[str, Any]
+    ):
         """Salva o estado de um agente"""
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
@@ -174,11 +178,23 @@ class DatabaseManager:
                 INSERT INTO events (simulation_id, event_type, agent_id, description, data)
                 VALUES (?, ?, ?, ?, ?)
             """,
-                (simulation_id, event_type, agent_id, description, json.dumps(data) if data else None),
+                (
+                    simulation_id,
+                    event_type,
+                    agent_id,
+                    description,
+                    json.dumps(data) if data else None,
+                ),
             )
             conn.commit()
 
-    def save_metric(self, simulation_id: int, metric_name: str, value: float, metadata: Optional[Dict] = None):
+    def save_metric(
+        self,
+        simulation_id: int,
+        metric_name: str,
+        value: float,
+        metadata: Optional[Dict] = None,
+    ):
         """Salva uma métrica da simulação"""
         with sqlite3.connect(self.db_path) as conn:
             cursor = conn.cursor()
@@ -187,7 +203,12 @@ class DatabaseManager:
                 INSERT INTO metrics (simulation_id, metric_name, value, metadata)
                 VALUES (?, ?, ?, ?)
             """,
-                (simulation_id, metric_name, value, json.dumps(metadata) if metadata else None),
+                (
+                    simulation_id,
+                    metric_name,
+                    value,
+                    json.dumps(metadata) if metadata else None,
+                ),
             )
             conn.commit()
 
@@ -209,7 +230,14 @@ class DatabaseManager:
                                         interaction_type, data, result)
                 VALUES (?, ?, ?, ?, ?, ?)
             """,
-                (simulation_id, agent_from, agent_to, interaction_type, json.dumps(data) if data else None, result),
+                (
+                    simulation_id,
+                    agent_from,
+                    agent_to,
+                    interaction_type,
+                    json.dumps(data) if data else None,
+                    result,
+                ),
             )
             conn.commit()
 
@@ -269,19 +297,27 @@ class DatabaseManager:
             simulation = dict(cursor.fetchone())
 
             # Agentes
-            cursor.execute("SELECT * FROM agents WHERE simulation_id = ?", (simulation_id,))
+            cursor.execute(
+                "SELECT * FROM agents WHERE simulation_id = ?", (simulation_id,)
+            )
             agents = [dict(row) for row in cursor.fetchall()]
 
             # Eventos
-            cursor.execute("SELECT * FROM events WHERE simulation_id = ?", (simulation_id,))
+            cursor.execute(
+                "SELECT * FROM events WHERE simulation_id = ?", (simulation_id,)
+            )
             events = [dict(row) for row in cursor.fetchall()]
 
             # Métricas
-            cursor.execute("SELECT * FROM metrics WHERE simulation_id = ?", (simulation_id,))
+            cursor.execute(
+                "SELECT * FROM metrics WHERE simulation_id = ?", (simulation_id,)
+            )
             metrics = [dict(row) for row in cursor.fetchall()]
 
             # Interações
-            cursor.execute("SELECT * FROM interactions WHERE simulation_id = ?", (simulation_id,))
+            cursor.execute(
+                "SELECT * FROM interactions WHERE simulation_id = ?", (simulation_id,)
+            )
             interactions = [dict(row) for row in cursor.fetchall()]
 
             return {

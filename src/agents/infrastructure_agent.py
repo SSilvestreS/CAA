@@ -16,11 +16,15 @@ class InfrastructureAgent(BaseAgent):
     Coordena decisões em tempo real e usa simulações preditivas.
     """
 
-    def __init__(self, name: str, infrastructure_type: str, position: tuple = (0, 0), **kwargs):
+    def __init__(
+        self, name: str, infrastructure_type: str, position: tuple = (0, 0), **kwargs
+    ):
         super().__init__(name, position, **kwargs)
 
         # Tipo de infraestrutura
-        self.infrastructure_type = infrastructure_type  # 'energy', 'transport', 'water', 'healthcare', etc.
+        self.infrastructure_type = (
+            infrastructure_type  # 'energy', 'transport', 'water', 'healthcare', etc.
+        )
 
         # Capacidade e operação
         self.capacity = random.uniform(1000, 10000)  # Capacidade total
@@ -84,15 +88,21 @@ class InfrastructureAgent(BaseAgent):
         decisions = []
 
         # Decisões de carga
-        load_decisions = await self._make_load_management_decisions(current_situation, issues)
+        load_decisions = await self._make_load_management_decisions(
+            current_situation, issues
+        )
         decisions.extend(load_decisions)
 
         # Decisões de manutenção
-        maintenance_decisions = await self._make_maintenance_decisions(current_situation, issues)
+        maintenance_decisions = await self._make_maintenance_decisions(
+            current_situation, issues
+        )
         decisions.extend(maintenance_decisions)
 
         # Decisões de otimização
-        optimization_decisions = await self._make_optimization_decisions(current_situation)
+        optimization_decisions = await self._make_optimization_decisions(
+            current_situation
+        )
         decisions.extend(optimization_decisions)
 
         # Decisões de emergência
@@ -183,39 +193,68 @@ class InfrastructureAgent(BaseAgent):
 
     def _calculate_system_health(self) -> float:
         """Calcula saúde geral do sistema"""
-        factors = [self.efficiency, self.maintenance_level, self.uptime, self.service_quality]
+        factors = [
+            self.efficiency,
+            self.maintenance_level,
+            self.uptime,
+            self.service_quality,
+        ]
 
         return np.mean(factors)
 
     def _assess_maintenance_needs(self) -> Dict[str, Any]:
         """Avalia necessidades de manutenção"""
-        days_since_maintenance = (datetime.now() - self.system_status["last_maintenance"]).days
+        days_since_maintenance = (
+            datetime.now() - self.system_status["last_maintenance"]
+        ).days
 
-        maintenance_urgency = min(1.0, days_since_maintenance / 30)  # Urgência baseada em dias
+        maintenance_urgency = min(
+            1.0, days_since_maintenance / 30
+        )  # Urgência baseada em dias
 
         return {
             "urgency": maintenance_urgency,
             "days_since_last": days_since_maintenance,
-            "recommended_action": "schedule_maintenance" if maintenance_urgency > 0.7 else "monitor",
+            "recommended_action": (
+                "schedule_maintenance" if maintenance_urgency > 0.7 else "monitor"
+            ),
         }
 
-    async def _identify_system_issues(self, situation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    async def _identify_system_issues(
+        self, situation: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
         """Identifica problemas no sistema"""
         issues = []
 
         # Problema de sobrecarga
         if situation["load_percentage"] > 0.9:
-            issues.append({"type": "overload", "severity": situation["load_percentage"], "priority": "critical"})
+            issues.append(
+                {
+                    "type": "overload",
+                    "severity": situation["load_percentage"],
+                    "priority": "critical",
+                }
+            )
 
         # Problema de baixa eficiência
         if situation["efficiency"] < 0.6:
-            issues.append({"type": "low_efficiency", "severity": 1 - situation["efficiency"], "priority": "high"})
+            issues.append(
+                {
+                    "type": "low_efficiency",
+                    "severity": 1 - situation["efficiency"],
+                    "priority": "high",
+                }
+            )
 
         # Problema de manutenção
         maintenance_status = situation["maintenance_status"]
         if maintenance_status["urgency"] > 0.8:
             issues.append(
-                {"type": "maintenance_required", "severity": maintenance_status["urgency"], "priority": "high"}
+                {
+                    "type": "maintenance_required",
+                    "severity": maintenance_status["urgency"],
+                    "priority": "high",
+                }
             )
 
         # Problema de capacidade
@@ -223,7 +262,8 @@ class InfrastructureAgent(BaseAgent):
             issues.append(
                 {
                     "type": "capacity_shortage",
-                    "severity": (situation["predicted_demand"] - situation["capacity"]) / situation["capacity"],
+                    "severity": (situation["predicted_demand"] - situation["capacity"])
+                    / situation["capacity"],
                     "priority": "medium",
                 }
             )
@@ -271,11 +311,15 @@ class InfrastructureAgent(BaseAgent):
 
         return decisions
 
-    async def _make_maintenance_decisions(self, situation: Dict[str, Any], issues: List[Dict]) -> List[Dict[str, Any]]:
+    async def _make_maintenance_decisions(
+        self, situation: Dict[str, Any], issues: List[Dict]
+    ) -> List[Dict[str, Any]]:
         """Toma decisões de manutenção"""
         decisions = []
 
-        maintenance_issues = [issue for issue in issues if issue["type"] == "maintenance_required"]
+        maintenance_issues = [
+            issue for issue in issues if issue["type"] == "maintenance_required"
+        ]
 
         for issue in maintenance_issues:
             if issue["severity"] > 0.8:
@@ -301,7 +345,9 @@ class InfrastructureAgent(BaseAgent):
 
         return decisions
 
-    async def _make_optimization_decisions(self, situation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    async def _make_optimization_decisions(
+        self, situation: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
         """Toma decisões de otimização"""
         decisions = []
 
@@ -341,7 +387,9 @@ class InfrastructureAgent(BaseAgent):
 
         return efficiency_improvement
 
-    async def _optimize_capacity_utilization(self, situation: Dict[str, Any]) -> Dict[str, Any]:
+    async def _optimize_capacity_utilization(
+        self, situation: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Otimiza utilização de capacidade"""
         current_utilization = situation["load_percentage"]
 
@@ -359,7 +407,9 @@ class InfrastructureAgent(BaseAgent):
             "target_utilization": current_utilization + improvement,
         }
 
-    async def _make_emergency_decisions(self, issues: List[Dict]) -> List[Dict[str, Any]]:
+    async def _make_emergency_decisions(
+        self, issues: List[Dict]
+    ) -> List[Dict[str, Any]]:
         """Toma decisões de emergência"""
         decisions = []
 
@@ -413,18 +463,26 @@ class InfrastructureAgent(BaseAgent):
         """Atualiza carga do sistema"""
         # Simula variação de carga baseada em fatores externos
         load_variation = random.uniform(-0.1, 0.1) * delta_time
-        self.current_load = max(0, min(self.capacity, self.current_load + load_variation))
+        self.current_load = max(
+            0, min(self.capacity, self.current_load + load_variation)
+        )
 
         # Atualiza porcentagem de carga
-        self.system_status["load_percentage"] = self.current_load / self.capacity if self.capacity > 0 else 0
+        self.system_status["load_percentage"] = (
+            self.current_load / self.capacity if self.capacity > 0 else 0
+        )
 
     def _update_efficiency(self, delta_time: float) -> None:
         """Atualiza eficiência do sistema"""
         # Eficiência degrada com o tempo sem manutenção
-        days_since_maintenance = (datetime.now() - self.system_status["last_maintenance"]).days
+        days_since_maintenance = (
+            datetime.now() - self.system_status["last_maintenance"]
+        ).days
         efficiency_degradation = min(0.1, days_since_maintenance * 0.001)
 
-        self.efficiency = max(0.3, self.efficiency - efficiency_degradation * delta_time)
+        self.efficiency = max(
+            0.3, self.efficiency - efficiency_degradation * delta_time
+        )
         self.system_status["efficiency_rating"] = self.efficiency
 
     def _update_performance_metrics(self, delta_time: float) -> None:
@@ -450,8 +508,12 @@ class InfrastructureAgent(BaseAgent):
         ]
         target_satisfaction = np.mean(satisfaction_factors)
 
-        satisfaction_change = (target_satisfaction - self.customer_satisfaction) * 0.05 * delta_time
-        self.customer_satisfaction = max(0, min(1, self.customer_satisfaction + satisfaction_change))
+        satisfaction_change = (
+            (target_satisfaction - self.customer_satisfaction) * 0.05 * delta_time
+        )
+        self.customer_satisfaction = max(
+            0, min(1, self.customer_satisfaction + satisfaction_change)
+        )
 
     async def _handle_message(self, message: AgentMessage) -> Optional[Dict[str, Any]]:
         """Processa mensagens específicas da infraestrutura"""
@@ -520,7 +582,11 @@ class InfrastructureAgent(BaseAgent):
         elif alert_type == "natural_disaster":
             return await self._handle_natural_disaster(severity)
 
-        return {"action": "emergency_acknowledged", "alert_type": alert_type, "response_time": 1 / self.efficiency}
+        return {
+            "action": "emergency_acknowledged",
+            "alert_type": alert_type,
+            "response_time": 1 / self.efficiency,
+        }
 
     async def _handle_power_outage(self, severity: float) -> Dict[str, Any]:
         """Lida com queda de energia"""
@@ -537,7 +603,9 @@ class InfrastructureAgent(BaseAgent):
             return {
                 "action": "reduce_power_consumption",
                 "reduction_percentage": severity * 0.5,
-                "affected_services": self.connected_systems[:2],  # Apenas alguns serviços
+                "affected_services": self.connected_systems[
+                    :2
+                ],  # Apenas alguns serviços
             }
 
     async def _handle_system_failure(self, severity: float) -> Dict[str, Any]:
@@ -567,7 +635,9 @@ class InfrastructureAgent(BaseAgent):
             "estimated_recovery_time": severity * 24,  # horas
         }
 
-    async def _handle_maintenance_request(self, request: Dict[str, Any]) -> Dict[str, Any]:
+    async def _handle_maintenance_request(
+        self, request: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Processa solicitação de manutenção"""
         maintenance_type = request.get("type")
         urgency = request.get("urgency", "normal")

@@ -198,7 +198,9 @@ class DynamicEventSystem:
         self.event_handlers[EventType.PANDEMIA] = self._handle_pandemic
         self.event_handlers[EventType.DESASTRE_NATURAL] = self._handle_natural_disaster
         self.event_handlers[EventType.CRISE_ECONOMICA] = self._handle_economic_crisis
-        self.event_handlers[EventType.CRESCIMENTO_POPULACIONAL] = self._handle_population_growth
+        self.event_handlers[EventType.CRESCIMENTO_POPULACIONAL] = (
+            self._handle_population_growth
+        )
 
     def start(self):
         """Inicia o sistema de eventos dinâmicos"""
@@ -231,7 +233,9 @@ class DynamicEventSystem:
     def _check_for_new_events(self):
         """Verifica se novos eventos devem ser gerados"""
         for event_type, config in self.event_configs.items():
-            if random.random() < config.probability / 60:  # Converter para probabilidade por minuto
+            if (
+                random.random() < config.probability / 60
+            ):  # Converter para probabilidade por minuto
                 self._generate_event(event_type, config)
 
     def _generate_event(self, event_type: EventType, config: EventConfig):
@@ -267,9 +271,13 @@ class DynamicEventSystem:
             if event_type in self.event_handlers:
                 self.event_handlers[event_type](event)
 
-            logger.info(f"Evento gerado: {event_type.value} (Severidade: {severity.value})")
+            logger.info(
+                f"Evento gerado: {event_type.value} (Severidade: {severity.value})"
+            )
 
-    def _determine_severity(self, distribution: Dict[EventSeverity, float]) -> EventSeverity:
+    def _determine_severity(
+        self, distribution: Dict[EventSeverity, float]
+    ) -> EventSeverity:
         """Determina a severidade baseada na distribuição"""
         rand = random.random()
         cumulative = 0.0
@@ -338,7 +346,9 @@ class DynamicEventSystem:
         # Reduzir consumo de energia dos agentes
         for agent in self.simulation_manager.get_all_agents():
             if hasattr(agent, "energy_consumption"):
-                agent.energy_consumption *= 1 + event.impact_factors.get("energy_consumption", 0)
+                agent.energy_consumption *= 1 + event.impact_factors.get(
+                    "energy_consumption", 0
+                )
 
     def _handle_pandemic(self, event: ActiveEvent):
         """Handler para pandemia"""
@@ -347,21 +357,27 @@ class DynamicEventSystem:
             if hasattr(agent, "mobility"):
                 agent.mobility *= 1 + event.impact_factors.get("mobility", 0)
             if hasattr(agent, "social_interaction"):
-                agent.social_interaction *= 1 + event.impact_factors.get("social_interaction", 0)
+                agent.social_interaction *= 1 + event.impact_factors.get(
+                    "social_interaction", 0
+                )
 
     def _handle_natural_disaster(self, event: ActiveEvent):
         """Handler para desastre natural"""
         # Danificar infraestrutura
         for agent in self.simulation_manager.get_all_agents():
             if hasattr(agent, "infrastructure_health"):
-                agent.infrastructure_health *= 1 + event.impact_factors.get("infrastructure", 0)
+                agent.infrastructure_health *= 1 + event.impact_factors.get(
+                    "infrastructure", 0
+                )
 
     def _handle_economic_crisis(self, event: ActiveEvent):
         """Handler para crise econômica"""
         # Reduzir atividade econômica
         for agent in self.simulation_manager.get_all_agents():
             if hasattr(agent, "economic_activity"):
-                agent.economic_activity *= 1 + event.impact_factors.get("economic_growth", 0)
+                agent.economic_activity *= 1 + event.impact_factors.get(
+                    "economic_growth", 0
+                )
 
     def _handle_population_growth(self, event: ActiveEvent):
         """Handler para crescimento populacional"""
@@ -369,7 +385,9 @@ class DynamicEventSystem:
         population_increase = event.impact_factors.get("population", 0)
         if population_increase > 0:
             # Adicionar novos agentes cidadãos
-            for _ in range(int(population_increase * 10)):  # Escalar para número de agentes
+            for _ in range(
+                int(population_increase * 10)
+            ):  # Escalar para número de agentes
                 self.simulation_manager.add_citizen_agent()
 
     def get_active_events(self) -> List[ActiveEvent]:
@@ -384,11 +402,19 @@ class DynamicEventSystem:
             "resolved_events": self.resolved_events,
             "active_events": len(self.active_events),
             "event_types": {
-                event_type.value: sum(1 for event in self.event_history if event["type"] == event_type.value)
+                event_type.value: sum(
+                    1
+                    for event in self.event_history
+                    if event["type"] == event_type.value
+                )
                 for event_type in EventType
             },
             "severity_distribution": {
-                severity.value: sum(1 for event in self.event_history if event["severity"] == severity.value)
+                severity.value: sum(
+                    1
+                    for event in self.event_history
+                    if event["severity"] == severity.value
+                )
                 for severity in EventSeverity
             },
         }

@@ -34,7 +34,17 @@ class CityDashboard:
             [
                 # Cabeçalho
                 dbc.Row(
-                    [dbc.Col([html.H1("🏙️ Cidade Inteligente - Dashboard", className="text-center mb-4"), html.Hr()])]
+                    [
+                        dbc.Col(
+                            [
+                                html.H1(
+                                    "🏙️ Cidade Inteligente - Dashboard",
+                                    className="text-center mb-4",
+                                ),
+                                html.Hr(),
+                            ]
+                        )
+                    ]
                 ),
                 # Controles
                 dbc.Row(
@@ -77,7 +87,9 @@ class CityDashboard:
                                                     [
                                                         dbc.Col(
                                                             [
-                                                                html.Label("Velocidade da Simulação:"),
+                                                                html.Label(
+                                                                    "Velocidade da Simulação:"
+                                                                ),
                                                                 dcc.Slider(
                                                                     id="speed-slider",
                                                                     min=0.1,
@@ -86,7 +98,14 @@ class CityDashboard:
                                                                     value=1.0,
                                                                     marks={
                                                                         i: f"{i}x"
-                                                                        for i in [0.1, 1.0, 2.0, 3.0, 4.0, 5.0]
+                                                                        for i in [
+                                                                            0.1,
+                                                                            1.0,
+                                                                            2.0,
+                                                                            3.0,
+                                                                            4.0,
+                                                                            5.0,
+                                                                        ]
                                                                     },
                                                                 ),
                                                             ]
@@ -118,19 +137,12 @@ class CityDashboard:
                                                         dbc.Col(
                                                             [
                                                                 html.H4(
-                                                                    id="population-metric", className="text-center"
-                                                                ),
-                                                                html.P("População", className="text-center text-muted"),
-                                                            ],
-                                                            width=2,
-                                                        ),
-                                                        dbc.Col(
-                                                            [
-                                                                html.H4(
-                                                                    id="satisfaction-metric", className="text-center"
+                                                                    id="population-metric",
+                                                                    className="text-center",
                                                                 ),
                                                                 html.P(
-                                                                    "Satisfação", className="text-center text-muted"
+                                                                    "População",
+                                                                    className="text-center text-muted",
                                                                 ),
                                                             ],
                                                             width=2,
@@ -138,26 +150,48 @@ class CityDashboard:
                                                         dbc.Col(
                                                             [
                                                                 html.H4(
-                                                                    id="unemployment-metric", className="text-center"
+                                                                    id="satisfaction-metric",
+                                                                    className="text-center",
                                                                 ),
                                                                 html.P(
-                                                                    "Desemprego", className="text-center text-muted"
+                                                                    "Satisfação",
+                                                                    className="text-center text-muted",
                                                                 ),
                                                             ],
                                                             width=2,
                                                         ),
                                                         dbc.Col(
                                                             [
-                                                                html.H4(id="crime-metric", className="text-center"),
+                                                                html.H4(
+                                                                    id="unemployment-metric",
+                                                                    className="text-center",
+                                                                ),
                                                                 html.P(
-                                                                    "Criminalidade", className="text-center text-muted"
+                                                                    "Desemprego",
+                                                                    className="text-center text-muted",
                                                                 ),
                                                             ],
                                                             width=2,
                                                         ),
                                                         dbc.Col(
                                                             [
-                                                                html.H4(id="economic-metric", className="text-center"),
+                                                                html.H4(
+                                                                    id="crime-metric",
+                                                                    className="text-center",
+                                                                ),
+                                                                html.P(
+                                                                    "Criminalidade",
+                                                                    className="text-center text-muted",
+                                                                ),
+                                                            ],
+                                                            width=2,
+                                                        ),
+                                                        dbc.Col(
+                                                            [
+                                                                html.H4(
+                                                                    id="economic-metric",
+                                                                    className="text-center",
+                                                                ),
                                                                 html.P(
                                                                     "Saúde Econômica",
                                                                     className="text-center text-muted",
@@ -168,7 +202,8 @@ class CityDashboard:
                                                         dbc.Col(
                                                             [
                                                                 html.H4(
-                                                                    id="environmental-metric", className="text-center"
+                                                                    id="environmental-metric",
+                                                                    className="text-center",
                                                                 ),
                                                                 html.P(
                                                                     "Saúde Ambiental",
@@ -197,7 +232,9 @@ class CityDashboard:
                                 dbc.Card(
                                     [
                                         dbc.CardHeader("📈 Evolução das Métricas"),
-                                        dbc.CardBody([dcc.Graph(id="metrics-evolution-graph")]),
+                                        dbc.CardBody(
+                                            [dcc.Graph(id="metrics-evolution-graph")]
+                                        ),
                                     ]
                                 )
                             ],
@@ -208,7 +245,9 @@ class CityDashboard:
                                 dbc.Card(
                                     [
                                         dbc.CardHeader("🎯 Distribuição de Agentes"),
-                                        dbc.CardBody([dcc.Graph(id="agents-distribution-graph")]),
+                                        dbc.CardBody(
+                                            [dcc.Graph(id="agents-distribution-graph")]
+                                        ),
                                     ]
                                 )
                             ],
@@ -223,7 +262,10 @@ class CityDashboard:
                         dbc.Col(
                             [
                                 dbc.Card(
-                                    [dbc.CardHeader("🗺️ Mapa da Cidade"), dbc.CardBody([dcc.Graph(id="city-map-graph")])]
+                                    [
+                                        dbc.CardHeader("🗺️ Mapa da Cidade"),
+                                        dbc.CardBody([dcc.Graph(id="city-map-graph")]),
+                                    ]
                                 )
                             ],
                             width=8,
@@ -233,7 +275,9 @@ class CityDashboard:
                                 dbc.Card(
                                     [
                                         dbc.CardHeader("⚡ Eventos Ativos"),
-                                        dbc.CardBody([html.Div(id="active-events-list")]),
+                                        dbc.CardBody(
+                                            [html.Div(id="active-events-list")]
+                                        ),
                                     ]
                                 )
                             ],
@@ -250,7 +294,9 @@ class CityDashboard:
                                 dbc.Card(
                                     [
                                         dbc.CardHeader("💰 Análise de Mercado"),
-                                        dbc.CardBody([dcc.Graph(id="market-analysis-graph")]),
+                                        dbc.CardBody(
+                                            [dcc.Graph(id="market-analysis-graph")]
+                                        ),
                                     ]
                                 )
                             ],
@@ -261,7 +307,9 @@ class CityDashboard:
                                 dbc.Card(
                                     [
                                         dbc.CardHeader("🏢 Performance das Empresas"),
-                                        dbc.CardBody([dcc.Graph(id="business-performance-graph")]),
+                                        dbc.CardBody(
+                                            [dcc.Graph(id="business-performance-graph")]
+                                        ),
                                     ]
                                 )
                             ],
@@ -300,7 +348,9 @@ class CityDashboard:
                     ]
                 ),
                 # Intervalo para atualização automática
-                dcc.Interval(id="interval-component", interval=2000, n_intervals=0),  # Atualiza a cada 2 segundos
+                dcc.Interval(
+                    id="interval-component", interval=2000, n_intervals=0
+                ),  # Atualiza a cada 2 segundos
             ],
             fluid=True,
         )
@@ -333,7 +383,10 @@ class CityDashboard:
                 f"{metrics['environmental_health']:.1%}",
             )
 
-        @self.app.callback(Output("metrics-evolution-graph", "figure"), [Input("interval-component", "n_intervals")])
+        @self.app.callback(
+            Output("metrics-evolution-graph", "figure"),
+            [Input("interval-component", "n_intervals")],
+        )
         def update_metrics_evolution(n):
             """Atualiza gráfico de evolução das métricas"""
             history = self.city_environment.get_metrics_history()
@@ -376,7 +429,10 @@ class CityDashboard:
 
             return fig
 
-        @self.app.callback(Output("agents-distribution-graph", "figure"), [Input("interval-component", "n_intervals")])
+        @self.app.callback(
+            Output("agents-distribution-graph", "figure"),
+            [Input("interval-component", "n_intervals")],
+        )
         def update_agents_distribution(n):
             """Atualiza gráfico de distribuição de agentes"""
             status = self.city_environment.get_city_status()
@@ -391,7 +447,10 @@ class CityDashboard:
 
             return fig
 
-        @self.app.callback(Output("city-map-graph", "figure"), [Input("interval-component", "n_intervals")])
+        @self.app.callback(
+            Output("city-map-graph", "figure"),
+            [Input("interval-component", "n_intervals")],
+        )
         def update_city_map(n):
             """Atualiza mapa da cidade"""
             agent_data = self.city_environment.get_agent_data()
@@ -422,7 +481,9 @@ class CityDashboard:
                         x=businesses_df["position"].apply(lambda x: x[0]),
                         y=businesses_df["position"].apply(lambda x: x[1]),
                         mode="markers",
-                        marker=dict(size=10, color="green", symbol="square", opacity=0.8),
+                        marker=dict(
+                            size=10, color="green", symbol="square", opacity=0.8
+                        ),
                         name="Empresas",
                         text=businesses_df["name"],
                         hovertemplate="<b>%{text}</b><br>Tipo: %{customdata}<extra></extra>",
@@ -438,7 +499,9 @@ class CityDashboard:
                         x=infra_df["position"].apply(lambda x: x[0]),
                         y=infra_df["position"].apply(lambda x: x[1]),
                         mode="markers",
-                        marker=dict(size=12, color="red", symbol="diamond", opacity=0.8),
+                        marker=dict(
+                            size=12, color="red", symbol="diamond", opacity=0.8
+                        ),
                         name="Infraestrutura",
                         text=infra_df["name"],
                         hovertemplate="<b>%{text}</b><br>Tipo: %{customdata}<extra></extra>",
@@ -447,12 +510,18 @@ class CityDashboard:
                 )
 
             fig.update_layout(
-                title="Mapa da Cidade", xaxis_title="Coordenada X", yaxis_title="Coordenada Y", showlegend=True
+                title="Mapa da Cidade",
+                xaxis_title="Coordenada X",
+                yaxis_title="Coordenada Y",
+                showlegend=True,
             )
 
             return fig
 
-        @self.app.callback(Output("active-events-list", "children"), [Input("interval-component", "n_intervals")])
+        @self.app.callback(
+            Output("active-events-list", "children"),
+            [Input("interval-component", "n_intervals")],
+        )
         def update_active_events(n):
             """Atualiza lista de eventos ativos"""
             active_events = self.city_environment.active_events
@@ -468,8 +537,13 @@ class CityDashboard:
                             dbc.CardBody(
                                 [
                                     html.H6(event.description, className="card-title"),
-                                    html.P(f"Duração restante: {event.duration} ciclos"),
-                                    html.Small(f"Tipo: {event.event_type}", className="text-muted"),
+                                    html.P(
+                                        f"Duração restante: {event.duration} ciclos"
+                                    ),
+                                    html.Small(
+                                        f"Tipo: {event.event_type}",
+                                        className="text-muted",
+                                    ),
                                 ]
                             )
                         ],
@@ -479,7 +553,10 @@ class CityDashboard:
 
             return event_cards
 
-        @self.app.callback(Output("market-analysis-graph", "figure"), [Input("interval-component", "n_intervals")])
+        @self.app.callback(
+            Output("market-analysis-graph", "figure"),
+            [Input("interval-component", "n_intervals")],
+        )
         def update_market_analysis(n):
             """Atualiza análise de mercado"""
             agent_data = self.city_environment.get_agent_data()
@@ -495,7 +572,9 @@ class CityDashboard:
                 .agg(
                     {
                         "current_price": "mean",
-                        "business_metrics": lambda x: np.mean([m.get("profit_margin", 0) for m in x]),
+                        "business_metrics": lambda x: np.mean(
+                            [m.get("profit_margin", 0) for m in x]
+                        ),
                     }
                 )
                 .reset_index()
@@ -533,7 +612,10 @@ class CityDashboard:
 
             return fig
 
-        @self.app.callback(Output("business-performance-graph", "figure"), [Input("interval-component", "n_intervals")])
+        @self.app.callback(
+            Output("business-performance-graph", "figure"),
+            [Input("interval-component", "n_intervals")],
+        )
         def update_business_performance(n):
             """Atualiza performance das empresas"""
             agent_data = self.city_environment.get_agent_data()
@@ -553,7 +635,9 @@ class CityDashboard:
                         "revenue": metrics.get("revenue", 0),
                         "profit_margin": metrics.get("profit_margin", 0),
                         "market_share": metrics.get("market_share", 0),
-                        "customer_satisfaction": metrics.get("customer_satisfaction", 0),
+                        "customer_satisfaction": metrics.get(
+                            "customer_satisfaction", 0
+                        ),
                     }
                 )
 
@@ -587,7 +671,10 @@ class CityDashboard:
 
             return fig
 
-        @self.app.callback(Output("events-log", "children"), [Input("interval-component", "n_intervals")])
+        @self.app.callback(
+            Output("events-log", "children"),
+            [Input("interval-component", "n_intervals")],
+        )
         def update_events_log(n):
             """Atualiza log de eventos"""
             event_history = self.city_environment.event_history
@@ -607,7 +694,9 @@ class CityDashboard:
                             html.Small(f"[{timestamp}] ", className="text-muted"),
                             html.Strong(event.description),
                             html.Br(),
-                            html.Small(f"Tipo: {event.event_type}", className="text-muted"),
+                            html.Small(
+                                f"Tipo: {event.event_type}", className="text-muted"
+                            ),
                         ],
                         className="mb-2",
                     )
@@ -616,7 +705,9 @@ class CityDashboard:
             return log_entries
 
         # Callbacks para controles
-        @self.app.callback(Output("start-btn", "disabled"), [Input("start-btn", "n_clicks")])
+        @self.app.callback(
+            Output("start-btn", "disabled"), [Input("start-btn", "n_clicks")]
+        )
         def start_simulation(n_clicks):
             """Inicia a simulação"""
             if n_clicks:
@@ -633,7 +724,9 @@ class CityDashboard:
                 return True
             return False
 
-        @self.app.callback(Output("pause-btn", "disabled"), [Input("pause-btn", "n_clicks")])
+        @self.app.callback(
+            Output("pause-btn", "disabled"), [Input("pause-btn", "n_clicks")]
+        )
         def pause_simulation(n_clicks):
             """Pausa a simulação"""
             if n_clicks:
@@ -641,7 +734,9 @@ class CityDashboard:
                 return True
             return False
 
-        @self.app.callback(Output("stop-btn", "disabled"), [Input("stop-btn", "n_clicks")])
+        @self.app.callback(
+            Output("stop-btn", "disabled"), [Input("stop-btn", "n_clicks")]
+        )
         def stop_simulation(n_clicks):
             """Para a simulação"""
             if n_clicks:
@@ -649,7 +744,10 @@ class CityDashboard:
                 return True
             return False
 
-        @self.app.callback(Output("city_environment", "simulation_speed"), [Input("speed-slider", "value")])
+        @self.app.callback(
+            Output("city_environment", "simulation_speed"),
+            [Input("speed-slider", "value")],
+        )
         def update_simulation_speed(speed):
             """Atualiza velocidade da simulação"""
             self.city_environment.simulation_speed = speed

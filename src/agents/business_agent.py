@@ -17,11 +17,15 @@ class BusinessAgent(BaseAgent):
     Fornece produtos/serviços com precificação dinâmica e logística inteligente.
     """
 
-    def __init__(self, name: str, business_type: str, position: tuple = (0, 0), **kwargs):
+    def __init__(
+        self, name: str, business_type: str, position: tuple = (0, 0), **kwargs
+    ):
         super().__init__(name, position, **kwargs)
 
         # Características da empresa
-        self.business_type = business_type  # 'energy', 'food', 'transport', 'healthcare', etc.
+        self.business_type = (
+            business_type  # 'energy', 'food', 'transport', 'healthcare', etc.
+        )
         self.size = random.choice(["small", "medium", "large"])
         self.capital = random.uniform(10000, 1000000)  # Capital inicial
         self.employees = random.randint(5, 500)
@@ -77,7 +81,9 @@ class BusinessAgent(BaseAgent):
         decisions = []
 
         # Decisão de preço
-        pricing_decision = await self._make_pricing_decision(current_situation, competitor_actions)
+        pricing_decision = await self._make_pricing_decision(
+            current_situation, competitor_actions
+        )
         decisions.append(pricing_decision)
 
         # Decisão de produção
@@ -92,9 +98,15 @@ class BusinessAgent(BaseAgent):
         marketing_decision = await self._make_marketing_decision(current_situation)
         decisions.append(marketing_decision)
 
-        return {"decisions": decisions, "situation_analysis": current_situation, "timestamp": datetime.now()}
+        return {
+            "decisions": decisions,
+            "situation_analysis": current_situation,
+            "timestamp": datetime.now(),
+        }
 
-    async def _analyze_market_situation(self, market_context: Dict[str, Any]) -> Dict[str, Any]:
+    async def _analyze_market_situation(
+        self, market_context: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Analisa situação atual do mercado"""
         # Calcula demanda atual
         current_demand = market_context.get("demand", 0)
@@ -136,7 +148,9 @@ class BusinessAgent(BaseAgent):
         # Calcula diferença de preços com concorrentes
         competitor_prices = [comp.current_price for comp in self.competitors]
         avg_competitor_price = np.mean(competitor_prices)
-        price_difference = (self.current_price - avg_competitor_price) / avg_competitor_price
+        price_difference = (
+            self.current_price - avg_competitor_price
+        ) / avg_competitor_price
 
         return abs(price_difference)
 
@@ -149,7 +163,9 @@ class BusinessAgent(BaseAgent):
 
         return (capital_ratio + revenue_ratio + margin_ratio) / 3
 
-    async def _make_pricing_decision(self, situation: Dict[str, Any], competitor_actions: List[Dict]) -> Dict[str, Any]:
+    async def _make_pricing_decision(
+        self, situation: Dict[str, Any], competitor_actions: List[Dict]
+    ) -> Dict[str, Any]:
         """Toma decisão de preço baseada em estratégia e IA"""
         current_price = self.current_price
         new_price = current_price
@@ -177,7 +193,9 @@ class BusinessAgent(BaseAgent):
             "strategy": self.strategy["pricing"],
         }
 
-    async def _dynamic_pricing(self, situation: Dict[str, Any], competitor_actions: List[Dict]) -> float:
+    async def _dynamic_pricing(
+        self, situation: Dict[str, Any], competitor_actions: List[Dict]
+    ) -> float:
         """Precificação dinâmica usando IA"""
         # Fatores que influenciam o preço
         demand_factor = situation["current_demand"] / 100  # Normaliza demanda
@@ -239,7 +257,9 @@ class BusinessAgent(BaseAgent):
 
         return base_cost
 
-    async def _make_production_decision(self, situation: Dict[str, Any]) -> Dict[str, Any]:
+    async def _make_production_decision(
+        self, situation: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Decide sobre níveis de produção"""
         current_demand = situation["current_demand"]
         # Calcula produção ideal baseada na demanda
@@ -265,7 +285,9 @@ class BusinessAgent(BaseAgent):
             "adjustment_cost": adjustment_cost,
         }
 
-    async def _make_investment_decision(self, situation: Dict[str, Any]) -> Dict[str, Any]:
+    async def _make_investment_decision(
+        self, situation: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Decide sobre investimentos"""
         financial_health = situation["financial_health"]
         market_share = situation["market_share"]
@@ -275,30 +297,49 @@ class BusinessAgent(BaseAgent):
         # Investimento em capacidade
         if situation["capacity_utilization"] > 0.9 and financial_health > 0.6:
             investment_opportunities.append(
-                {"type": "capacity_expansion", "cost": self.capital * 0.2, "expected_return": 0.15, "priority": "high"}
+                {
+                    "type": "capacity_expansion",
+                    "cost": self.capital * 0.2,
+                    "expected_return": 0.15,
+                    "priority": "high",
+                }
             )
 
         # Investimento em inovação
         if self.strategy["innovation"] > 0.6 and financial_health > 0.5:
             investment_opportunities.append(
-                {"type": "innovation", "cost": self.capital * 0.1, "expected_return": 0.2, "priority": "medium"}
+                {
+                    "type": "innovation",
+                    "cost": self.capital * 0.1,
+                    "expected_return": 0.2,
+                    "priority": "medium",
+                }
             )
 
         # Investimento em marketing
         if market_share < 0.1 and financial_health > 0.4:
             investment_opportunities.append(
-                {"type": "marketing", "cost": self.capital * 0.05, "expected_return": 0.1, "priority": "medium"}
+                {
+                    "type": "marketing",
+                    "cost": self.capital * 0.05,
+                    "expected_return": 0.1,
+                    "priority": "medium",
+                }
             )
 
         return {
             "action": "investment_analysis",
             "opportunities": investment_opportunities,
             "recommended_investment": (
-                max(investment_opportunities, key=lambda x: x["expected_return"]) if investment_opportunities else None
+                max(investment_opportunities, key=lambda x: x["expected_return"])
+                if investment_opportunities
+                else None
             ),
         }
 
-    async def _make_marketing_decision(self, situation: Dict[str, Any]) -> Dict[str, Any]:
+    async def _make_marketing_decision(
+        self, situation: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Decide sobre estratégias de marketing"""
         customer_satisfaction = situation["customer_satisfaction"]
         market_share = situation["market_share"]
@@ -308,19 +349,31 @@ class BusinessAgent(BaseAgent):
         # Marketing para satisfação baixa
         if customer_satisfaction < 0.4:
             marketing_actions.append(
-                {"type": "customer_retention", "cost": self.capital * 0.03, "target": "existing_customers"}
+                {
+                    "type": "customer_retention",
+                    "cost": self.capital * 0.03,
+                    "target": "existing_customers",
+                }
             )
 
         # Marketing para expansão
         if market_share < 0.2 and self.strategy["expansion"] > 0.5:
             marketing_actions.append(
-                {"type": "market_expansion", "cost": self.capital * 0.05, "target": "new_customers"}
+                {
+                    "type": "market_expansion",
+                    "cost": self.capital * 0.05,
+                    "target": "new_customers",
+                }
             )
 
         # Marketing competitivo
         if situation["competitive_pressure"] > 0.5:
             marketing_actions.append(
-                {"type": "competitive_positioning", "cost": self.capital * 0.02, "target": "market_share"}
+                {
+                    "type": "competitive_positioning",
+                    "cost": self.capital * 0.02,
+                    "target": "market_share",
+                }
             )
 
         return {
@@ -381,8 +434,12 @@ class BusinessAgent(BaseAgent):
 
         # Atualiza satisfação gradualmente
         target_satisfaction = (price_factor + quality_factor) / 2
-        satisfaction_change = (target_satisfaction - self.customer_satisfaction) * 0.1 * delta_time
-        self.customer_satisfaction = max(0, min(1, self.customer_satisfaction + satisfaction_change))
+        satisfaction_change = (
+            (target_satisfaction - self.customer_satisfaction) * 0.1 * delta_time
+        )
+        self.customer_satisfaction = max(
+            0, min(1, self.customer_satisfaction + satisfaction_change)
+        )
 
     def _update_market_share(self, delta_time: float) -> None:
         """Atualiza participação de mercado"""
@@ -425,11 +482,17 @@ class BusinessAgent(BaseAgent):
         else:
             # Negocia ou recusa
             if available < quantity:
-                return {"action": "partial_fulfillment", "available_quantity": available, "price": self.current_price}
+                return {
+                    "action": "partial_fulfillment",
+                    "available_quantity": available,
+                    "price": self.current_price,
+                }
             else:
                 return {"action": "price_too_low", "minimum_price": self.current_price}
 
-    async def _handle_partnership_proposal(self, proposal: Dict[str, Any]) -> Dict[str, Any]:
+    async def _handle_partnership_proposal(
+        self, proposal: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Processa proposta de parceria"""
         benefits = proposal.get("benefits", {})
 
@@ -437,9 +500,14 @@ class BusinessAgent(BaseAgent):
         if self.strategy["cooperation"] > 0.6:
             return {"action": "accept_partnership", "terms": benefits}
         else:
-            return {"action": "decline_partnership", "reason": "low_cooperation_strategy"}
+            return {
+                "action": "decline_partnership",
+                "reason": "low_cooperation_strategy",
+            }
 
-    async def _handle_regulation_change(self, regulation: Dict[str, Any]) -> Dict[str, Any]:
+    async def _handle_regulation_change(
+        self, regulation: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Processa mudança regulatória"""
         regulation_type = regulation.get("type")
         impact = regulation.get("impact", 0)
@@ -456,7 +524,11 @@ class BusinessAgent(BaseAgent):
             max_production = regulation.get("max_production", self.production_capacity)
             self.production_capacity = min(self.production_capacity, max_production)
 
-        return {"action": "regulation_compliance", "adjustments_made": True, "impact_assessment": impact}
+        return {
+            "action": "regulation_compliance",
+            "adjustments_made": True,
+            "impact_assessment": impact,
+        }
 
     def get_business_metrics(self) -> Dict[str, Any]:
         """Retorna métricas de negócio"""

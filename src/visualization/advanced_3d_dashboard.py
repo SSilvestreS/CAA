@@ -69,7 +69,11 @@ class Advanced3DDashboard:
         # Configurações de visualização
         self.camera_position = (500, 500, 800)
         self.camera_target = (500, 500, 0)
-        self.lighting = {"ambient": 0.4, "directional": 0.8, "position": (1000, 1000, 1000)}
+        self.lighting = {
+            "ambient": 0.4,
+            "directional": 0.8,
+            "position": (1000, 1000, 1000),
+        }
 
         # Animações e efeitos
         self.animations: List[Dict[str, Any]] = []
@@ -201,7 +205,11 @@ class Advanced3DDashboard:
 
     def set_weather(self, weather_type: str, intensity: float = 1.0):
         """Define efeito climático"""
-        self.weather_effects = {"type": weather_type, "intensity": intensity, "timestamp": datetime.now()}
+        self.weather_effects = {
+            "type": weather_type,
+            "intensity": intensity,
+            "timestamp": datetime.now(),
+        }
         self._trigger_event("weather_changed", self.weather_effects)
 
     def _update_real_time_data(self):
@@ -229,12 +237,18 @@ class Advanced3DDashboard:
         self.real_time_data["energy_consumption"] = total_energy
 
         # Tráfego
-        active_agents = sum(1 for agent in self.agents.values() if agent.status == "active")
+        active_agents = sum(
+            1 for agent in self.agents.values() if agent.status == "active"
+        )
         self.real_time_data["traffic_flow"] = active_agents / max(len(self.agents), 1)
 
         # Satisfação
-        satisfied_agents = sum(1 for agent in self.agents.values() if agent.status == "active")
-        self.real_time_data["satisfaction_level"] = satisfied_agents / max(len(self.agents), 1)
+        satisfied_agents = sum(
+            1 for agent in self.agents.values() if agent.status == "active"
+        )
+        self.real_time_data["satisfaction_level"] = satisfied_agents / max(
+            len(self.agents), 1
+        )
 
     def _update_animations(self):
         """Atualiza animações"""
@@ -264,7 +278,9 @@ class Advanced3DDashboard:
             end_pos = animation["end_position"]
 
             # Interpola posição
-            current_pos = tuple(start_pos[i] + (end_pos[i] - start_pos[i]) * progress for i in range(3))
+            current_pos = tuple(
+                start_pos[i] + (end_pos[i] - start_pos[i]) * progress for i in range(3)
+            )
 
             if target_id in self.agents:
                 self.agents[target_id].position = current_pos
@@ -276,7 +292,10 @@ class Advanced3DDashboard:
             start_scale = animation["start_scale"]
             end_scale = animation["end_scale"]
 
-            current_scale = tuple(start_scale[i] + (end_scale[i] - start_scale[i]) * progress for i in range(3))
+            current_scale = tuple(
+                start_scale[i] + (end_scale[i] - start_scale[i]) * progress
+                for i in range(3)
+            )
 
             if target_id in self.agents:
                 self.agents[target_id].scale = current_scale
@@ -471,7 +490,9 @@ class Advanced3DDashboard:
 
         logger.info(f"Cena importada de: {filepath}")
 
-    def create_animation(self, target_id: str, animation_type: str, duration: float, **params) -> Dict[str, Any]:
+    def create_animation(
+        self, target_id: str, animation_type: str, duration: float, **params
+    ) -> Dict[str, Any]:
         """Cria animação"""
         animation = {
             "target_id": target_id,
@@ -486,7 +507,11 @@ class Advanced3DDashboard:
         return animation
 
     def create_particle_system(
-        self, position: Tuple[float, float, float], particle_type: str, count: int, duration: float
+        self,
+        position: Tuple[float, float, float],
+        particle_type: str,
+        count: int,
+        duration: float,
     ) -> Dict[str, Any]:
         """Cria sistema de partículas"""
         particle_system = {
@@ -506,7 +531,9 @@ class Advanced3DDashboard:
         """Retorna estatísticas de performance"""
         return {
             "fps": self.real_time_data["fps"],
-            "total_objects": len(self.agents) + len(self.buildings) + len(self.infrastructure),
+            "total_objects": len(self.agents)
+            + len(self.buildings)
+            + len(self.infrastructure),
             "active_animations": len(self.animations),
             "active_particle_systems": len(self.particle_systems),
             "memory_usage": self._estimate_memory_usage(),

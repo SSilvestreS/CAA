@@ -34,7 +34,13 @@ class EncryptionService:
 
     def derive_key(self, password: str, salt: bytes) -> bytes:
         """Deriva chave de criptografia a partir de senha e salt."""
-        kdf = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=100000, backend=default_backend())
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=100000,
+            backend=default_backend(),
+        )
         return base64.urlsafe_b64encode(kdf.derive(password.encode()))
 
     def encrypt_data(self, data: Union[str, bytes, Dict, Any]) -> str:
@@ -98,7 +104,9 @@ class EncryptionService:
         if salt is None:
             salt = secrets.token_hex(32)
 
-        hash_obj = hashlib.pbkdf2_hmac("sha256", data.encode("utf-8"), salt.encode("utf-8"), 100000)
+        hash_obj = hashlib.pbkdf2_hmac(
+            "sha256", data.encode("utf-8"), salt.encode("utf-8"), 100000
+        )
 
         return f"{salt}:{hash_obj.hex()}"
 
@@ -106,7 +114,9 @@ class EncryptionService:
         """Verifica se dados correspondem ao hash."""
         try:
             salt, hash_part = hash_value.split(":")
-            computed_hash = hashlib.pbkdf2_hmac("sha256", data.encode("utf-8"), salt.encode("utf-8"), 100000)
+            computed_hash = hashlib.pbkdf2_hmac(
+                "sha256", data.encode("utf-8"), salt.encode("utf-8"), 100000
+            )
             return computed_hash.hex() == hash_part
         except ValueError:
             return False
@@ -124,7 +134,11 @@ class FieldEncryption:
             return None
 
         # Adiciona metadados do campo
-        field_data = {"field": field_name, "value": value, "timestamp": str(os.urandom(8).hex())}  # Nonce simples
+        field_data = {
+            "field": field_name,
+            "value": value,
+            "timestamp": str(os.urandom(8).hex()),
+        }  # Nonce simples
 
         return self.encryption.encrypt_json(field_data)
 
@@ -147,7 +161,9 @@ class SecureStorage:
         self.encryption = encryption_service
         self.field_encryption = FieldEncryption(encryption_service)
 
-    def store_sensitive_data(self, data: Dict[str, Any], sensitive_fields: list) -> Dict[str, Any]:
+    def store_sensitive_data(
+        self, data: Dict[str, Any], sensitive_fields: list
+    ) -> Dict[str, Any]:
         """
         Armazena dados com campos sensíveis criptografados.
 
@@ -162,11 +178,15 @@ class SecureStorage:
 
         for field in sensitive_fields:
             if field in data and data[field] is not None:
-                encrypted_data[field] = self.field_encryption.encrypt_field(data[field], field)
+                encrypted_data[field] = self.field_encryption.encrypt_field(
+                    data[field], field
+                )
 
         return encrypted_data
 
-    def retrieve_sensitive_data(self, encrypted_data: Dict[str, Any], sensitive_fields: list) -> Dict[str, Any]:
+    def retrieve_sensitive_data(
+        self, encrypted_data: Dict[str, Any], sensitive_fields: list
+    ) -> Dict[str, Any]:
         """
         Recupera dados descriptografando campos sensíveis.
 
@@ -181,7 +201,9 @@ class SecureStorage:
 
         for field in sensitive_fields:
             if field in encrypted_data and encrypted_data[field] is not None:
-                field_name, value = self.field_encryption.decrypt_field(encrypted_data[field])
+                field_name, value = self.field_encryption.decrypt_field(
+                    encrypted_data[field]
+                )
                 if field_name == field:
                     decrypted_data[field] = value
 
@@ -194,7 +216,9 @@ class CommunicationEncryption:
     def __init__(self, encryption_service: EncryptionService):
         self.encryption = encryption_service
 
-    def encrypt_message(self, message: Dict[str, Any], recipient_id: str) -> Dict[str, Any]:
+    def encrypt_message(
+        self, message: Dict[str, Any], recipient_id: str
+    ) -> Dict[str, Any]:
         """
         Criptografa mensagem para comunicação segura.
 
@@ -206,11 +230,20 @@ class CommunicationEncryption:
             Mensagem criptografada com metadados
         """
         # Adiciona metadados de segurança
-        secure_message = {"recipient": recipient_id, "timestamp": str(os.urandom(8).hex()), "message": message}
+        secure_message = {
+            "recipient": recipient_id,
+            "timestamp": str(os.urandom(8).hex()),
+            "message": message,
+        }
 
         encrypted_content = self.encryption.encrypt_json(secure_message)
 
-        return {"encrypted": True, "content": encrypted_content, "algorithm": "AES-256-GCM", "version": "1.0"}
+        return {
+            "encrypted": True,
+            "content": encrypted_content,
+            "algorithm": "AES-256-GCM",
+            "version": "1.0",
+        }
 
     def decrypt_message(self, encrypted_message: Dict[str, Any]) -> Dict[str, Any]:
         """

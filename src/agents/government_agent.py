@@ -21,7 +21,9 @@ class GovernmentAgent(BaseAgent):
         super().__init__(name, position, **kwargs)
 
         # Características do governo
-        self.government_type = random.choice(["democratic", "authoritarian", "technocratic"])
+        self.government_type = random.choice(
+            ["democratic", "authoritarian", "technocratic"]
+        )
         self.efficiency = random.uniform(0.3, 0.9)  # Eficiência governamental
         self.corruption_level = random.uniform(0.0, 0.3)  # Nível de corrupção
 
@@ -83,11 +85,15 @@ class GovernmentAgent(BaseAgent):
         decisions = []
 
         # Decisões de política
-        policy_decisions = await self._make_policy_decisions(priority_issues, current_situation)
+        policy_decisions = await self._make_policy_decisions(
+            priority_issues, current_situation
+        )
         decisions.extend(policy_decisions)
 
         # Decisões de regulamentação
-        regulation_decisions = await self._make_regulation_decisions(priority_issues, current_situation)
+        regulation_decisions = await self._make_regulation_decisions(
+            priority_issues, current_situation
+        )
         decisions.extend(regulation_decisions)
 
         # Decisões de investimento
@@ -95,7 +101,9 @@ class GovernmentAgent(BaseAgent):
         decisions.extend(investment_decisions)
 
         # Decisões de fiscalização
-        enforcement_decisions = await self._make_enforcement_decisions(current_situation)
+        enforcement_decisions = await self._make_enforcement_decisions(
+            current_situation
+        )
         decisions.extend(enforcement_decisions)
 
         return {
@@ -113,12 +121,23 @@ class GovernmentAgent(BaseAgent):
         infrastructure_data = context.get("infrastructure", [])
 
         # Calcula métricas agregadas
-        avg_citizen_satisfaction = np.mean([c.get("satisfaction", 0.5) for c in citizen_data])
-        avg_business_health = np.mean([b.get("business_metrics", {}).get("profit_margin", 0.2) for b in business_data])
+        avg_citizen_satisfaction = np.mean(
+            [c.get("satisfaction", 0.5) for c in citizen_data]
+        )
+        avg_business_health = np.mean(
+            [
+                b.get("business_metrics", {}).get("profit_margin", 0.2)
+                for b in business_data
+            ]
+        )
 
         # Calcula indicadores econômicos
         total_tax_revenue = sum(
-            [b.get("business_metrics", {}).get("revenue", 0) * self.policies["tax_rate"] for b in business_data]
+            [
+                b.get("business_metrics", {}).get("revenue", 0)
+                * self.policies["tax_rate"]
+                for b in business_data
+            ]
         )
         unemployment_rate = self._calculate_unemployment_rate(citizen_data)
 
@@ -127,7 +146,9 @@ class GovernmentAgent(BaseAgent):
         crime_rate = self._calculate_crime_rate(citizen_data)
 
         # Calcula indicadores ambientais
-        environmental_impact = self._calculate_environmental_impact(business_data, infrastructure_data)
+        environmental_impact = self._calculate_environmental_impact(
+            business_data, infrastructure_data
+        )
 
         return {
             "citizen_satisfaction": avg_citizen_satisfaction,
@@ -161,7 +182,9 @@ class GovernmentAgent(BaseAgent):
         incomes.sort()
         n = len(incomes)
         cumsum = np.cumsum(incomes)
-        return (n + 1 - 2 * sum((n + 1 - i) * y for i, y in enumerate(cumsum, 1))) / (n * sum(incomes))
+        return (n + 1 - 2 * sum((n + 1 - i) * y for i, y in enumerate(cumsum, 1))) / (
+            n * sum(incomes)
+        )
 
     def _calculate_crime_rate(self, citizen_data: List[Dict]) -> float:
         """Calcula taxa de criminalidade"""
@@ -169,17 +192,30 @@ class GovernmentAgent(BaseAgent):
             return 0.1
 
         # Baseado em stress, satisfação e desigualdade social
-        high_stress_citizens = sum(1 for c in citizen_data if c.get("stress_level", 0) > 0.7)
-        low_satisfaction_citizens = sum(1 for c in citizen_data if c.get("satisfaction", 0.5) < 0.3)
+        high_stress_citizens = sum(
+            1 for c in citizen_data if c.get("stress_level", 0) > 0.7
+        )
+        low_satisfaction_citizens = sum(
+            1 for c in citizen_data if c.get("satisfaction", 0.5) < 0.3
+        )
 
-        crime_factors = (high_stress_citizens + low_satisfaction_citizens) / (2 * len(citizen_data))
+        crime_factors = (high_stress_citizens + low_satisfaction_citizens) / (
+            2 * len(citizen_data)
+        )
         return min(1.0, crime_factors * 0.5)  # Normaliza para 0-1
 
-    def _calculate_environmental_impact(self, business_data: List[Dict], infrastructure_data: List[Dict]) -> float:
+    def _calculate_environmental_impact(
+        self, business_data: List[Dict], infrastructure_data: List[Dict]
+    ) -> float:
         """Calcula impacto ambiental"""
         # Baseado em produção industrial e uso de energia
-        total_production = sum(b.get("business_metrics", {}).get("current_production", 0) for b in business_data)
-        energy_consumption = sum(i.get("energy_consumption", 0) for i in infrastructure_data)
+        total_production = sum(
+            b.get("business_metrics", {}).get("current_production", 0)
+            for b in business_data
+        )
+        energy_consumption = sum(
+            i.get("energy_consumption", 0) for i in infrastructure_data
+        )
 
         # Normaliza e combina fatores
         production_impact = min(1.0, total_production / 10000)
@@ -187,7 +223,9 @@ class GovernmentAgent(BaseAgent):
 
         return (production_impact + energy_impact) / 2
 
-    async def _identify_priority_issues(self, situation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    async def _identify_priority_issues(
+        self, situation: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
         """Identifica problemas prioritários baseados na situação atual"""
         issues = []
 
@@ -203,17 +241,33 @@ class GovernmentAgent(BaseAgent):
 
         # Problemas econômicos
         if situation["unemployment_rate"] > 0.15:
-            issues.append({"type": "high_unemployment", "severity": situation["unemployment_rate"], "priority": "high"})
+            issues.append(
+                {
+                    "type": "high_unemployment",
+                    "severity": situation["unemployment_rate"],
+                    "priority": "high",
+                }
+            )
 
         # Problemas de desigualdade
         if situation["social_inequality"] > 0.7:
             issues.append(
-                {"type": "social_inequality", "severity": situation["social_inequality"], "priority": "medium"}
+                {
+                    "type": "social_inequality",
+                    "severity": situation["social_inequality"],
+                    "priority": "medium",
+                }
             )
 
         # Problemas de criminalidade
         if situation["crime_rate"] > 0.3:
-            issues.append({"type": "high_crime", "severity": situation["crime_rate"], "priority": "high"})
+            issues.append(
+                {
+                    "type": "high_crime",
+                    "severity": situation["crime_rate"],
+                    "priority": "high",
+                }
+            )
 
         # Problemas ambientais
         if situation["environmental_impact"] > 0.7:
@@ -236,7 +290,9 @@ class GovernmentAgent(BaseAgent):
             )
 
         # Ordena por prioridade e severidade
-        issues.sort(key=lambda x: (x["priority"] == "high", x["severity"]), reverse=True)
+        issues.sort(
+            key=lambda x: (x["priority"] == "high", x["severity"]), reverse=True
+        )
         return issues
 
     async def _make_policy_decisions(
@@ -268,13 +324,17 @@ class GovernmentAgent(BaseAgent):
 
         return decisions
 
-    async def _address_citizen_dissatisfaction(self, issue: Dict, situation: Dict) -> Dict[str, Any]:
+    async def _address_citizen_dissatisfaction(
+        self, issue: Dict, situation: Dict
+    ) -> Dict[str, Any]:
         """Endereça insatisfação cidadã"""
         # Aumenta investimento em serviços públicos
         service_increase = min(0.1, issue["severity"] * 0.2)
 
         for service in self.public_services:
-            self.public_services[service] = min(1.0, self.public_services[service] + service_increase)
+            self.public_services[service] = min(
+                1.0, self.public_services[service] + service_increase
+            )
 
         cost = self.budget * service_increase * 0.1
 
@@ -285,7 +345,9 @@ class GovernmentAgent(BaseAgent):
             "expected_impact": service_increase * 0.8,
         }
 
-    async def _address_unemployment(self, issue: Dict, situation: Dict) -> Dict[str, Any]:
+    async def _address_unemployment(
+        self, issue: Dict, situation: Dict
+    ) -> Dict[str, Any]:
         """Endereça desemprego alto"""
         # Cria programa de emprego público
         job_creation_cost = self.budget * 0.05
@@ -298,11 +360,15 @@ class GovernmentAgent(BaseAgent):
             "expected_impact": issue["severity"] * 0.6,
         }
 
-    async def _address_social_inequality(self, issue: Dict, situation: Dict) -> Dict[str, Any]:
+    async def _address_social_inequality(
+        self, issue: Dict, situation: Dict
+    ) -> Dict[str, Any]:
         """Endereça desigualdade social"""
         # Implementa programa de redistribuição de renda
         redistribution_rate = min(0.1, issue["severity"] * 0.15)
-        self.policies["social_welfare"] = min(1.0, self.policies["social_welfare"] + redistribution_rate)
+        self.policies["social_welfare"] = min(
+            1.0, self.policies["social_welfare"] + redistribution_rate
+        )
 
         cost = self.budget * redistribution_rate * 0.2
 
@@ -317,7 +383,9 @@ class GovernmentAgent(BaseAgent):
         """Endereça criminalidade alta"""
         # Aumenta investimento em segurança
         security_increase = min(0.2, issue["severity"] * 0.3)
-        self.public_services["security"] = min(1.0, self.public_services["security"] + security_increase)
+        self.public_services["security"] = min(
+            1.0, self.public_services["security"] + security_increase
+        )
 
         cost = self.budget * security_increase * 0.15
 
@@ -328,7 +396,9 @@ class GovernmentAgent(BaseAgent):
             "expected_impact": security_increase * 0.9,
         }
 
-    async def _address_environmental_issues(self, issue: Dict, situation: Dict) -> Dict[str, Any]:
+    async def _address_environmental_issues(
+        self, issue: Dict, situation: Dict
+    ) -> Dict[str, Any]:
         """Endereça problemas ambientais"""
         # Aumenta regulamentações ambientais
         regulation_increase = min(0.2, issue["severity"] * 0.25)
@@ -373,7 +443,9 @@ class GovernmentAgent(BaseAgent):
 
         return decisions
 
-    async def _make_investment_decisions(self, situation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    async def _make_investment_decisions(
+        self, situation: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
         """Toma decisões de investimento público"""
         decisions = []
 
@@ -403,7 +475,9 @@ class GovernmentAgent(BaseAgent):
 
         return decisions
 
-    async def _make_enforcement_decisions(self, situation: Dict[str, Any]) -> List[Dict[str, Any]]:
+    async def _make_enforcement_decisions(
+        self, situation: Dict[str, Any]
+    ) -> List[Dict[str, Any]]:
         """Toma decisões de fiscalização"""
         decisions = []
 
@@ -475,14 +549,24 @@ class GovernmentAgent(BaseAgent):
         service_quality = np.mean(list(self.public_services.values()))
         target_satisfaction = service_quality * (1 - self.corruption_level)
 
-        satisfaction_change = (target_satisfaction - self.citizen_satisfaction) * 0.1 * delta_time
-        self.citizen_satisfaction = max(0, min(1, self.citizen_satisfaction + satisfaction_change))
+        satisfaction_change = (
+            (target_satisfaction - self.citizen_satisfaction) * 0.1 * delta_time
+        )
+        self.citizen_satisfaction = max(
+            0, min(1, self.citizen_satisfaction + satisfaction_change)
+        )
 
         # Atualiza estabilidade social
-        stability_factors = [1 - self.corruption_level, self.citizen_satisfaction, self.policies["social_welfare"]]
+        stability_factors = [
+            1 - self.corruption_level,
+            self.citizen_satisfaction,
+            self.policies["social_welfare"],
+        ]
         target_stability = np.mean(stability_factors)
 
-        stability_change = (target_stability - self.social_stability) * 0.05 * delta_time
+        stability_change = (
+            (target_stability - self.social_stability) * 0.05 * delta_time
+        )
         self.social_stability = max(0, min(1, self.social_stability + stability_change))
 
     async def _handle_message(self, message: AgentMessage) -> Optional[Dict[str, Any]]:
@@ -504,9 +588,17 @@ class GovernmentAgent(BaseAgent):
         response_time = 1 / self.efficiency  # Eficiência alta = resposta rápida
 
         if severity > 0.7 and self.efficiency > 0.6:
-            return {"action": "immediate_investigation", "response_time": response_time, "priority": "high"}
+            return {
+                "action": "immediate_investigation",
+                "response_time": response_time,
+                "priority": "high",
+            }
         else:
-            return {"action": "standard_investigation", "response_time": response_time * 2, "priority": "medium"}
+            return {
+                "action": "standard_investigation",
+                "response_time": response_time * 2,
+                "priority": "medium",
+            }
 
     async def _handle_lobby_request(self, request: Dict[str, Any]) -> Dict[str, Any]:
         """Processa solicitação de lobby de empresa"""
@@ -524,7 +616,9 @@ class GovernmentAgent(BaseAgent):
         else:
             return {"action": "decline_request", "reason": "insufficient_influence"}
 
-    async def _handle_emergency_report(self, emergency: Dict[str, Any]) -> Dict[str, Any]:
+    async def _handle_emergency_report(
+        self, emergency: Dict[str, Any]
+    ) -> Dict[str, Any]:
         """Processa relatório de emergência"""
         emergency_type = emergency.get("type")
         severity = emergency.get("severity", 0.5)

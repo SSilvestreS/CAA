@@ -81,16 +81,22 @@ class Discriminator(nn.Module):
 class CityDataGAN(nn.Module):
     """GAN para geração de dados sintéticos de cidade"""
 
-    def __init__(self, noise_dim: int = 100, data_dim: int = 128, num_features: int = 20):
+    def __init__(
+        self, noise_dim: int = 100, data_dim: int = 128, num_features: int = 20
+    ):
         super().__init__()
         self.noise_dim = noise_dim
         self.data_dim = data_dim
 
         # Gerador
-        self.generator = Generator(noise_dim=noise_dim, output_dim=data_dim, hidden_dims=[256, 512, 1024, 512])
+        self.generator = Generator(
+            noise_dim=noise_dim, output_dim=data_dim, hidden_dims=[256, 512, 1024, 512]
+        )
 
         # Discriminador
-        self.discriminator = Discriminator(input_dim=data_dim, hidden_dims=[512, 256, 128, 64])
+        self.discriminator = Discriminator(
+            input_dim=data_dim, hidden_dims=[512, 256, 128, 64]
+        )
 
         # Classificador de características
         self.feature_classifier = nn.Sequential(
@@ -132,10 +138,14 @@ class SyntheticAgentGenerator(nn.Module):
         self.agent_types = agent_types
 
         # Gerador
-        self.generator = Generator(noise_dim=noise_dim, output_dim=agent_dim, hidden_dims=[256, 512, 256])
+        self.generator = Generator(
+            noise_dim=noise_dim, output_dim=agent_dim, hidden_dims=[256, 512, 256]
+        )
 
         # Discriminador
-        self.discriminator = Discriminator(input_dim=agent_dim, hidden_dims=[256, 128, 64])
+        self.discriminator = Discriminator(
+            input_dim=agent_dim, hidden_dims=[256, 128, 64]
+        )
 
         # Classificador de tipo de agente
         self.type_classifier = nn.Sequential(
@@ -153,7 +163,9 @@ class SyntheticAgentGenerator(nn.Module):
             nn.Tanh(),  # Valores entre -1 e 1
         )
 
-    def generate_agent(self, num_agents: int, device: str = "cpu") -> Dict[str, torch.Tensor]:
+    def generate_agent(
+        self, num_agents: int, device: str = "cpu"
+    ) -> Dict[str, torch.Tensor]:
         """Gera agentes sintéticos"""
         noise = torch.randn(num_agents, self.noise_dim).to(device)
 
@@ -194,7 +206,9 @@ class ScenarioGenerator(nn.Module):
         )
 
         # Discriminador
-        self.discriminator = Discriminator(input_dim=scenario_dim, hidden_dims=[512, 256, 128])
+        self.discriminator = Discriminator(
+            input_dim=scenario_dim, hidden_dims=[512, 256, 128]
+        )
 
         # Classificador de tipo de cenário
         self.scenario_classifier = nn.Sequential(
@@ -214,7 +228,9 @@ class ScenarioGenerator(nn.Module):
             nn.Sigmoid(),  # Intensidade entre 0 e 1
         )
 
-    def generate_scenario(self, num_scenarios: int, device: str = "cpu") -> Dict[str, torch.Tensor]:
+    def generate_scenario(
+        self, num_scenarios: int, device: str = "cpu"
+    ) -> Dict[str, torch.Tensor]:
         """Gera cenários sintéticos"""
         noise = torch.randn(num_scenarios, self.noise_dim).to(device)
 
@@ -237,7 +253,9 @@ class ScenarioGenerator(nn.Module):
 class DataAugmentationGAN(nn.Module):
     """GAN para aumento de dados de treinamento"""
 
-    def __init__(self, input_dim: int = 64, noise_dim: int = 50, augmentation_factor: float = 0.1):
+    def __init__(
+        self, input_dim: int = 64, noise_dim: int = 50, augmentation_factor: float = 0.1
+    ):
         super().__init__()
         self.input_dim = input_dim
         self.noise_dim = noise_dim
@@ -254,9 +272,13 @@ class DataAugmentationGAN(nn.Module):
         )
 
         # Discriminador
-        self.discriminator = Discriminator(input_dim=input_dim, hidden_dims=[128, 64, 32])
+        self.discriminator = Discriminator(
+            input_dim=input_dim, hidden_dims=[128, 64, 32]
+        )
 
-    def augment_data(self, real_data: torch.Tensor, device: str = "cpu") -> torch.Tensor:
+    def augment_data(
+        self, real_data: torch.Tensor, device: str = "cpu"
+    ) -> torch.Tensor:
         """Aumenta dados reais com variações sintéticas"""
         batch_size = real_data.size(0)
         noise = torch.randn(batch_size, self.noise_dim).to(device)
@@ -295,14 +317,20 @@ class GANTrainer:
         self.device = device
 
         # Otimizadores
-        self.g_optimizer = torch.optim.Adam(generator.parameters(), lr=learning_rate, betas=(beta1, beta2))
-        self.d_optimizer = torch.optim.Adam(discriminator.parameters(), lr=learning_rate, betas=(beta1, beta2))
+        self.g_optimizer = torch.optim.Adam(
+            generator.parameters(), lr=learning_rate, betas=(beta1, beta2)
+        )
+        self.d_optimizer = torch.optim.Adam(
+            discriminator.parameters(), lr=learning_rate, betas=(beta1, beta2)
+        )
 
         # Critérios de perda
         self.criterion = nn.BCELoss()
         self.mse_criterion = nn.MSELoss()
 
-    def train_discriminator(self, real_data: torch.Tensor, fake_data: torch.Tensor) -> float:
+    def train_discriminator(
+        self, real_data: torch.Tensor, fake_data: torch.Tensor
+    ) -> float:
         """Treina o discriminador"""
         self.d_optimizer.zero_grad()
 
@@ -436,7 +464,9 @@ class GANModelManager:
             device=self.device,
         )
 
-    def train_model(self, model_name: str, dataloader, epochs: int = 100) -> Dict[str, List[float]]:
+    def train_model(
+        self, model_name: str, dataloader, epochs: int = 100
+    ) -> Dict[str, List[float]]:
         """Treina um modelo GAN específico"""
         if model_name not in self.trainers:
             raise ValueError(f"Modelo {model_name} não encontrado")
@@ -451,7 +481,9 @@ class GANModelManager:
             g_losses.append(losses["g_loss"])
 
             if epoch % 20 == 0:
-                print(f"Época {epoch}, D_Loss: {losses['d_loss']:.4f}, G_Loss: {losses['g_loss']:.4f}")
+                print(
+                    f"Época {epoch}, D_Loss: {losses['d_loss']:.4f}, G_Loss: {losses['g_loss']:.4f}"
+                )
 
         return {"d_losses": d_losses, "g_losses": g_losses}
 

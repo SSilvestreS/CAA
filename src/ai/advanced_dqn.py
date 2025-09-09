@@ -151,7 +151,12 @@ class AdvancedDQN:
         self.episode_count = 0
 
         # Histórico de treinamento
-        self.training_history = {"episode_rewards": [], "episode_losses": [], "epsilon_values": [], "q_values": []}
+        self.training_history = {
+            "episode_rewards": [],
+            "episode_losses": [],
+            "epsilon_values": [],
+            "q_values": [],
+        }
 
     def act(self, state: np.ndarray, training: bool = True) -> int:
         """Seleciona ação usando epsilon-greedy"""
@@ -161,10 +166,22 @@ class AdvancedDQN:
         q_values = self.q_network.predict(state)
         return np.argmax(q_values)
 
-    def remember(self, state: np.ndarray, action: int, reward: float, next_state: np.ndarray, done: bool):
+    def remember(
+        self,
+        state: np.ndarray,
+        action: int,
+        reward: float,
+        next_state: np.ndarray,
+        done: bool,
+    ):
         """Armazena experiência no buffer"""
         experience = Experience(
-            state=state, action=action, reward=reward, next_state=next_state, done=done, timestamp=datetime.now()
+            state=state,
+            action=action,
+            reward=reward,
+            next_state=next_state,
+            done=done,
+            timestamp=datetime.now(),
         )
         self.memory.push(experience)
 
@@ -192,7 +209,9 @@ class AdvancedDQN:
             if dones[i]:
                 targets[i][actions[i]] = rewards[i]
             else:
-                targets[i][actions[i]] = rewards[i] + self.gamma * np.max(next_q_values[i])
+                targets[i][actions[i]] = rewards[i] + self.gamma * np.max(
+                    next_q_values[i]
+                )
 
         # Calcula loss (MSE)
         loss = np.mean((current_q_values - targets) ** 2)
@@ -275,7 +294,9 @@ class AdvancedDQN:
             "steps": step_count,
         }
 
-    def _calculate_reward(self, state: np.ndarray, action: int, next_state: np.ndarray) -> float:
+    def _calculate_reward(
+        self, state: np.ndarray, action: int, next_state: np.ndarray
+    ) -> float:
         """Calcula recompensa baseada no estado e ação"""
         # Função de recompensa simplificada
         # Em implementação real, seria baseada no contexto específico do agente

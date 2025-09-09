@@ -53,9 +53,25 @@ class AdvancedAIManager:
                 "nhead": 8,
                 "num_layers": 6,
             },
-            "lstm": {"learning_rate": 1e-3, "batch_size": 64, "epochs": 50, "hidden_size": 128, "num_layers": 3},
-            "gan": {"learning_rate": 2e-4, "batch_size": 32, "epochs": 100, "noise_dim": 100},
-            "rl": {"learning_rate": 1e-4, "gamma": 0.99, "epsilon": 1.0, "memory_size": 100000},
+            "lstm": {
+                "learning_rate": 1e-3,
+                "batch_size": 64,
+                "epochs": 50,
+                "hidden_size": 128,
+                "num_layers": 3,
+            },
+            "gan": {
+                "learning_rate": 2e-4,
+                "batch_size": 32,
+                "epochs": 100,
+                "noise_dim": 100,
+            },
+            "rl": {
+                "learning_rate": 1e-4,
+                "gamma": 0.99,
+                "epsilon": 1.0,
+                "memory_size": 100000,
+            },
         }
 
         if os.path.exists(self.config_path):
@@ -74,7 +90,9 @@ class AdvancedAIManager:
         with open(self.config_path, "w") as f:
             json.dump(self.config, f, indent=2)
 
-    def initialize_rl_system(self, num_agents: int, state_size: int, action_size: int, algorithm: str = "dqn") -> None:
+    def initialize_rl_system(
+        self, num_agents: int, state_size: int, action_size: int, algorithm: str = "dqn"
+    ) -> None:
         """Inicializa sistema de RL multi-agente"""
         self.rl_system = MultiAgentRL(
             num_agents=num_agents,
@@ -84,43 +102,66 @@ class AdvancedAIManager:
             device=self.device,
         )
 
-    def train_transformer_model(self, model_name: str, dataloader, epochs: Optional[int] = None) -> List[float]:
+    def train_transformer_model(
+        self, model_name: str, dataloader, epochs: Optional[int] = None
+    ) -> List[float]:
         """Treina modelo Transformer"""
         epochs = epochs or self.config["transformer"]["epochs"]
         losses = self.transformer_manager.train_model(model_name, dataloader, epochs)
 
         # Registrar histórico
         self.training_history["transformer"].append(
-            {"model": model_name, "epochs": epochs, "losses": losses, "timestamp": datetime.now().isoformat()}
+            {
+                "model": model_name,
+                "epochs": epochs,
+                "losses": losses,
+                "timestamp": datetime.now().isoformat(),
+            }
         )
 
         return losses
 
-    def train_lstm_model(self, model_name: str, dataloader, epochs: Optional[int] = None) -> List[float]:
+    def train_lstm_model(
+        self, model_name: str, dataloader, epochs: Optional[int] = None
+    ) -> List[float]:
         """Treina modelo LSTM"""
         epochs = epochs or self.config["lstm"]["epochs"]
         losses = self.lstm_manager.train_model(model_name, dataloader, epochs)
 
         # Registrar histórico
         self.training_history["lstm"].append(
-            {"model": model_name, "epochs": epochs, "losses": losses, "timestamp": datetime.now().isoformat()}
+            {
+                "model": model_name,
+                "epochs": epochs,
+                "losses": losses,
+                "timestamp": datetime.now().isoformat(),
+            }
         )
 
         return losses
 
-    def train_gan_model(self, model_name: str, dataloader, epochs: Optional[int] = None) -> Dict[str, List[float]]:
+    def train_gan_model(
+        self, model_name: str, dataloader, epochs: Optional[int] = None
+    ) -> Dict[str, List[float]]:
         """Treina modelo GAN"""
         epochs = epochs or self.config["gan"]["epochs"]
         losses = self.gan_manager.train_model(model_name, dataloader, epochs)
 
         # Registrar histórico
         self.training_history["gan"].append(
-            {"model": model_name, "epochs": epochs, "losses": losses, "timestamp": datetime.now().isoformat()}
+            {
+                "model": model_name,
+                "epochs": epochs,
+                "losses": losses,
+                "timestamp": datetime.now().isoformat(),
+            }
         )
 
         return losses
 
-    def train_rl_system(self, environment, episodes: int = 1000) -> Dict[str, List[float]]:
+    def train_rl_system(
+        self, environment, episodes: int = 1000
+    ) -> Dict[str, List[float]]:
         """Treina sistema de RL multi-agente"""
         if self.rl_system is None:
             raise ValueError("Sistema RL não inicializado")
@@ -147,7 +188,9 @@ class AdvancedAIManager:
                 for i, (state, action, reward, next_state, done) in enumerate(
                     zip(states, actions, rewards, next_states, dones)
                 ):
-                    self.rl_system.store_experience(i, state, action, reward, next_state, done)
+                    self.rl_system.store_experience(
+                        i, state, action, reward, next_state, done
+                    )
                     episode_rewards[i] += reward
 
                 states = next_states
@@ -172,12 +215,18 @@ class AdvancedAIManager:
 
         # Registrar histórico
         self.training_history["rl"].append(
-            {"episodes": episodes, "losses": all_losses, "timestamp": datetime.now().isoformat()}
+            {
+                "episodes": episodes,
+                "losses": all_losses,
+                "timestamp": datetime.now().isoformat(),
+            }
         )
 
         return all_losses
 
-    def predict_with_transformer(self, model_name: str, data: torch.Tensor) -> torch.Tensor:
+    def predict_with_transformer(
+        self, model_name: str, data: torch.Tensor
+    ) -> torch.Tensor:
         """Faz predição com modelo Transformer"""
         return self.transformer_manager.predict(model_name, data)
 
@@ -195,7 +244,9 @@ class AdvancedAIManager:
             raise ValueError("Sistema RL não inicializado")
         return self.rl_system.act(states, training)
 
-    def evaluate_model(self, model_type: str, model_name: str, dataloader) -> Dict[str, float]:
+    def evaluate_model(
+        self, model_type: str, model_name: str, dataloader
+    ) -> Dict[str, float]:
         """Avalia um modelo específico"""
         if model_type == "transformer":
             trainer = self.transformer_manager.trainers[model_name]
@@ -204,7 +255,9 @@ class AdvancedAIManager:
             trainer = self.lstm_manager.trainers[model_name]
             return trainer.evaluate(dataloader)
         else:
-            raise ValueError(f"Tipo de modelo {model_type} não suportado para avaliação")
+            raise ValueError(
+                f"Tipo de modelo {model_type} não suportado para avaliação"
+            )
 
     def get_model_info(self) -> Dict[str, Any]:
         """Retorna informações de todos os modelos"""
@@ -274,7 +327,12 @@ class AdvancedAIManager:
 
     def get_performance_summary(self) -> Dict[str, Any]:
         """Retorna resumo de performance de todos os modelos"""
-        summary = {"total_models": 0, "models_by_type": {}, "training_status": {}, "device_usage": {}}
+        summary = {
+            "total_models": 0,
+            "models_by_type": {},
+            "training_status": {},
+            "device_usage": {},
+        }
 
         # Contar modelos por tipo
         for model_type, manager in [
@@ -299,7 +357,9 @@ class AdvancedAIManager:
         summary["device_usage"] = {
             "device": self.device,
             "cuda_available": torch.cuda.is_available(),
-            "cuda_device_count": torch.cuda.device_count() if torch.cuda.is_available() else 0,
+            "cuda_device_count": (
+                torch.cuda.device_count() if torch.cuda.is_available() else 0
+            ),
         }
 
         return summary

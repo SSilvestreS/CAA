@@ -120,7 +120,10 @@ class EventStore:
             self._process_event_handlers(event)
 
             # Cria snapshot se necessário
-            if len(self.aggregate_events[event.aggregate_id]) % self.snapshot_interval == 0:
+            if (
+                len(self.aggregate_events[event.aggregate_id]) % self.snapshot_interval
+                == 0
+            ):
                 self._create_snapshot(event.aggregate_id)
 
             return True
@@ -169,7 +172,9 @@ class EventStore:
         events = self.aggregate_events.get(aggregate_id, [])
         return [e for e in events if e.version >= from_version]
 
-    def get_events_by_type(self, event_type: EventType, limit: int = 1000) -> List[DomainEvent]:
+    def get_events_by_type(
+        self, event_type: EventType, limit: int = 1000
+    ) -> List[DomainEvent]:
         """Recupera eventos por tipo."""
         events = [e for e in self.events if e.event_type == event_type]
         return events[-limit:] if limit > 0 else events
@@ -183,7 +188,9 @@ class EventStore:
         """Registra handler para tipo de evento."""
         self.event_handlers[event_type].append(handler)
 
-    def get_aggregate_state(self, aggregate_id: str, at_version: Optional[int] = None) -> Dict[str, Any]:
+    def get_aggregate_state(
+        self, aggregate_id: str, at_version: Optional[int] = None
+    ) -> Dict[str, Any]:
         """Reconstrói estado do agregado a partir dos eventos."""
         events = self.get_events(aggregate_id)
 
@@ -197,7 +204,9 @@ class EventStore:
 
         return state
 
-    def _apply_event_to_state(self, state: Dict[str, Any], event: DomainEvent) -> Dict[str, Any]:
+    def _apply_event_to_state(
+        self, state: Dict[str, Any], event: DomainEvent
+    ) -> Dict[str, Any]:
         """Aplica evento ao estado (implementação específica por domínio)."""
         # Implementação genérica - pode ser sobrescrita
         state.update(event.data)
@@ -277,7 +286,12 @@ class EventSourcedAggregate:
         self.version = event.version
         # Implementação específica por domínio
 
-    def _add_event(self, event_type: EventType, data: Dict[str, Any], metadata: Optional[Dict[str, Any]] = None):
+    def _add_event(
+        self,
+        event_type: EventType,
+        data: Dict[str, Any],
+        metadata: Optional[Dict[str, Any]] = None,
+    ):
         """Adiciona evento não commitado."""
         event = DomainEvent(
             event_id=str(uuid.uuid4()),
@@ -334,7 +348,9 @@ class EventReplay:
 
         return state
 
-    def _apply_event_to_state(self, state: Dict[str, Any], event: DomainEvent) -> Dict[str, Any]:
+    def _apply_event_to_state(
+        self, state: Dict[str, Any], event: DomainEvent
+    ) -> Dict[str, Any]:
         """Aplica evento ao estado durante replay."""
         # Implementação genérica - pode ser customizada
         state.update(event.data)

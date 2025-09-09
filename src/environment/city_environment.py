@@ -52,7 +52,12 @@ class CityEnvironment:
     Gerencia agentes, eventos, mercado e interações.
     """
 
-    def __init__(self, city_name: str = "Cidade Inteligente", city_size: tuple = (100, 100), **kwargs):
+    def __init__(
+        self,
+        city_name: str = "Cidade Inteligente",
+        city_size: tuple = (100, 100),
+        **kwargs,
+    ):
         self.city_name = city_name
         self.city_size = city_size
 
@@ -153,7 +158,11 @@ class CityEnvironment:
             MarketEvent(
                 event_type="environmental_regulation",
                 description="Nova regulamentação ambiental",
-                impact={"environmental_costs": 0.3, "innovation": 0.2, "compliance": 0.4},
+                impact={
+                    "environmental_costs": 0.3,
+                    "innovation": 0.2,
+                    "compliance": 0.4,
+                },
                 duration=100,
                 probability=0.05,
             ),
@@ -186,11 +195,16 @@ class CityEnvironment:
                 self.businesses.remove(agent)
             elif isinstance(agent, GovernmentAgent) and agent in self.governments:
                 self.governments.remove(agent)
-            elif isinstance(agent, InfrastructureAgent) and agent in self.infrastructure:
+            elif (
+                isinstance(agent, InfrastructureAgent) and agent in self.infrastructure
+            ):
                 self.infrastructure.remove(agent)
 
     async def initialize_city(
-        self, num_citizens: int = 100, num_businesses: int = 20, num_infrastructure: int = 10
+        self,
+        num_citizens: int = 100,
+        num_businesses: int = 20,
+        num_infrastructure: int = 10,
     ) -> None:
         """Inicializa a cidade com agentes"""
         print(f"Inicializando {self.city_name}...")
@@ -202,28 +216,46 @@ class CityEnvironment:
             await self.add_agent(citizen)
 
         # Cria empresas
-        business_types = ["energy", "food", "transport", "healthcare", "entertainment", "housing"]
+        business_types = [
+            "energy",
+            "food",
+            "transport",
+            "healthcare",
+            "entertainment",
+            "housing",
+        ]
         for i in range(num_businesses):
             position = self._generate_random_position()
             business_type = random.choice(business_types)
             business = BusinessAgent(
-                name=f"Empresa_{business_type}_{i + 1}", business_type=business_type, position=position
+                name=f"Empresa_{business_type}_{i + 1}",
+                business_type=business_type,
+                position=position,
             )
             await self.add_agent(business)
 
         # Cria infraestrutura
-        infrastructure_types = ["energy", "transport", "water", "healthcare", "communication"]
+        infrastructure_types = [
+            "energy",
+            "transport",
+            "water",
+            "healthcare",
+            "communication",
+        ]
         for i in range(num_infrastructure):
             position = self._generate_random_position()
             infra_type = random.choice(infrastructure_types)
             infrastructure = InfrastructureAgent(
-                name=f"Infraestrutura_{infra_type}_{i + 1}", infrastructure_type=infra_type, position=position
+                name=f"Infraestrutura_{infra_type}_{i + 1}",
+                infrastructure_type=infra_type,
+                position=position,
             )
             await self.add_agent(infrastructure)
 
         # Cria governo
         government = GovernmentAgent(
-            name="Governo Municipal", position=(self.city_size[0] // 2, self.city_size[1] // 2)
+            name="Governo Municipal",
+            position=(self.city_size[0] // 2, self.city_size[1] // 2),
         )
         await self.add_agent(government)
 
@@ -298,7 +330,9 @@ class CityEnvironment:
     async def _trigger_random_event(self) -> None:
         """Dispara um evento aleatório"""
         # Seleciona evento baseado na probabilidade
-        available_events = [e for e in self.market_events if e not in self.active_events]
+        available_events = [
+            e for e in self.market_events if e not in self.active_events
+        ]
         if not available_events:
             return
 
@@ -410,9 +444,18 @@ class CityEnvironment:
         """Executa todos os agentes em paralelo"""
         # Prepara contexto específico para cada tipo de agente
         citizen_context = {**context, "citizens": [c.to_dict() for c in self.citizens]}
-        business_context = {**context, "businesses": [b.to_dict() for b in self.businesses]}
-        government_context = {**context, "governments": [g.to_dict() for g in self.governments]}
-        infrastructure_context = {**context, "infrastructure": [i.to_dict() for i in self.infrastructure]}
+        business_context = {
+            **context,
+            "businesses": [b.to_dict() for b in self.businesses],
+        }
+        government_context = {
+            **context,
+            "governments": [g.to_dict() for g in self.governments],
+        }
+        infrastructure_context = {
+            **context,
+            "infrastructure": [i.to_dict() for i in self.infrastructure],
+        }
 
         # Executa agentes em paralelo
         tasks = []
@@ -453,7 +496,12 @@ class CityEnvironment:
         for business in self.businesses:
             business_type = business.business_type
             if business_type not in market_data:
-                market_data[business_type] = {"supply": 0, "demand": 0, "prices": [], "businesses": []}
+                market_data[business_type] = {
+                    "supply": 0,
+                    "demand": 0,
+                    "prices": [],
+                    "businesses": [],
+                }
 
             market_data[business_type]["supply"] += business.current_production
             market_data[business_type]["prices"].append(business.current_price)
@@ -488,31 +536,53 @@ class CityEnvironment:
         unemployment_rate = unemployed / total_population if total_population > 0 else 0
 
         # Taxa de criminalidade
-        high_stress_citizens = sum(1 for citizen in self.citizens if citizen.stress_level > 0.7)
-        crime_rate = high_stress_citizens / total_population if total_population > 0 else 0
+        high_stress_citizens = sum(
+            1 for citizen in self.citizens if citizen.stress_level > 0.7
+        )
+        crime_rate = (
+            high_stress_citizens / total_population if total_population > 0 else 0
+        )
 
         # Saúde ambiental
         environmental_health = (
-            1.0 - sum(business.get_business_metrics().get("environmental_impact", 0) for business in self.businesses) / len(self.businesses)
+            1.0
+            - sum(
+                business.get_business_metrics().get("environmental_impact", 0)
+                for business in self.businesses
+            )
+            / len(self.businesses)
             if self.businesses
             else 1.0
         )
 
         # Satisfação cidadã
-        citizen_satisfaction = np.mean([citizen.state.satisfaction for citizen in self.citizens])
+        citizen_satisfaction = np.mean(
+            [citizen.state.satisfaction for citizen in self.citizens]
+        )
 
         # Saúde econômica
         economic_health = np.mean(
-            [business.get_business_metrics().get("profit_margin", 0) for business in self.businesses]
+            [
+                business.get_business_metrics().get("profit_margin", 0)
+                for business in self.businesses
+            ]
         )
 
         # Saúde da infraestrutura
         infrastructure_health = np.mean(
-            [infra.get_infrastructure_metrics().get("system_health", 0) for infra in self.infrastructure]
+            [
+                infra.get_infrastructure_metrics().get("system_health", 0)
+                for infra in self.infrastructure
+            ]
         )
 
         # Eficiência governamental
-        government_efficiency = np.mean([gov.get_governance_metrics().get("efficiency", 0) for gov in self.governments])
+        government_efficiency = np.mean(
+            [
+                gov.get_governance_metrics().get("efficiency", 0)
+                for gov in self.governments
+            ]
+        )
 
         # Atualiza métricas
         self.city_metrics = CityMetrics(
@@ -595,7 +665,9 @@ class CityEnvironment:
             "citizens": [citizen.to_dict() for citizen in self.citizens],
             "businesses": [business.to_dict() for business in self.businesses],
             "governments": [government.to_dict() for government in self.governments],
-            "infrastructure": [infrastructure.to_dict() for infrastructure in self.infrastructure],
+            "infrastructure": [
+                infrastructure.to_dict() for infrastructure in self.infrastructure
+            ],
         }
 
     def get_metrics_history(self) -> List[Dict[str, Any]]:

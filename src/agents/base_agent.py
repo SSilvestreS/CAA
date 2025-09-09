@@ -78,7 +78,11 @@ class BaseAgent(ABC):
         pass
 
     async def send_message(
-        self, receiver: "BaseAgent", message_type: str, content: Dict[str, Any], priority: int = 1
+        self,
+        receiver: "BaseAgent",
+        message_type: str,
+        content: Dict[str, Any],
+        priority: int = 1,
     ) -> None:
         """Envia uma mensagem para outro agente"""
         message = AgentMessage(
@@ -103,7 +107,11 @@ class BaseAgent(ABC):
     async def _handle_message(self, message: AgentMessage) -> Optional[Dict[str, Any]]:
         """Processa uma mensagem individual"""
         # Implementação básica - pode ser sobrescrita por subclasses
-        return {"sender_id": self.state.id, "message_type": "acknowledgment", "content": {"received": True}}
+        return {
+            "sender_id": self.state.id,
+            "message_type": "acknowledgment",
+            "content": {"received": True},
+        }
 
     def add_resource(self, resource_type: str, amount: float) -> None:
         """Adiciona recursos ao agente"""
@@ -126,7 +134,9 @@ class BaseAgent(ABC):
         pos2 = np.array(other_agent.state.position)
         return np.linalg.norm(pos1 - pos2)
 
-    def find_nearest_agents(self, agent_type: type, max_distance: float = 100) -> List["BaseAgent"]:
+    def find_nearest_agents(
+        self, agent_type: type, max_distance: float = 100
+    ) -> List["BaseAgent"]:
         """Encontra agentes mais próximos de um tipo específico"""
         if not self.environment:
             return []
@@ -164,7 +174,9 @@ class BaseAgent(ABC):
         }
 
     def __str__(self) -> str:
-        return f"{self.__class__.__name__}({self.state.name}, pos={self.state.position})"
+        return (
+            f"{self.__class__.__name__}({self.state.name}, pos={self.state.position})"
+        )
 
     def __repr__(self) -> str:
         return self.__str__()

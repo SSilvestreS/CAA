@@ -26,7 +26,9 @@ class PositionalEncoding(nn.Module):
 
         pe = torch.zeros(max_len, d_model)
         position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))
+        div_term = torch.exp(
+            torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model)
+        )
         pe[:, 0::2] = torch.sin(position * div_term)
         pe[:, 1::2] = torch.cos(position * div_term)
         pe = pe.unsqueeze(0).transpose(0, 1)
@@ -67,7 +69,9 @@ class CityTransformer(nn.Module):
         self.output_projection = nn.Linear(d_model, input_dim)
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self, x: torch.Tensor, mask: Optional[torch.Tensor] = None) -> torch.Tensor:
+    def forward(
+        self, x: torch.Tensor, mask: Optional[torch.Tensor] = None
+    ) -> torch.Tensor:
         # Projeção de entrada
         x = self.input_projection(x)
 
@@ -101,7 +105,9 @@ class SentimentAnalyzer(nn.Module):
         self.embedding = nn.Embedding(vocab_size, d_model)
         self.pos_encoding = PositionalEncoding(d_model, max_len)
 
-        encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, batch_first=True)
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=d_model, nhead=nhead, batch_first=True
+        )
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers)
 
         self.classifier = nn.Sequential(
@@ -137,7 +143,9 @@ class PolicyAnalyzer(nn.Module):
         self.input_projection = nn.Linear(input_dim, d_model)
         self.pos_encoding = PositionalEncoding(d_model)
 
-        encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, batch_first=True)
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=d_model, nhead=nhead, batch_first=True
+        )
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers)
 
         self.policy_classifier = nn.Linear(d_model, num_policies)
@@ -175,7 +183,9 @@ class DemandPredictor(nn.Module):
         self.input_projection = nn.Linear(input_dim, d_model)
         self.pos_encoding = PositionalEncoding(d_model)
 
-        encoder_layer = nn.TransformerEncoderLayer(d_model=d_model, nhead=nhead, batch_first=True)
+        encoder_layer = nn.TransformerEncoderLayer(
+            d_model=d_model, nhead=nhead, batch_first=True
+        )
         self.transformer = nn.TransformerEncoder(encoder_layer, num_layers)
 
         self.predictor = nn.Linear(d_model, prediction_horizon)
@@ -208,8 +218,12 @@ class TransformerTrainer:
     ):
         self.model = model.to(device)
         self.device = device
-        self.optimizer = torch.optim.AdamW(model.parameters(), lr=learning_rate, weight_decay=weight_decay)
-        self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, T_max=100)
+        self.optimizer = torch.optim.AdamW(
+            model.parameters(), lr=learning_rate, weight_decay=weight_decay
+        )
+        self.scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+            self.optimizer, T_max=100
+        )
         self.criterion = nn.CrossEntropyLoss()
 
     def train_epoch(self, dataloader) -> float:
@@ -311,19 +325,27 @@ class CityTransformerManager:
         """Inicializa todos os modelos"""
         # Transformer principal
         self.models["city_transformer"] = CityTransformer()
-        self.trainers["city_transformer"] = TransformerTrainer(self.models["city_transformer"], device=self.device)
+        self.trainers["city_transformer"] = TransformerTrainer(
+            self.models["city_transformer"], device=self.device
+        )
 
         # Analisador de sentimento
         self.models["sentiment"] = SentimentAnalyzer()
-        self.trainers["sentiment"] = TransformerTrainer(self.models["sentiment"], device=self.device)
+        self.trainers["sentiment"] = TransformerTrainer(
+            self.models["sentiment"], device=self.device
+        )
 
         # Analisador de políticas
         self.models["policy"] = PolicyAnalyzer()
-        self.trainers["policy"] = TransformerTrainer(self.models["policy"], device=self.device)
+        self.trainers["policy"] = TransformerTrainer(
+            self.models["policy"], device=self.device
+        )
 
         # Preditor de demanda
         self.models["demand"] = DemandPredictor()
-        self.trainers["demand"] = TransformerTrainer(self.models["demand"], device=self.device)
+        self.trainers["demand"] = TransformerTrainer(
+            self.models["demand"], device=self.device
+        )
 
     def train_model(self, model_name: str, dataloader, epochs: int = 10) -> List[float]:
         """Treina um modelo específico"""
@@ -360,7 +382,9 @@ class CityTransformerManager:
         for name, model in self.models.items():
             info[name] = {
                 "parameters": sum(p.numel() for p in model.parameters()),
-                "trainable_parameters": sum(p.numel() for p in model.parameters() if p.requires_grad),
+                "trainable_parameters": sum(
+                    p.numel() for p in model.parameters() if p.requires_grad
+                ),
                 "device": next(model.parameters()).device,
             }
         return info

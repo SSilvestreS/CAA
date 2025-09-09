@@ -134,12 +134,18 @@ class CollectiveLearningSystem:
         self.collective_memory.append(experience)
         self.learning_stats["total_experiences"] += 1
 
-    def get_shared_experiences(self, agent_type: str, limit: int = 100) -> List[Experience]:
+    def get_shared_experiences(
+        self, agent_type: str, limit: int = 100
+    ) -> List[Experience]:
         """Retorna experiências compartilhadas relevantes para um tipo de agente"""
-        relevant_experiences = [exp for exp in self.collective_memory if exp.agent_id.startswith(agent_type)]
+        relevant_experiences = [
+            exp for exp in self.collective_memory if exp.agent_id.startswith(agent_type)
+        ]
         return relevant_experiences[-limit:]
 
-    def share_knowledge(self, agent_id: str, strategy: str, success_rate: float, context: Dict[str, Any]) -> None:
+    def share_knowledge(
+        self, agent_id: str, strategy: str, success_rate: float, context: Dict[str, Any]
+    ) -> None:
         """Compartilha conhecimento entre agentes"""
         if success_rate >= self.config["knowledge_sharing_threshold"]:
             knowledge_key = f"{agent_id}_{strategy}"
@@ -153,12 +159,17 @@ class CollectiveLearningSystem:
             else:
                 # Cria novo conhecimento
                 self.shared_knowledge[knowledge_key] = SharedKnowledge(
-                    strategy=strategy, success_rate=success_rate, context=context, usage_count=1
+                    strategy=strategy,
+                    success_rate=success_rate,
+                    context=context,
+                    usage_count=1,
                 )
 
             self.learning_stats["shared_strategies"] += 1
 
-    def get_relevant_knowledge(self, agent_type: str, context: Dict[str, Any]) -> List[SharedKnowledge]:
+    def get_relevant_knowledge(
+        self, agent_type: str, context: Dict[str, Any]
+    ) -> List[SharedKnowledge]:
         """Retorna conhecimento relevante para um agente"""
         relevant_knowledge = []
 
@@ -171,7 +182,9 @@ class CollectiveLearningSystem:
         relevant_knowledge.sort(key=lambda x: x.success_rate, reverse=True)
         return relevant_knowledge[:5]  # Retorna top 5
 
-    def _is_knowledge_relevant(self, knowledge: SharedKnowledge, agent_type: str, context: Dict[str, Any]) -> bool:
+    def _is_knowledge_relevant(
+        self, knowledge: SharedKnowledge, agent_type: str, context: Dict[str, Any]
+    ) -> bool:
         """Verifica se conhecimento é relevante para o contexto"""
         # Verifica se o conhecimento não está muito desatualizado
         days_old = (datetime.now() - knowledge.last_updated).days
@@ -180,11 +193,15 @@ class CollectiveLearningSystem:
 
         # Verifica compatibilidade de contexto
         knowledge_context = knowledge.context
-        context_similarity = self._calculate_context_similarity(context, knowledge_context)
+        context_similarity = self._calculate_context_similarity(
+            context, knowledge_context
+        )
 
         return context_similarity > 0.5
 
-    def _calculate_context_similarity(self, context1: Dict[str, Any], context2: Dict[str, Any]) -> float:
+    def _calculate_context_similarity(
+        self, context1: Dict[str, Any], context2: Dict[str, Any]
+    ) -> float:
         """Calcula similaridade entre contextos"""
         if not context1 or not context2:
             return 0.0
@@ -228,7 +245,9 @@ class CollectiveLearningSystem:
             if len(experiences) >= 50:  # Mínimo de experiências
                 self._update_model_for_type(agent_type, experiences)
 
-    def _update_model_for_type(self, agent_type: str, experiences: List[Experience]) -> None:
+    def _update_model_for_type(
+        self, agent_type: str, experiences: List[Experience]
+    ) -> None:
         """Atualiza modelo para um tipo específico de agente"""
         if not experiences:
             return
@@ -246,7 +265,9 @@ class CollectiveLearningSystem:
         if agent_type not in self.shared_models:
             input_size = states.shape[1]
             output_size = len(np.unique(actions))
-            self.shared_models[agent_type] = SimpleNeuralNetwork(input_size, 64, output_size)
+            self.shared_models[agent_type] = SimpleNeuralNetwork(
+                input_size, 64, output_size
+            )
 
         model = self.shared_models[agent_type]
 
@@ -301,8 +322,11 @@ class CollectiveLearningSystem:
             "shared_models": len(self.shared_models),
             "memory_usage": len(self.collective_memory),
             "success_rate": (
-                self.learning_stats["successful_adaptations"] / (
-                    self.learning_stats["successful_adaptations"] + self.learning_stats["failed_adaptations"] + 1e-8
+                self.learning_stats["successful_adaptations"]
+                / (
+                    self.learning_stats["successful_adaptations"]
+                    + self.learning_stats["failed_adaptations"]
+                    + 1e-8
                 )
             ),
         }
@@ -349,7 +373,9 @@ class CollectiveLearningSystem:
             self.config.update(data["config"])
 
         except FileNotFoundError:
-            print(f"Arquivo {filename} não encontrado. Iniciando com conhecimento vazio.")
+            print(
+                f"Arquivo {filename} não encontrado. Iniciando com conhecimento vazio."
+            )
         except Exception as e:
             print(f"Erro ao carregar conhecimento: {e}")
 
@@ -359,7 +385,12 @@ class AgentLearningModule:
     Módulo de aprendizado individual para agentes.
     """
 
-    def __init__(self, agent_id: str, agent_type: str, collective_system: CollectiveLearningSystem):
+    def __init__(
+        self,
+        agent_id: str,
+        agent_type: str,
+        collective_system: CollectiveLearningSystem,
+    ):
         self.agent_id = agent_id
         self.agent_type = agent_type
         self.collective_system = collective_system
@@ -381,7 +412,9 @@ class AgentLearningModule:
         self.last_action = None
         self.last_reward = 0.0
 
-    def encode_state(self, agent_state: Dict[str, Any], environment_context: Dict[str, Any]) -> np.ndarray:
+    def encode_state(
+        self, agent_state: Dict[str, Any], environment_context: Dict[str, Any]
+    ) -> np.ndarray:
         """Codifica estado do agente em vetor numérico"""
         features = []
 
@@ -390,7 +423,11 @@ class AgentLearningModule:
             [
                 agent_state.get("satisfaction", 0.5),
                 agent_state.get("energy", 0.5),
-                agent_state.get("stress_level", 0.5) if "stress_level" in agent_state else 0.5,
+                (
+                    agent_state.get("stress_level", 0.5)
+                    if "stress_level" in agent_state
+                    else 0.5
+                ),
             ]
         )
 
@@ -436,11 +473,15 @@ class AgentLearningModule:
 
         return action
 
-    def _select_exploitative_action(self, state: np.ndarray, available_actions: List[int]) -> int:
+    def _select_exploitative_action(
+        self, state: np.ndarray, available_actions: List[int]
+    ) -> int:
         """Seleciona ação baseada em exploração"""
         # Tenta usar modelo compartilhado
         try:
-            predicted_action = self.collective_system.get_model_prediction(self.agent_type, state)
+            predicted_action = self.collective_system.get_model_prediction(
+                self.agent_type, state
+            )
             if predicted_action in available_actions:
                 return predicted_action
         except Exception:
@@ -448,7 +489,9 @@ class AgentLearningModule:
 
         # Usa conhecimento compartilhado
         context = self._extract_context_from_state(state)
-        relevant_knowledge = self.collective_system.get_relevant_knowledge(self.agent_type, context)
+        relevant_knowledge = self.collective_system.get_relevant_knowledge(
+            self.agent_type, context
+        )
 
         if relevant_knowledge:
             # Seleciona estratégia com maior taxa de sucesso
@@ -497,9 +540,13 @@ class AgentLearningModule:
 
     def share_successful_strategy(self, strategy: str, context: Dict[str, Any]) -> None:
         """Compartilha estratégia bem-sucedida"""
-        success_rate = self.learning_stats["successful_decisions"] / max(1, self.learning_stats["decisions_made"])
+        success_rate = self.learning_stats["successful_decisions"] / max(
+            1, self.learning_stats["decisions_made"]
+        )
 
-        self.collective_system.share_knowledge(self.agent_id, strategy, success_rate, context)
+        self.collective_system.share_knowledge(
+            self.agent_id, strategy, success_rate, context
+        )
 
         self.learning_stats["knowledge_shared"] += 1
 
@@ -510,7 +557,8 @@ class AgentLearningModule:
             "agent_type": self.agent_type,
             "decisions_made": self.learning_stats["decisions_made"],
             "success_rate": (
-                self.learning_stats["successful_decisions"] / max(1, self.learning_stats["decisions_made"])
+                self.learning_stats["successful_decisions"]
+                / max(1, self.learning_stats["decisions_made"])
             ),
             "knowledge_shared": self.learning_stats["knowledge_shared"],
             "local_memory_size": len(self.local_memory),

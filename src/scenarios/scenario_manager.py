@@ -20,7 +20,9 @@ class ScenarioManager:
         self.active_scenarios = []
         self.scenario_history = []
 
-    async def run_scenario(self, scenario_name: str, duration_cycles: int = 100) -> Dict[str, Any]:
+    async def run_scenario(
+        self, scenario_name: str, duration_cycles: int = 100
+    ) -> Dict[str, Any]:
         """
         Executa um cenário específico e retorna resultados.
         """
@@ -114,7 +116,9 @@ class ScenarioManager:
             final_val = final["metrics"].get(metric, 0)
             change = final_val - initial_val
             results[f"{metric}_change"] = change
-            results[f"{metric}_change_percent"] = (change / initial_val * 100) if initial_val != 0 else 0
+            results[f"{metric}_change_percent"] = (
+                (change / initial_val * 100) if initial_val != 0 else 0
+            )
 
         # Compara contagem de agentes
         for agent_type in ["citizens", "businesses", "infrastructure"]:
@@ -134,7 +138,9 @@ class ScenarioManager:
         for government in self.environment.governments:
             old_tax_rate = government.policies["tax_rate"]
             government.policies["tax_rate"] = min(0.5, old_tax_rate + 0.1)
-            print(f"  Taxa de impostos: {old_tax_rate:.1%} → {government.policies['tax_rate']:.1%}")
+            print(
+                f"  Taxa de impostos: {old_tax_rate:.1%} → {government.policies['tax_rate']:.1%}"
+            )
 
         # Executa simulação
         await self._run_scenario_cycles(duration)
@@ -147,7 +153,12 @@ class ScenarioManager:
         energy_crisis = MarketEvent(
             event_type="energy_crisis",
             description="Crise energética severa - preços altos e escassez",
-            impact={"energy_prices": 0.8, "production": -0.4, "transport": -0.5, "citizen_satisfaction": -0.3},
+            impact={
+                "energy_prices": 0.8,
+                "production": -0.4,
+                "transport": -0.5,
+                "citizen_satisfaction": -0.3,
+            },
             duration=duration,
             probability=1.0,
         )
@@ -236,7 +247,9 @@ class ScenarioManager:
         for government in self.environment.governments:
             old_reg = government.policies["environmental_regulations"]
             government.policies["environmental_regulations"] = min(1.0, old_reg + 0.3)
-            print(f"  Regulamentação ambiental: {old_reg:.1%} → {government.policies['environmental_regulations']:.1%}")
+            print(
+                f"  Regulamentação ambiental: {old_reg:.1%} → {government.policies['environmental_regulations']:.1%}"
+            )
 
         # Impacta empresas
         for business in self.environment.businesses:
@@ -318,7 +331,12 @@ class ScenarioManager:
         inequality = MarketEvent(
             event_type="social_inequality",
             description="Aumento da desigualdade social",
-            impact={"social_stability": -0.3, "crime_rate": 0.2, "citizen_satisfaction": -0.2, "economic_health": -0.1},
+            impact={
+                "social_stability": -0.3,
+                "crime_rate": 0.2,
+                "citizen_satisfaction": -0.2,
+                "economic_health": -0.1,
+            },
             duration=duration,
             probability=1.0,
         )
@@ -334,7 +352,9 @@ class ScenarioManager:
 
             # Log de progresso
             if cycle % 20 == 0:
-                print(f"  Ciclo {cycle}/{duration} - {self.environment.simulation_time}")
+                print(
+                    f"  Ciclo {cycle}/{duration} - {self.environment.simulation_time}"
+                )
 
     def get_available_scenarios(self) -> List[str]:
         """Retorna lista de cenários disponíveis"""

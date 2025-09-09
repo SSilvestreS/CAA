@@ -1,0 +1,48 @@
+# ConfigMap para Cidades Autônomas com Agentes de IA v1.6
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cities-ai-config
+  namespace: cities-ai
+data:
+  # Configurações da aplicação
+  DATABASE_URL: "postgresql://postgres:password@postgres-service:5432/cities_db"
+  REDIS_URL: "redis://redis-service:6379"
+  KAFKA_BROKERS: "kafka-service:9092"
+  
+  # Configurações de logging
+  LOG_LEVEL: "INFO"
+  LOG_FORMAT: "json"
+  
+  # Configurações de monitoramento
+  METRICS_ENABLED: "true"
+  TRACING_ENABLED: "true"
+  
+  # Configurações de segurança
+  JWT_SECRET: "your-secret-key-here"
+  ENCRYPTION_KEY: "your-encryption-key-here"
+  
+  # Configurações de performance
+  MAX_WORKERS: "4"
+  WORKER_TIMEOUT: "30"
+  
+  # Configurações de cache
+  CACHE_TTL: "3600"
+  CACHE_MAX_SIZE: "1000"
+  
+  # Configurações de API externa
+  EXTERNAL_API_TIMEOUT: "30"
+  EXTERNAL_API_RETRIES: "3"
+  
+  # Configurações de ML
+  MODEL_CACHE_SIZE: "10"
+  MODEL_UPDATE_INTERVAL: "3600"
+  
+  # Configurações de alertas
+  ALERT_WEBHOOK_URL: "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK"
+  ALERT_EMAIL_SMTP: "smtp.gmail.com:587"
+  
+  # Configurações de backup
+  BACKUP_SCHEDULE: "0 2 * * *"
+  BACKUP_RETENTION_DAYS: "30"
+

@@ -19,7 +19,9 @@ import random
 from collections import deque, namedtuple
 
 # Estrutura para experiência
-Experience = namedtuple("Experience", ["state", "action", "reward", "next_state", "done"])
+Experience = namedtuple(
+    "Experience", ["state", "action", "reward", "next_state", "done"]
+)
 
 
 class DQNNetwork(nn.Module):
@@ -39,7 +41,9 @@ class DQNNetwork(nn.Module):
         input_size = state_size
 
         for hidden_size in hidden_sizes:
-            layers.extend([nn.Linear(input_size, hidden_size), nn.ReLU(), nn.Dropout(0.2)])
+            layers.extend(
+                [nn.Linear(input_size, hidden_size), nn.ReLU(), nn.Dropout(0.2)]
+            )
             input_size = hidden_size
 
         layers.append(nn.Linear(input_size, action_size))
@@ -131,12 +135,20 @@ class AdvancedDQN:
             return 0.0
 
         # Amostragem priorizada
-        batch_indices, batch_experiences, batch_weights = self._sample_prioritized_batch()
+        batch_indices, batch_experiences, batch_weights = (
+            self._sample_prioritized_batch()
+        )
 
         states = torch.FloatTensor([e.state for e in batch_experiences]).to(self.device)
-        actions = torch.LongTensor([e.action for e in batch_experiences]).to(self.device)
-        rewards = torch.FloatTensor([e.reward for e in batch_experiences]).to(self.device)
-        next_states = torch.FloatTensor([e.next_state for e in batch_experiences]).to(self.device)
+        actions = torch.LongTensor([e.action for e in batch_experiences]).to(
+            self.device
+        )
+        rewards = torch.FloatTensor([e.reward for e in batch_experiences]).to(
+            self.device
+        )
+        next_states = torch.FloatTensor([e.next_state for e in batch_experiences]).to(
+            self.device
+        )
         dones = torch.BoolTensor([e.done for e in batch_experiences]).to(self.device)
         weights = torch.FloatTensor(batch_weights).to(self.device)
 
@@ -145,8 +157,12 @@ class AdvancedDQN:
 
         # Q-values do próximo estado (Double DQN)
         next_actions = self.q_network(next_states).argmax(1)
-        next_q_values = self.target_network(next_states).gather(1, next_actions.unsqueeze(1))
-        target_q_values = rewards.unsqueeze(1) + (self.gamma * next_q_values * ~dones.unsqueeze(1))
+        next_q_values = self.target_network(next_states).gather(
+            1, next_actions.unsqueeze(1)
+        )
+        target_q_values = rewards.unsqueeze(1) + (
+            self.gamma * next_q_values * ~dones.unsqueeze(1)
+        )
 
         # Calcular TD errors
         td_errors = (current_q_values - target_q_values).squeeze()
@@ -156,7 +172,9 @@ class AdvancedDQN:
             self.priorities[idx] = abs(td_errors[i].item()) + 1e-6
 
         # Perda ponderada
-        loss = (weights * F.mse_loss(current_q_values, target_q_values, reduction="none")).mean()
+        loss = (
+            weights * F.mse_loss(current_q_values, target_q_values, reduction="none")
+        ).mean()
 
         # Backpropagation
         self.optimizer.zero_grad()
@@ -186,7 +204,9 @@ class AdvancedDQN:
         probabilities = priorities**self.alpha
         probabilities /= probabilities.sum()
 
-        batch_indices = np.random.choice(len(self.memory), size=self.batch_size, p=probabilities)
+        batch_indices = np.random.choice(
+            len(self.memory), size=self.batch_size, p=probabilities
+        )
 
         batch_experiences = [self.memory[i] for i in batch_indices]
 
@@ -328,7 +348,11 @@ class PPOAgent:
 
         gae = 0
         for t in reversed(range(len(self.rewards))):
-            delta = self.rewards[t] + self.gamma * next_values[t] * (1 - self.dones[t]) - self.values[t]
+            delta = (
+                self.rewards[t]
+                + self.gamma * next_values[t] * (1 - self.dones[t])
+                - self.values[t]
+            )
             gae = delta + self.gamma * self.gae_lambda * (1 - self.dones[t]) * gae
             advantages.insert(0, gae)
             returns.insert(0, gae + self.values[t])
@@ -370,7 +394,10 @@ class PPOAgent:
 
             # Perda do ator (clipped)
             surr1 = ratio * advantages
-            surr2 = torch.clamp(ratio, 1 - self.clip_ratio, 1 + self.clip_ratio) * advantages
+            surr2 = (
+                torch.clamp(ratio, 1 - self.clip_ratio, 1 + self.clip_ratio)
+                * advantages
+            )
             actor_loss = -torch.min(surr1, surr2).mean() - self.entropy_coef * entropy
 
             self.actor_optimizer.zero_grad()
@@ -438,7 +465,9 @@ class A3CAgent:
 
     def _build_shared_network(self) -> nn.Module:
         """Constrói rede compartilhada"""
-        return nn.Sequential(nn.Linear(self.state_size, 128), nn.ReLU(), nn.Linear(128, 128), nn.ReLU())
+        return nn.Sequential(
+            nn.Linear(self.state_size, 128), nn.ReLU(), nn.Linear(128, 128), nn.ReLU()
+        )
 
     def forward(self, state: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
         """Forward pass"""
@@ -632,7 +661,9 @@ class MultiAgentRL:
 
         # Selecionar experiências para compartilhar
         num_to_share = int(len(self.shared_experience_buffer) * sharing_ratio)
-        shared_experiences = random.sample(list(self.shared_experience_buffer), num_to_share)
+        shared_experiences = random.sample(
+            list(self.shared_experience_buffer), num_to_share
+        )
 
         # Distribuir experiências para outros agentes
         for exp in shared_experiences:

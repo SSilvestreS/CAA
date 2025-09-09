@@ -205,7 +205,11 @@ class AuditLogger:
         events = []
 
         # Lista arquivos de log
-        log_files = [f for f in os.listdir(self.log_directory) if f.startswith("audit_") and f.endswith(".json")]
+        log_files = [
+            f
+            for f in os.listdir(self.log_directory)
+            if f.startswith("audit_") and f.endswith(".json")
+        ]
 
         for log_file in sorted(log_files, reverse=True):
             if len(events) >= limit:
@@ -222,7 +226,9 @@ class AuditLogger:
                         break
 
                     # Aplica filtros
-                    if self._matches_filters(event_data, start_date, end_date, event_type, user_id, severity):
+                    if self._matches_filters(
+                        event_data, start_date, end_date, event_type, user_id, severity
+                    ):
                         event = self._dict_to_event(event_data)
                         events.append(event)
 
@@ -243,7 +249,9 @@ class AuditLogger:
         """Verifica se evento atende aos filtros."""
         # Filtro por data
         if start_date or end_date:
-            event_time = datetime.fromisoformat(event_data["timestamp"].replace("Z", "+00:00"))
+            event_time = datetime.fromisoformat(
+                event_data["timestamp"].replace("Z", "+00:00")
+            )
             if start_date and event_time < start_date:
                 return False
             if end_date and event_time > end_date:
@@ -269,7 +277,9 @@ class AuditLogger:
             event_id=event_data["event_id"],
             event_type=AuditEventType(event_data["event_type"]),
             severity=AuditSeverity(event_data["severity"]),
-            timestamp=datetime.fromisoformat(event_data["timestamp"].replace("Z", "+00:00")),
+            timestamp=datetime.fromisoformat(
+                event_data["timestamp"].replace("Z", "+00:00")
+            ),
             user_id=event_data.get("user_id"),
             session_id=event_data.get("session_id"),
             ip_address=event_data.get("ip_address"),
@@ -286,7 +296,9 @@ class AuditLogger:
         end_date = datetime.now(timezone.utc)
         start_date = end_date.replace(day=end_date.day - days)
 
-        return self.query_events(start_date=start_date, end_date=end_date, user_id=user_id)
+        return self.query_events(
+            start_date=start_date, end_date=end_date, user_id=user_id
+        )
 
     def get_security_events(self, hours: int = 24) -> List[AuditEvent]:
         """Retorna eventos de segurança das últimas N horas."""
@@ -304,7 +316,10 @@ class AuditLogger:
         for event_type in security_types:
             events.extend(
                 self.query_events(
-                    start_date=start_date, end_date=end_date, event_type=event_type, severity=AuditSeverity.MEDIUM
+                    start_date=start_date,
+                    end_date=end_date,
+                    event_type=event_type,
+                    severity=AuditSeverity.MEDIUM,
                 )
             )
 
@@ -325,7 +340,10 @@ class SecurityMonitor:
         start_time = end_time.replace(minute=end_time.minute - self.time_window_minutes)
 
         failed_logins = self.audit_logger.query_events(
-            start_date=start_time, end_date=end_time, event_type=AuditEventType.LOGIN_FAILED, user_id=user_id
+            start_date=start_time,
+            end_date=end_time,
+            event_type=AuditEventType.LOGIN_FAILED,
+            user_id=user_id,
         )
 
         return len(failed_logins) >= self.failed_login_threshold
@@ -335,7 +353,9 @@ class SecurityMonitor:
         recent_events = self.audit_logger.query_events(user_id=user_id, limit=100)
 
         # Verifica múltiplas tentativas de acesso negado
-        denied_access = [e for e in recent_events if e.event_type == AuditEventType.PERMISSION_DENIED]
+        denied_access = [
+            e for e in recent_events if e.event_type == AuditEventType.PERMISSION_DENIED
+        ]
 
         return len(denied_access) >= 3
 
@@ -372,13 +392,19 @@ class SecurityMonitor:
         # Conta tipos de eventos
         for event in security_events:
             event_type = event.event_type.value
-            report["event_types"][event_type] = report["event_types"].get(event_type, 0) + 1
+            report["event_types"][event_type] = (
+                report["event_types"].get(event_type, 0) + 1
+            )
 
             severity = event.severity.value
-            report["severity_distribution"][severity] = report["severity_distribution"].get(severity, 0) + 1
+            report["severity_distribution"][severity] = (
+                report["severity_distribution"].get(severity, 0) + 1
+            )
 
             if event.user_id:
-                report["top_users"][event.user_id] = report["top_users"].get(event.user_id, 0) + 1
+                report["top_users"][event.user_id] = (
+                    report["top_users"].get(event.user_id, 0) + 1
+                )
 
         # Gera alertas
         unique_users = set(e.user_id for e in security_events if e.user_id)
