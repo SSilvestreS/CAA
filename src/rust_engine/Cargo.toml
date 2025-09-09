@@ -1,0 +1,59 @@
+[package]
+name = "rust_engine"
+version = "0.1.0"
+edition = "2021"
+description = "High-performance simulation engine for autonomous cities with AI agents"
+authors = ["Cidades Autônomas com Agentes de IA <contato@cidadesautonomas.com>"]
+license = "MIT"
+
+[lib]
+name = "rust_engine"
+crate-type = ["cdylib"]
+
+[dependencies]
+# PyO3 para integração Python
+pyo3 = { version = "0.20", features = ["extension-module"] }
+
+# Processamento paralelo
+rayon = "1.7"
+
+# Computação numérica
+ndarray = "0.15"
+nalgebra = "0.32"
+
+# Serialização
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Estruturas de dados eficientes
+dashmap = "5.4"
+indexmap = "2.0"
+
+# Logging
+log = "0.4"
+env_logger = "0.10"
+
+# Utilitários
+uuid = { version = "1.0", features = ["v4", "serde"] }
+chrono = { version = "0.4", features = ["serde"] }
+
+# Matemática e estatísticas
+rand = "0.8"
+statrs = "0.16"
+
+# Otimização
+argmin = "0.8"
+
+[dev-dependencies]
+criterion = "0.5"
+proptest = "1.0"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.dev]
+opt-level = 1
+debug = true
