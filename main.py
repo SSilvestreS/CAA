@@ -10,10 +10,10 @@ import os
 from typing import Optional
 
 # Adiciona o diretório src ao path
-sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "src"))  # noqa: E402
 
-from src.environment.city_environment import CityEnvironment
-from src.visualization.dashboard import CityDashboard
+from src.environment.city_environment import CityEnvironment  # noqa: E402
+from src.visualization.dashboard import CityDashboard  # noqa: E402
 
 
 class SmartCitySimulation:

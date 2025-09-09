@@ -5,6 +5,7 @@ Implementa cenários como políticas públicas, crises, trânsito autônomo, etc
 
 import random
 from typing import Dict, List, Any, Optional, Callable
+from datetime import datetime
 
 from ..environment.city_environment import CityEnvironment, MarketEvent
 
@@ -221,7 +222,7 @@ class ScenarioManager:
             from ..agents.citizen_agent import CitizenAgent
 
             position = self.environment._generate_random_position()
-            citizen = CitizenAgent(name=f"Novo_Cidadão_{i+1}", position=position)
+            citizen = CitizenAgent(name=f"Novo_Cidadão_{i + 1}", position=position)
             await self.environment.add_agent(citizen)
 
         print(f"  Adicionados {new_citizens} novos cidadãos")

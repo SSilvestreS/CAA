@@ -4,6 +4,7 @@ Gerencia energia, trânsito, saneamento, saúde e outros serviços essenciais.
 """
 
 import random
+from typing import Dict, List, Any, Optional
 from datetime import datetime, timedelta
 import numpy as np
 from .base_agent import BaseAgent, AgentMessage

@@ -22,9 +22,9 @@ import matplotlib.pyplot as plt  # noqa: E402
 from typing import List  # noqa: E402
 
 from src.ai.advanced_models import AdvancedAIManager  # noqa: E402
-from src.ai.advanced_models.transformer_models import (
+from src.ai.advanced_models.transformer_models import (  # noqa: E402
     CityTransformerManager,
-)  # noqa: E402
+)
 from src.ai.advanced_models.lstm_models import LSTMModelManager  # noqa: E402
 from src.ai.advanced_models.gan_models import GANModelManager  # noqa: E402
 from src.ai.advanced_models.reinforcement_learning import MultiAgentRL  # noqa: E402

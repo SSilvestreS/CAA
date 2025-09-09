@@ -2,6 +2,8 @@
 Sistema de Event Sourcing para auditoria e reconstrução de estado.
 """
 
+from typing import Dict, List, Any, Optional, Callable
+
 import json
 import uuid
 from datetime import datetime, timezone

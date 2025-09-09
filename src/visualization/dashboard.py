@@ -3,14 +3,18 @@ Dashboard interativo para visualização da simulação de cidade inteligente.
 Usa Dash e Plotly para criar interface web em tempo real.
 """
 
+# Imports de tipos não utilizados removidos
+
 import dash
-import plotly.graph_objs as go
+from dash import dcc, html, Input, Output
+import dash_bootstrap_components as dbc
+import plotly.graph_objects as go
+
+# import plotly.express as px  # Não utilizado
 import pandas as pd
 import numpy as np
 import asyncio
 import threading
-
-import dash_bootstrap_components as dbc
 
 
 class CityDashboard:

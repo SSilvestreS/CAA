@@ -9,22 +9,32 @@ Este módulo contém implementações de modelos de IA de última geração:
 - Reinforcement Learning para tomada de decisões
 """
 
+from .transformer_models import (
     CityTransformer,
     SentimentAnalyzer,
     PolicyAnalyzer,
     DemandPredictor,
 )
 
+from .lstm_models import (
     TimeSeriesLSTM,
     TrafficPredictor,
     EnergyDemandPredictor,
     PopulationGrowthPredictor,
 )
 
+from .gan_models import (
     CityDataGAN,
     SyntheticAgentGenerator,
     ScenarioGenerator,
     DataAugmentationGAN,
+)
+
+from .reinforcement_learning import (
+    AdvancedDQN,
+    PPOAgent,
+    A3CAgent,
+    MultiAgentRL,
 )
 
 

@@ -301,8 +301,9 @@ class CollectiveLearningSystem:
             "shared_models": len(self.shared_models),
             "memory_usage": len(self.collective_memory),
             "success_rate": (
-                self.learning_stats["successful_adaptations"]
-                / (self.learning_stats["successful_adaptations"] + self.learning_stats["failed_adaptations"] + 1e-8)
+                self.learning_stats["successful_adaptations"] / (
+                    self.learning_stats["successful_adaptations"] + self.learning_stats["failed_adaptations"] + 1e-8
+                )
             ),
         }
 

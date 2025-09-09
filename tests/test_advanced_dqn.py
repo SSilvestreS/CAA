@@ -11,9 +11,9 @@ from unittest.mock import patch
 # Adiciona src ao path
 import sys
 
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa: E402
 
-from src.ai.advanced_dqn import AdvancedDQN, ReplayBuffer, Experience, MultiAgentDQN
+from src.ai.advanced_dqn import AdvancedDQN, ReplayBuffer, Experience, MultiAgentDQN  # noqa: E402
 
 
 class TestReplayBuffer(unittest.TestCase):

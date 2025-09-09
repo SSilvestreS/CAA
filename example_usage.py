@@ -8,11 +8,12 @@ import sys
 import os
 
 # Adiciona o diretório src ao path
-sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "src"))  # noqa: E402
 
-from src.environment.city_environment import CityEnvironment
-from src.scenarios.scenario_manager import ScenarioManager
-from src.ai.collective_learning import CollectiveLearningSystem
+from src.environment.city_environment import CityEnvironment  # noqa: E402
+from src.scenarios.scenario_manager import ScenarioManager  # noqa: E402
+from src.ai.collective_learning import CollectiveLearningSystem  # noqa: E402
+
 # from src.visualization.dashboard import CityDashboard
 
 
@@ -30,7 +31,7 @@ async def basic_simulation_example():
     # Executa alguns ciclos
     for i in range(10):
         await environment._simulation_cycle()
-        print(f"Ciclo {i+1} - População: {len(environment.citizens)}")
+        print(f"Ciclo {i + 1} - População: {len(environment.citizens)}")
 
     # Exibe status
     status = environment.get_city_status()

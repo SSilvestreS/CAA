@@ -2,18 +2,23 @@
 Aplicação FastAPI principal com todos os endpoints.
 """
 
+from fastapi import FastAPI, HTTPException, Depends, status, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.security import HTTPBearer
 import uvicorn
 from datetime import datetime
 import logging
+from typing import Optional, Dict, Any
 
 # Imports dos módulos do sistema
 from src.security.auth import AuthService, User, UserRole
 from src.security.rbac import RBACService, Permission, Resource
+from src.security.audit import AuditLogger
 from src.monitoring.metrics import MetricsRegistry, MetricsCollector
 from src.monitoring.alerts import AlertManager, AlertRule, AlertSeverity
+from src.realtime.event_sourcing import EventStore
 
 # Configuração de logging
 logging.basicConfig(level=logging.INFO)

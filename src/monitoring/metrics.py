@@ -2,10 +2,14 @@
 Sistema de métricas e coleta de dados de performance.
 """
 
+from typing import Dict, List, Any, Optional
+
 import time
 import threading
 from dataclasses import dataclass, field
+from datetime import datetime
 from enum import Enum
+from collections import deque
 import json
 
 

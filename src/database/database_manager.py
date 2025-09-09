@@ -128,7 +128,7 @@ class DatabaseManager:
             if status == "completed":
                 cursor.execute(
                     """
-                    UPDATE simulations 
+                    UPDATE simulations
                     SET end_time = CURRENT_TIMESTAMP, status = ?, metrics = ?
                     WHERE id = ?
                 """,
@@ -137,7 +137,7 @@ class DatabaseManager:
             else:
                 cursor.execute(
                     """
-                    UPDATE simulations 
+                    UPDATE simulations
                     SET status = ?
                     WHERE id = ?
                 """,
@@ -205,7 +205,7 @@ class DatabaseManager:
             cursor = conn.cursor()
             cursor.execute(
                 """
-                INSERT INTO interactions (simulation_id, agent_from, agent_to, 
+                INSERT INTO interactions (simulation_id, agent_from, agent_to,
                                         interaction_type, data, result)
                 VALUES (?, ?, ?, ?, ?, ?)
             """,
@@ -220,8 +220,8 @@ class DatabaseManager:
             cursor = conn.cursor()
             cursor.execute(
                 """
-                SELECT * FROM simulations 
-                ORDER BY start_time DESC 
+                SELECT * FROM simulations
+                ORDER BY start_time DESC
                 LIMIT ?
             """,
                 (limit,),
@@ -235,7 +235,7 @@ class DatabaseManager:
             cursor = conn.cursor()
             cursor.execute(
                 """
-                SELECT * FROM metrics 
+                SELECT * FROM metrics
                 WHERE simulation_id = ?
                 ORDER BY timestamp
             """,
@@ -250,7 +250,7 @@ class DatabaseManager:
             cursor = conn.cursor()
             cursor.execute(
                 """
-                SELECT * FROM events 
+                SELECT * FROM events
                 WHERE simulation_id = ? AND agent_id = ?
                 ORDER BY timestamp
             """,

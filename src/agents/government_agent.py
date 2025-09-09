@@ -3,6 +3,9 @@ Agente Governo - Representa órgãos públicos e governo.
 Define regras, impostos, fiscalização e políticas públicas.
 """
 
+from typing import Dict, List, Any, Optional
+from datetime import datetime
+
 import random
 import numpy as np
 from .base_agent import BaseAgent, AgentMessage
@@ -494,7 +497,8 @@ class GovernmentAgent(BaseAgent):
         return await super()._handle_message(message)
 
     async def _handle_complaint(self, complaint: Dict[str, Any]) -> Dict[str, Any]:
-        """Processa reclamação de cidadão"""        severity = complaint.get("severity", 0.5)
+        """Processa reclamação de cidadão"""
+        severity = complaint.get("severity", 0.5)
 
         # Resposta baseada na eficiência governamental
         response_time = 1 / self.efficiency  # Eficiência alta = resposta rápida
@@ -505,7 +509,8 @@ class GovernmentAgent(BaseAgent):
             return {"action": "standard_investigation", "response_time": response_time * 2, "priority": "medium"}
 
     async def _handle_lobby_request(self, request: Dict[str, Any]) -> Dict[str, Any]:
-        """Processa solicitação de lobby de empresa"""        company_influence = request.get("influence", 0.5)
+        """Processa solicitação de lobby de empresa"""
+        company_influence = request.get("influence", 0.5)
 
         # Considera corrupção e influência
         success_probability = company_influence * (1 + self.corruption_level)

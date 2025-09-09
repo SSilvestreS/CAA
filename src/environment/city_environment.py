@@ -5,6 +5,7 @@ Gerencia interações, eventos aleatórios e mecânicas de mercado.
 
 import asyncio
 import random
+from typing import Dict, List, Any, Tuple
 from datetime import datetime, timedelta
 import numpy as np
 from dataclasses import dataclass, field
@@ -197,7 +198,7 @@ class CityEnvironment:
         # Cria cidadãos
         for i in range(num_citizens):
             position = self._generate_random_position()
-            citizen = CitizenAgent(name=f"Cidadão_{i+1}", position=position)
+            citizen = CitizenAgent(name=f"Cidadão_{i + 1}", position=position)
             await self.add_agent(citizen)
 
         # Cria empresas
@@ -206,7 +207,7 @@ class CityEnvironment:
             position = self._generate_random_position()
             business_type = random.choice(business_types)
             business = BusinessAgent(
-                name=f"Empresa_{business_type}_{i+1}", business_type=business_type, position=position
+                name=f"Empresa_{business_type}_{i + 1}", business_type=business_type, position=position
             )
             await self.add_agent(business)
 
@@ -216,7 +217,7 @@ class CityEnvironment:
             position = self._generate_random_position()
             infra_type = random.choice(infrastructure_types)
             infrastructure = InfrastructureAgent(
-                name=f"Infraestrutura_{infra_type}_{i+1}", infrastructure_type=infra_type, position=position
+                name=f"Infraestrutura_{infra_type}_{i + 1}", infrastructure_type=infra_type, position=position
             )
             await self.add_agent(infrastructure)
 
@@ -492,9 +493,7 @@ class CityEnvironment:
 
         # Saúde ambiental
         environmental_health = (
-            1.0
-            - sum(business.get_business_metrics().get("environmental_impact", 0) for business in self.businesses)
-            / len(self.businesses)
+            1.0 - sum(business.get_business_metrics().get("environmental_impact", 0) for business in self.businesses) / len(self.businesses)
             if self.businesses
             else 1.0
         )

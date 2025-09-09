@@ -3,6 +3,9 @@ Agente Empresa - Representa empresas que fornecem produtos e serviços.
 Usa IA para precificação dinâmica, previsão de demanda e logística.
 """
 
+from typing import Dict, List, Any, Optional
+from datetime import datetime
+
 import random
 import numpy as np
 from .base_agent import BaseAgent, AgentMessage
@@ -104,6 +107,8 @@ class BusinessAgent(BaseAgent):
         # Calcula saúde financeira
         financial_health = self._calculate_financial_health()
 
+        capacity_utilization = min(1.0, current_demand / max(self.capacity, 1))
+
         return {
             "current_demand": current_demand,
             "demand_trend": demand_trend,
@@ -175,7 +180,9 @@ class BusinessAgent(BaseAgent):
     async def _dynamic_pricing(self, situation: Dict[str, Any], competitor_actions: List[Dict]) -> float:
         """Precificação dinâmica usando IA"""
         # Fatores que influenciam o preço
-        demand_factor = situation["current_demand"] / 100  # Normaliza demanda        capacity_factor = situation["capacity_utilization"]
+        demand_factor = situation["current_demand"] / 100  # Normaliza demanda
+
+        capacity_factor = situation["capacity_utilization"]
 
         # Ajusta preço baseado nos fatores
         price_multiplier = 1.0
@@ -423,7 +430,8 @@ class BusinessAgent(BaseAgent):
                 return {"action": "price_too_low", "minimum_price": self.current_price}
 
     async def _handle_partnership_proposal(self, proposal: Dict[str, Any]) -> Dict[str, Any]:
-        """Processa proposta de parceria"""        benefits = proposal.get("benefits", {})
+        """Processa proposta de parceria"""
+        benefits = proposal.get("benefits", {})
 
         # Avalia proposta baseada na estratégia
         if self.strategy["cooperation"] > 0.6:

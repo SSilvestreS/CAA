@@ -10,10 +10,10 @@ import os
 from typing import List
 
 # Adiciona o diretório src ao path
-sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "src"))  # noqa: E402
 
-from src.environment.city_environment import CityEnvironment
-from src.scenarios.scenario_manager import ScenarioManager
+from src.environment.city_environment import CityEnvironment  # noqa: E402
+from src.scenarios.scenario_manager import ScenarioManager  # noqa: E402
 
 
 async def run_single_scenario(scenario_name: str, duration: int = 100, city_size: tuple = (50, 50)):

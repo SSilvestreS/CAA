@@ -6,6 +6,7 @@ Versão 1.1 - Métricas avançadas e análise de eficiência
 import time
 import statistics
 from typing import Dict, List, Any, Optional
+from datetime import datetime
 from dataclasses import dataclass
 from collections import defaultdict, deque
 import json

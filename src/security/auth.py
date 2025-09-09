@@ -2,6 +2,8 @@
 Sistema de autenticação JWT com refresh tokens e validação robusta.
 """
 
+from typing import Dict, List, Optional
+
 import jwt
 import hashlib
 import secrets

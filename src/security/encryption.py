@@ -260,7 +260,8 @@ class KeyManagement:
         return self.keys.get(key_id)
 
     def rotate_key(self, key_id: str) -> bytes:
-        """Rotaciona chave existente."""        new_key = self.generate_key(key_id)
+        """Rotaciona chave existente."""
+        new_key = self.generate_key(key_id)
 
         # Aqui você implementaria a migração de dados
         # criptografados com a chave antiga para a nova

@@ -7,6 +7,7 @@ from enum import Enum
 from dataclasses import dataclass
 
 try:
+    from pydantic import BaseModel
 except ImportError:
     # Fallback para ambientes sem pydantic
     class BaseModel:
