@@ -3,19 +3,15 @@ Gerenciador de Modelos ML
 Versão 1.6 - MLOps e Escalabilidade
 """
 
-import os
 import json
 import logging
-import asyncio
-from typing import Dict, List, Optional, Any, Union
-from datetime import datetime
 from pathlib import Path
 from enum import Enum
+from typing import Dict, List, Optional, Any
+from datetime import datetime
 
 import joblib
-import numpy as np
 from pydantic import BaseModel, Field
-
 
 logger = logging.getLogger(__name__)
 

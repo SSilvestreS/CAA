@@ -16,7 +16,9 @@ from src.environment.city_environment import CityEnvironment  # noqa: E402
 from src.scenarios.scenario_manager import ScenarioManager  # noqa: E402
 
 
-async def run_single_scenario(scenario_name: str, duration: int = 100, city_size: tuple = (50, 50)):
+async def run_single_scenario(
+    scenario_name: str, duration: int = 100, city_size: tuple = (50, 50)
+):
     """Executa um cenário específico"""
     print(f"🎯 Executando cenário: {scenario_name}")
     print("=" * 60)
@@ -25,7 +27,9 @@ async def run_single_scenario(scenario_name: str, duration: int = 100, city_size
     environment = CityEnvironment("Cidade de Teste", city_size)
 
     # Inicializa cidade
-    await environment.initialize_city(num_citizens=50, num_businesses=10, num_infrastructure=5)
+    await environment.initialize_city(
+        num_citizens=50, num_businesses=10, num_infrastructure=5
+    )
 
     # Cria gerenciador de cenários
     scenario_manager = ScenarioManager(environment)
@@ -160,7 +164,9 @@ async def run_innovation_scenarios():
         print(f"  Impacto econômico: {economic_impact:.3f}")
         print(f"  Impacto ambiental: {environmental_impact:.3f}")
 
-        innovation_score = (satisfaction_impact + economic_impact + environmental_impact) / 3
+        innovation_score = (
+            satisfaction_impact + economic_impact + environmental_impact
+        ) / 3
         if innovation_score > 0.1:
             print("  ✅ Inovação altamente benéfica")
         elif innovation_score > 0:
@@ -173,11 +179,21 @@ async def main():
     """Função principal"""
     parser = argparse.ArgumentParser(description="Executar cenários da simulação")
     parser.add_argument("--scenario", type=str, help="Nome do cenário para executar")
-    parser.add_argument("--duration", type=int, default=100, help="Duração do cenário em ciclos")
-    parser.add_argument("--list", action="store_true", help="Lista cenários disponíveis")
-    parser.add_argument("--policies", action="store_true", help="Executa comparação de políticas")
-    parser.add_argument("--crises", action="store_true", help="Executa cenários de crise")
-    parser.add_argument("--innovations", action="store_true", help="Executa cenários de inovação")
+    parser.add_argument(
+        "--duration", type=int, default=100, help="Duração do cenário em ciclos"
+    )
+    parser.add_argument(
+        "--list", action="store_true", help="Lista cenários disponíveis"
+    )
+    parser.add_argument(
+        "--policies", action="store_true", help="Executa comparação de políticas"
+    )
+    parser.add_argument(
+        "--crises", action="store_true", help="Executa cenários de crise"
+    )
+    parser.add_argument(
+        "--innovations", action="store_true", help="Executa cenários de inovação"
+    )
     parser.add_argument("--all", action="store_true", help="Executa todos os cenários")
 
     args = parser.parse_args()

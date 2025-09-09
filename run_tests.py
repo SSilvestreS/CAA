@@ -13,7 +13,9 @@ from pathlib import Path
 sys.path.append(os.path.join(os.path.dirname(__file__), "src"))
 
 # Configura logging para testes
-logging.basicConfig(level=logging.WARNING, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+logging.basicConfig(
+    level=logging.WARNING, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+)
 
 
 def discover_and_run_tests():
@@ -26,7 +28,9 @@ def discover_and_run_tests():
     suite = loader.discover(str(test_dir), pattern="test_*.py")
 
     # Executa testes
-    runner = unittest.TextTestRunner(verbosity=2, stream=sys.stdout, descriptions=True, failfast=False)
+    runner = unittest.TextTestRunner(
+        verbosity=2, stream=sys.stdout, descriptions=True, failfast=False
+    )
 
     print("=" * 70)
     print("EXECUTANDO TESTES - CIDADES AUTÔNOMAS COM AGENTES DE IA")

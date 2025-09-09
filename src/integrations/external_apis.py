@@ -3,15 +3,14 @@ Gerenciador de APIs Externas
 Versão 1.6 - MLOps e Escalabilidade
 """
 
-import asyncio
 import aiohttp
 import logging
-from typing import Dict, List, Optional, Any, Union
-from datetime import datetime, timedelta
 from enum import Enum
 from dataclasses import dataclass
 from pydantic import BaseModel, Field
-
+import asyncio
+from typing import Dict, List, Optional, Any
+from datetime import datetime, timedelta
 
 logger = logging.getLogger(__name__)
 

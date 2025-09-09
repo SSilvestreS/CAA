@@ -9,11 +9,19 @@ from pathlib import Path
 # Adiciona o diretório raiz ao path
 sys.path.append(str(Path(__file__).parent))
 
-from src.config.v1_6_config import get_config, Environment
-from src.microservices.agent_service.agent_manager import AgentManager, AgentType, AgentStatus
-from src.mlops import ModelManager, ModelType, ModelStatus
-from src.integrations import ExternalAPIManager, APIType, APIConfig
-from src.analytics import DashboardManager, DashboardType, WidgetType, Widget
+from src.config.v1_6_config import get_config, Environment  # noqa: E402
+from src.microservices.agent_service.agent_manager import (
+    AgentManager,
+    AgentType,
+)  # noqa: E402
+from src.mlops import ModelManager, ModelType  # noqa: E402
+from src.integrations import ExternalAPIManager, APIType, APIConfig  # noqa: E402
+from src.analytics import (
+    DashboardManager,
+    DashboardType,
+    WidgetType,
+    Widget,
+)  # noqa: E402
 
 
 async def test_agent_service():

@@ -16,11 +16,25 @@ AGENT_CONFIG = {
         "default_count": 100,
         "age_range": (18, 80),
         "income_range": (1000, 10000),
-        "needs_types": ["food", "transport", "healthcare", "entertainment", "housing", "energy"],
+        "needs_types": [
+            "food",
+            "transport",
+            "healthcare",
+            "entertainment",
+            "housing",
+            "energy",
+        ],
     },
     "businesses": {
         "default_count": 20,
-        "types": ["energy", "food", "transport", "healthcare", "entertainment", "housing"],
+        "types": [
+            "energy",
+            "food",
+            "transport",
+            "healthcare",
+            "entertainment",
+            "housing",
+        ],
         "size_range": (5, 500),  # funcionários
         "capital_range": (10000, 1000000),
     },
@@ -29,7 +43,10 @@ AGENT_CONFIG = {
         "types": ["energy", "transport", "water", "healthcare", "communication"],
         "capacity_range": (1000, 10000),
     },
-    "governments": {"default_count": 1, "types": ["democratic", "authoritarian", "technocratic"]},
+    "governments": {
+        "default_count": 1,
+        "types": ["democratic", "authoritarian", "technocratic"],
+    },
 }
 
 # Configurações da Simulação
@@ -67,7 +84,12 @@ LEARNING_CONFIG = {
 }
 
 # Configurações do Dashboard
-DASHBOARD_CONFIG = {"host": "127.0.0.1", "port": 8050, "update_interval": 2000, "debug": False}  # milissegundos
+DASHBOARD_CONFIG = {
+    "host": "127.0.0.1",
+    "port": 8050,
+    "update_interval": 2000,
+    "debug": False,
+}  # milissegundos
 
 # Configurações de Cenários
 SCENARIO_CONFIG = {

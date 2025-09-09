@@ -155,7 +155,11 @@ class TestOptimizationTarget(unittest.TestCase):
     def test_initialization(self):
         """Testa inicialização do alvo de otimização"""
         target = OptimizationTarget(
-            name="test_target", current_value=50.0, target_value=30.0, priority=5, optimization_type="minimize"
+            name="test_target",
+            current_value=50.0,
+            target_value=30.0,
+            priority=5,
+            optimization_type="minimize",
         )
 
         self.assertEqual(target.name, "test_target")
@@ -207,7 +211,11 @@ class TestAdvancedOptimizer(unittest.TestCase):
     def test_add_target(self):
         """Testa adição de alvo de otimização"""
         target = OptimizationTarget(
-            name="cpu_usage", current_value=80.0, target_value=50.0, priority=8, optimization_type="minimize"
+            name="cpu_usage",
+            current_value=80.0,
+            target_value=50.0,
+            priority=8,
+            optimization_type="minimize",
         )
 
         self.optimizer.add_target(target)
@@ -229,7 +237,11 @@ class TestAdvancedOptimizer(unittest.TestCase):
         """Testa identificação de alvos que precisam de otimização"""
         # Adiciona alvo que precisa de otimização
         target = OptimizationTarget(
-            name="cpu_usage", current_value=80.0, target_value=50.0, priority=8, optimization_type="minimize"
+            name="cpu_usage",
+            current_value=80.0,
+            target_value=50.0,
+            priority=8,
+            optimization_type="minimize",
         )
         self.optimizer.add_target(target)
 
@@ -242,7 +254,11 @@ class TestAdvancedOptimizer(unittest.TestCase):
     def test_get_current_value(self):
         """Testa obtenção de valor atual"""
         target = OptimizationTarget(
-            name="cpu_usage", current_value=0.0, target_value=50.0, priority=8, optimization_type="minimize"
+            name="cpu_usage",
+            current_value=0.0,
+            target_value=50.0,
+            priority=8,
+            optimization_type="minimize",
         )
 
         # Mock das métricas do sistema
@@ -268,7 +284,11 @@ class TestAdvancedOptimizer(unittest.TestCase):
     def test_optimization_algorithms(self):
         """Testa algoritmos de otimização"""
         target = OptimizationTarget(
-            name="memory_usage", current_value=80.0, target_value=50.0, priority=8, optimization_type="minimize"
+            name="memory_usage",
+            current_value=80.0,
+            target_value=50.0,
+            priority=8,
+            optimization_type="minimize",
         )
 
         # Testa otimização de memória
@@ -322,12 +342,20 @@ class TestOptimizerIntegration(unittest.TestCase):
 
         # Adiciona alvos
         cpu_target = OptimizationTarget(
-            name="cpu_usage", current_value=80.0, target_value=50.0, priority=8, optimization_type="minimize"
+            name="cpu_usage",
+            current_value=80.0,
+            target_value=50.0,
+            priority=8,
+            optimization_type="minimize",
         )
         optimizer.add_target(cpu_target)
 
         memory_target = OptimizationTarget(
-            name="memory_usage", current_value=70.0, target_value=40.0, priority=7, optimization_type="minimize"
+            name="memory_usage",
+            current_value=70.0,
+            target_value=40.0,
+            priority=7,
+            optimization_type="minimize",
         )
         optimizer.add_target(memory_target)
 

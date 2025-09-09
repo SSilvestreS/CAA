@@ -2,9 +2,9 @@
 Configuração da Versão 1.6 - MLOps e Escalabilidade
 """
 
-from typing import Dict, List, Optional, Any
 from pydantic import BaseModel, Field
 from enum import Enum
+from typing import List, Optional
 
 
 class Environment(str, Enum):

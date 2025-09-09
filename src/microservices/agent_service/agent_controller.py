@@ -4,9 +4,9 @@ Versão 1.6 - MLOps e Escalabilidade
 """
 
 import logging
-from typing import Dict, List, Optional, Any
 from fastapi import APIRouter, HTTPException, Query, Path, Body
 from fastapi.responses import JSONResponse
+from typing import Optional
 
 from .agent_manager import AgentManager
 from .agent_models import (
@@ -19,7 +19,6 @@ from .agent_models import (
     AgentUpdateRequest,
     AgentListResponse,
 )
-
 
 logger = logging.getLogger(__name__)
 
@@ -263,17 +262,17 @@ async def get_stats_summary():
 
 class AgentController:
     """Controller principal para o Agent Service"""
-    
+
     def __init__(self):
         self.agent_manager = AgentManager()
         self.router = APIRouter()
         self._setup_routes()
-    
+
     def _setup_routes(self):
         """Configura as rotas da API"""
         # Rotas já definidas no router acima
         pass
-    
+
     def get_router(self):
         """Retorna o router configurado"""
         return self.router

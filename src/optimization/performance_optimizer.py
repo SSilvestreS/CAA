@@ -7,12 +7,12 @@ import gc
 import logging
 import multiprocessing as mp
 import threading
-import time
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from dataclasses import dataclass
-from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+import time
+from datetime import datetime
 
 import psutil
 from .base_optimizer import BaseOptimizer

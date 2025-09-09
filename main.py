@@ -21,20 +21,29 @@ class SmartCitySimulation:
     Classe principal que coordena a simulação de cidade inteligente.
     """
 
-    def __init__(self, city_name: str = "Cidade Inteligente", city_size: tuple = (100, 100)):
+    def __init__(
+        self, city_name: str = "Cidade Inteligente", city_size: tuple = (100, 100)
+    ):
         self.city_name = city_name
         self.city_size = city_size
         self.environment = CityEnvironment(city_name, city_size)
         self.dashboard = None
 
-    async def initialize(self, num_citizens: int = 100, num_businesses: int = 20, num_infrastructure: int = 10):
+    async def initialize(
+        self,
+        num_citizens: int = 100,
+        num_businesses: int = 20,
+        num_infrastructure: int = 10,
+    ):
         """Inicializa a simulação"""
         print("🏙️ Inicializando Simulação de Cidade Inteligente...")
         print("=" * 60)
 
         # Inicializa a cidade com agentes
         await self.environment.initialize_city(
-            num_citizens=num_citizens, num_businesses=num_businesses, num_infrastructure=num_infrastructure
+            num_citizens=num_citizens,
+            num_businesses=num_businesses,
+            num_infrastructure=num_infrastructure,
         )
 
         # Inicializa dashboard
@@ -51,7 +60,9 @@ class SmartCitySimulation:
         # Inicia dashboard em thread separada
         import threading
 
-        dashboard_thread = threading.Thread(target=self.dashboard.run, kwargs={"debug": False})
+        dashboard_thread = threading.Thread(
+            target=self.dashboard.run, kwargs={"debug": False}
+        )
         dashboard_thread.daemon = True
         dashboard_thread.start()
 
@@ -62,7 +73,9 @@ class SmartCitySimulation:
         try:
             if duration_hours:
                 # Executa por tempo limitado
-                await asyncio.wait_for(self.environment.start_simulation(), timeout=duration_hours * 3600)
+                await asyncio.wait_for(
+                    self.environment.start_simulation(), timeout=duration_hours * 3600
+                )
             else:
                 # Executa indefinidamente
                 await self.environment.start_simulation()
@@ -96,13 +109,35 @@ class SmartCitySimulation:
 async def main():
     """Função principal"""
     parser = argparse.ArgumentParser(description="Simulação de Cidade Inteligente")
-    parser.add_argument("--citizens", type=int, default=100, help="Número de cidadãos (padrão: 100)")
-    parser.add_argument("--businesses", type=int, default=20, help="Número de empresas (padrão: 20)")
-    parser.add_argument("--infrastructure", type=int, default=10, help="Número de infraestruturas (padrão: 10)")
-    parser.add_argument("--duration", type=int, help="Duração da simulação em horas (padrão: indefinida)")
-    parser.add_argument("--dashboard-only", action="store_true", help="Executa apenas o dashboard")
-    parser.add_argument("--city-name", type=str, default="Cidade Inteligente", help="Nome da cidade")
-    parser.add_argument("--city-size", type=str, default="100,100", help="Tamanho da cidade (largura,altura)")
+    parser.add_argument(
+        "--citizens", type=int, default=100, help="Número de cidadãos (padrão: 100)"
+    )
+    parser.add_argument(
+        "--businesses", type=int, default=20, help="Número de empresas (padrão: 20)"
+    )
+    parser.add_argument(
+        "--infrastructure",
+        type=int,
+        default=10,
+        help="Número de infraestruturas (padrão: 10)",
+    )
+    parser.add_argument(
+        "--duration",
+        type=int,
+        help="Duração da simulação em horas (padrão: indefinida)",
+    )
+    parser.add_argument(
+        "--dashboard-only", action="store_true", help="Executa apenas o dashboard"
+    )
+    parser.add_argument(
+        "--city-name", type=str, default="Cidade Inteligente", help="Nome da cidade"
+    )
+    parser.add_argument(
+        "--city-size",
+        type=str,
+        default="100,100",
+        help="Tamanho da cidade (largura,altura)",
+    )
 
     args = parser.parse_args()
 
@@ -122,7 +157,9 @@ async def main():
     else:
         # Inicializa e executa simulação completa
         await simulation.initialize(
-            num_citizens=args.citizens, num_businesses=args.businesses, num_infrastructure=args.infrastructure
+            num_citizens=args.citizens,
+            num_businesses=args.businesses,
+            num_infrastructure=args.infrastructure,
         )
 
         await simulation.run_simulation(duration_hours=args.duration)
@@ -136,7 +173,9 @@ def run_scenario_example():
     simulation = SmartCitySimulation("Cidade de Exemplo", (50, 50))
 
     # Inicializa com menos agentes para exemplo rápido
-    asyncio.run(simulation.initialize(num_citizens=50, num_businesses=10, num_infrastructure=5))
+    asyncio.run(
+        simulation.initialize(num_citizens=50, num_businesses=10, num_infrastructure=5)
+    )
 
     # Executa por 1 hora
     asyncio.run(simulation.run_simulation(duration_hours=1))

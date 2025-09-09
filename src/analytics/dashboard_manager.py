@@ -5,17 +5,14 @@ Versão 1.6 - MLOps e Escalabilidade
 
 import asyncio
 import logging
-from typing import Dict, List, Optional, Any, Union
+from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
 from enum import Enum
 from dataclasses import dataclass
 from pydantic import BaseModel, Field
 
-import plotly.graph_objects as go
-import plotly.express as px
 import pandas as pd
 import numpy as np
-
 
 logger = logging.getLogger(__name__)
 

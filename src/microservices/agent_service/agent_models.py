@@ -4,9 +4,9 @@ Versão 1.6 - MLOps e Escalabilidade
 """
 
 from enum import Enum
+from pydantic import BaseModel, Field
 from typing import Dict, List, Optional, Any
 from datetime import datetime
-from pydantic import BaseModel, Field
 
 
 class AgentType(str, Enum):

@@ -26,7 +26,9 @@ async def basic_simulation_example():
     environment = CityEnvironment("Cidade de Exemplo", (50, 50))
 
     # Inicializa cidade
-    await environment.initialize_city(num_citizens=50, num_businesses=10, num_infrastructure=5)
+    await environment.initialize_city(
+        num_citizens=50, num_businesses=10, num_infrastructure=5
+    )
 
     # Executa alguns ciclos
     for i in range(10):
@@ -48,7 +50,9 @@ async def scenario_example():
 
     # Cria ambiente
     environment = CityEnvironment("Cidade de Teste", (30, 30))
-    await environment.initialize_city(num_citizens=30, num_businesses=5, num_infrastructure=3)
+    await environment.initialize_city(
+        num_citizens=30, num_businesses=5, num_infrastructure=3
+    )
 
     # Cria gerenciador de cenários
     scenario_manager = ScenarioManager(environment)
@@ -87,7 +91,9 @@ async def learning_example():
         learning_system.add_experience(experience)
 
     # Compartilha conhecimento
-    learning_system.share_knowledge("citizen_1", "strategy_a", 0.8, {"context": "high_demand"})
+    learning_system.share_knowledge(
+        "citizen_1", "strategy_a", 0.8, {"context": "high_demand"}
+    )
 
     # Exibe estatísticas
     stats = learning_system.get_learning_statistics()
@@ -103,7 +109,9 @@ async def dashboard_example():
 
     # Cria ambiente
     environment = CityEnvironment("Cidade Dashboard", (40, 40))
-    await environment.initialize_city(num_citizens=40, num_businesses=8, num_infrastructure=4)
+    await environment.initialize_city(
+        num_citizens=40, num_businesses=8, num_infrastructure=4
+    )
 
     # Cria dashboard
     print("Dashboard criado com sucesso!")
@@ -129,13 +137,17 @@ async def complete_example():
     learning_system = CollectiveLearningSystem()
 
     # Inicializa cidade
-    await environment.initialize_city(num_citizens=60, num_businesses=12, num_infrastructure=6)
+    await environment.initialize_city(
+        num_citizens=60, num_businesses=12, num_infrastructure=6
+    )
 
     # Integra sistema de aprendizado aos agentes
     for citizen in environment.citizens:
         from src.ai.collective_learning import AgentLearningModule
 
-        citizen.learning_module = AgentLearningModule(citizen.state.id, "citizen", learning_system)
+        citizen.learning_module = AgentLearningModule(
+            citizen.state.id, "citizen", learning_system
+        )
 
     # Executa simulação com cenários
     scenario_manager = ScenarioManager(environment)

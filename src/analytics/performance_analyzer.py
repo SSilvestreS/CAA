@@ -3,13 +3,13 @@ Analisador de Performance para Simulação de Cidade Inteligente
 Versão 1.1 - Métricas avançadas e análise de eficiência
 """
 
-import time
 import statistics
 from typing import Dict, List, Any, Optional
-from datetime import datetime
 from dataclasses import dataclass
 from collections import defaultdict, deque
 import json
+import time
+from datetime import datetime
 
 
 @dataclass

@@ -82,7 +82,9 @@ def demonstrate_transformers():
 
     # Dados de exemplo para análise de sentimento
     sentiment_data = torch.randint(0, 1000, (100, 50))  # 100 amostras, 50 tokens
-    sentiment_labels = torch.randint(0, 3, (100,))  # 3 classes: positivo, neutro, negativo
+    sentiment_labels = torch.randint(
+        0, 3, (100,)
+    )  # 3 classes: positivo, neutro, negativo
 
     # Criar DataLoader simples
     from torch.utils.data import DataLoader, TensorDataset
@@ -119,12 +121,16 @@ def demonstrate_lstm():
 
     # Gerar dados sintéticos de tráfego
     traffic_data = np.random.randn(num_samples, sequence_length, num_features)
-    traffic_targets = np.random.randn(num_samples, 24)  # Previsão para próximas 24 horas
+    traffic_targets = np.random.randn(
+        num_samples, 24
+    )  # Previsão para próximas 24 horas
 
     # Criar DataLoader
     from torch.utils.data import DataLoader, TensorDataset
 
-    dataset = TensorDataset(torch.FloatTensor(traffic_data), torch.FloatTensor(traffic_targets))
+    dataset = TensorDataset(
+        torch.FloatTensor(traffic_data), torch.FloatTensor(traffic_targets)
+    )
     dataloader = DataLoader(dataset, batch_size=32, shuffle=True)
 
     # Treinar modelo de tráfego
@@ -188,7 +194,9 @@ def demonstrate_reinforcement_learning():
     environment = CitySimulationEnvironment(num_agents=4)
 
     # Inicializar sistema RL
-    rl_system = MultiAgentRL(num_agents=4, state_size=10, action_size=5, algorithm="dqn", device="cpu")
+    rl_system = MultiAgentRL(
+        num_agents=4, state_size=10, action_size=5, algorithm="dqn", device="cpu"
+    )
 
     # Treinar sistema RL
     print("Treinando sistema RL multi-agente...")
@@ -248,7 +256,9 @@ def demonstrate_integrated_system():
     ai_manager = AdvancedAIManager(device="cpu")
 
     # Inicializar sistema RL
-    ai_manager.initialize_rl_system(num_agents=4, state_size=10, action_size=5, algorithm="dqn")
+    ai_manager.initialize_rl_system(
+        num_agents=4, state_size=10, action_size=5, algorithm="dqn"
+    )
 
     # Dados de exemplo
     sentiment_data = torch.randint(0, 1000, (50, 30))
@@ -270,7 +280,9 @@ def demonstrate_integrated_system():
     print("Treinando modelos integrados...")
 
     # Transformer
-    transformer_losses = ai_manager.train_transformer_model("sentiment", sentiment_dataloader, epochs=5)
+    transformer_losses = ai_manager.train_transformer_model(
+        "sentiment", sentiment_dataloader, epochs=5
+    )
     print(f"Transformer losses: {transformer_losses[-3:]}")
 
     # LSTM
@@ -282,7 +294,9 @@ def demonstrate_integrated_system():
     gan_dataset = TensorDataset(real_data)
     gan_dataloader = DataLoader(gan_dataset, batch_size=16, shuffle=True)
     gan_losses = ai_manager.train_gan_model("city_data", gan_dataloader, epochs=20)
-    print(f"GAN losses - D: {gan_losses['d_losses'][-3:]}, G: {gan_losses['g_losses'][-3:]}")
+    print(
+        f"GAN losses - D: {gan_losses['d_losses'][-3:]}, G: {gan_losses['g_losses'][-3:]}"
+    )
 
     # RL
     environment = CitySimulationEnvironment(num_agents=4)

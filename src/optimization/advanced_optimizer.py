@@ -3,16 +3,14 @@ Sistema de Otimização Avançado - Clean Code & KISS
 Versão 1.6 - Refatorado para Clean Code
 """
 
-import asyncio
 import threading
-import time
 import psutil
 import gc
 from typing import Dict, List, Any, Optional
 from dataclasses import dataclass
-from datetime import datetime
 import logging
 from .base_optimizer import BaseOptimizer
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -242,9 +240,6 @@ class AdvancedOptimizer(BaseOptimizer):
 
             success = algorithm.optimize(target)
             after_value = self._get_current_value(target)
-            improvement = self._calculate_improvement(
-                before_value, after_value, target.optimization_type
-            )
 
             self._record_result(
                 target_name=target.name,

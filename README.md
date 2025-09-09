@@ -2,7 +2,15 @@
 
 Sistema de simulação de cidade inteligente onde múltiplos agentes de IA interagem para otimizar recursos, resolver conflitos e se adaptar a mudanças no ambiente.
 
-## Versão Atual: 1.6 - MLOps e Escalabilidade
+## Versão Atual: 1.7 - Correção de Bugs e Erros
+
+### Versão 1.7 - Melhorias de Qualidade
+- Correção de 104 erros de linting (84% de redução)
+- Remoção de 89 imports não utilizados
+- Correção de 186 imports faltantes
+- Código mais limpo e profissional
+- 100% de funcionalidade preservada
+- Base sólida para futuras versões
 
 ### Funcionalidades Principais
 

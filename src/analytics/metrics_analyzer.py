@@ -3,9 +3,7 @@ Metrics Analyzer para analytics
 Versão 1.6 - MLOps e Escalabilidade
 """
 
-import asyncio
 import logging
-from typing import Dict, List, Optional, Any
 
 logger = logging.getLogger(__name__)
 

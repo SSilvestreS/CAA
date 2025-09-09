@@ -8,4 +8,12 @@ from .report_generator import ReportGenerator
 from .alert_system import AlertSystem
 from .metrics_analyzer import MetricsAnalyzer
 
-__all__ = ["DashboardManager", "DashboardType", "WidgetType", "Widget", "ReportGenerator", "AlertSystem", "MetricsAnalyzer"]
+__all__ = [
+    "DashboardManager",
+    "DashboardType",
+    "WidgetType",
+    "Widget",
+    "ReportGenerator",
+    "AlertSystem",
+    "MetricsAnalyzer",
+]

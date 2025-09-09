@@ -13,7 +13,12 @@ import sys
 
 sys.path.append(os.path.join(os.path.dirname(__file__), "..", "src"))  # noqa: E402
 
-from src.ai.advanced_dqn import AdvancedDQN, ReplayBuffer, Experience, MultiAgentDQN  # noqa: E402
+from src.ai.advanced_dqn import (
+    AdvancedDQN,
+    ReplayBuffer,
+    Experience,
+    MultiAgentDQN,
+)  # noqa: E402
 
 
 class TestReplayBuffer(unittest.TestCase):
@@ -27,7 +32,11 @@ class TestReplayBuffer(unittest.TestCase):
         # Adiciona algumas experiências
         for i in range(10):
             exp = Experience(
-                state=np.random.random(4), action=i % 3, reward=float(i), next_state=np.random.random(4), done=i == 9
+                state=np.random.random(4),
+                action=i % 3,
+                reward=float(i),
+                next_state=np.random.random(4),
+                done=i == 9,
             )
             self.buffer.push(exp)
 
@@ -38,7 +47,11 @@ class TestReplayBuffer(unittest.TestCase):
         # Testa capacidade máxima
         for i in range(150):
             exp = Experience(
-                state=np.random.random(4), action=i % 3, reward=float(i), next_state=np.random.random(4), done=False
+                state=np.random.random(4),
+                action=i % 3,
+                reward=float(i),
+                next_state=np.random.random(4),
+                done=False,
             )
             self.buffer.push(exp)
 
@@ -268,7 +281,14 @@ class TestDQNIntegration(unittest.TestCase):
 
     def test_agent_learning(self):
         """Testa se o agente está aprendendo"""
-        dqn = AdvancedDQN(state_size=4, action_size=3, learning_rate=0.01, epsilon=0.1, memory_size=1000, batch_size=32)
+        dqn = AdvancedDQN(
+            state_size=4,
+            action_size=3,
+            learning_rate=0.01,
+            epsilon=0.1,
+            memory_size=1000,
+            batch_size=32,
+        )
 
         # Treina por vários episódios
         rewards = []

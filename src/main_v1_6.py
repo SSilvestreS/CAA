@@ -11,20 +11,25 @@ from pathlib import Path
 # Adiciona o diretório raiz ao path
 sys.path.append(str(Path(__file__).parent.parent))
 
-from src.config.v1_6_config import get_config, load_config_from_env, Environment
-from src.microservices.agent_service import AgentManager
-from src.microservices.ai_service import AIManager
-from src.microservices.data_service import DataManager
-from src.microservices.analytics_service import AnalyticsManager
-from src.microservices.notification_service import NotificationManager
-from src.mlops import ModelManager, ExperimentTracker, ModelMonitor, PipelineManager
-from src.integrations import (
+from src.config.v1_6_config import get_config, Environment  # noqa: E402
+from src.microservices.agent_service import AgentManager  # noqa: E402
+from src.microservices.ai_service import AIManager  # noqa: E402
+from src.microservices.data_service import DataManager  # noqa: E402
+from src.microservices.analytics_service import AnalyticsManager  # noqa: E402
+from src.microservices.notification_service import NotificationManager  # noqa: E402
+from src.mlops import (
+    ModelManager,
+    ExperimentTracker,
+    ModelMonitor,
+    PipelineManager,
+)  # noqa: E402
+from src.integrations import (  # noqa: E402
     ExternalAPIManager,
     IoTConnector,
     DatabaseConnector,
     WebhookManager,
 )
-from src.analytics import (
+from src.analytics import (  # noqa: E402
     DashboardManager,
     ReportGenerator,
     AlertSystem,

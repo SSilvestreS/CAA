@@ -3,14 +3,13 @@ Gerenciador de agentes para o microserviço
 Versão 1.6 - MLOps e Escalabilidade
 """
 
-import asyncio
 import logging
-from typing import Dict, List, Optional, Any
-from datetime import datetime, timedelta
 from uuid import uuid4
+import asyncio
+from typing import Dict, List, Optional, Any
+from datetime import datetime
 
 from .agent_models import Agent, AgentType, AgentStatus, AgentMetrics, AgentHealthCheck
-
 
 logger = logging.getLogger(__name__)
 
