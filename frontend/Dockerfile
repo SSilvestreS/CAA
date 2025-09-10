@@ -1,4 +1,4 @@
-# Multi-stage build para otimizar o tamanho da imagem
+# Dockerfile para Frontend - Cidades Autônomas IA
 FROM node:18-alpine AS builder
 
 # Definir diretório de trabalho
@@ -20,13 +20,13 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copiar configuração customizada do nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copiar build da aplicação
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 
-# Expor porta
-EXPOSE 3000
+# Expor porta 80
+EXPOSE 80
 
-# Comando para iniciar nginx
+# Comando de inicialização
 CMD ["nginx", "-g", "daemon off;"]
