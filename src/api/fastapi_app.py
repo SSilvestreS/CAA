@@ -164,18 +164,6 @@ def get_current_user(request: Request) -> Dict[str, Any]:
     return {"user_id": request.state.user_id, "role": request.state.user_role}
 
 
-def require_permission(permission: Permission, resource: Resource):
-    """Decorator para verificar permissões."""
-
-    def permission_checker(request: Request):
-        user_id = request.state.user_id
-        if not rbac_service.has_resource_permission(user_id, resource, permission):
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
-            )
-        return True
-
-    return permission_checker
 
 
 # Rotas de saúde e status
@@ -267,7 +255,12 @@ async def get_simulation_status(
     current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     """Retorna status da simulação."""
-    require_permission(Permission.READ_SIMULATION, Resource.SIMULATION)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.SIMULATION, Permission.READ_SIMULATION
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     return {
         "status": "running",
@@ -281,7 +274,12 @@ async def get_simulation_status(
 @app.post("/simulation/start")
 async def start_simulation(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Inicia simulação."""
-    require_permission(Permission.START_SIMULATION, Resource.SIMULATION)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.SIMULATION, Permission.START_SIMULATION
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para iniciar simulação
     return {
@@ -294,7 +292,12 @@ async def start_simulation(current_user: Dict[str, Any] = Depends(get_current_us
 @app.post("/simulation/stop")
 async def stop_simulation(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Para simulação."""
-    require_permission(Permission.STOP_SIMULATION, Resource.SIMULATION)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.SIMULATION, Permission.STOP_SIMULATION
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para parar simulação
     return {
@@ -306,7 +309,12 @@ async def stop_simulation(current_user: Dict[str, Any] = Depends(get_current_use
 @app.post("/simulation/pause")
 async def pause_simulation(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Pausa simulação."""
-    require_permission(Permission.PAUSE_SIMULATION, Resource.SIMULATION)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.SIMULATION, Permission.PAUSE_SIMULATION
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para pausar simulação
     return {
@@ -324,7 +332,12 @@ async def list_agents(
     current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     """Lista agentes."""
-    require_permission(Permission.READ_AGENT, Resource.AGENTS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.AGENTS, Permission.READ_AGENT
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para listar agentes
     agents = [
@@ -353,7 +366,12 @@ async def get_agent(
     agent_id: str, current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Obtém detalhes de um agente."""
-    require_permission(Permission.READ_AGENT, Resource.AGENTS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.AGENTS, Permission.READ_AGENT
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para obter agente
     return {
@@ -371,7 +389,12 @@ async def create_agent(
     agent_data: Dict[str, Any], current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Cria novo agente."""
-    require_permission(Permission.CREATE_AGENT, Resource.AGENTS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.AGENTS, Permission.CREATE_AGENT
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para criar agente
     agent_id = f"agent_{int(datetime.now().timestamp())}"
@@ -390,7 +413,12 @@ async def update_agent(
     current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     """Atualiza agente."""
-    require_permission(Permission.UPDATE_AGENT, Resource.AGENTS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.AGENTS, Permission.UPDATE_AGENT
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para atualizar agente
     return {
@@ -405,7 +433,12 @@ async def delete_agent(
     agent_id: str, current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Deleta agente."""
-    require_permission(Permission.DELETE_AGENT, Resource.AGENTS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.AGENTS, Permission.DELETE_AGENT
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para deletar agente
     return {
@@ -418,7 +451,12 @@ async def delete_agent(
 @app.get("/reports")
 async def list_reports(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Lista relatórios disponíveis."""
-    require_permission(Permission.READ_REPORTS, Resource.REPORTS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.REPORTS, Permission.READ_REPORTS
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     reports = [
         {
@@ -443,7 +481,12 @@ async def get_report(
     report_id: str, current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Obtém relatório específico."""
-    require_permission(Permission.READ_REPORTS, Resource.REPORTS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.REPORTS, Permission.READ_REPORTS
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para obter relatório
     return {
@@ -460,7 +503,12 @@ async def get_report(
 @app.get("/alerts")
 async def list_alerts(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Lista alertas ativos."""
-    require_permission(Permission.READ_LOGS, Resource.LOGS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.LOGS, Permission.READ_LOGS
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     active_alerts = alert_manager.get_active_alerts()
     return {"alerts": [alert.to_dict() for alert in active_alerts]}
@@ -471,7 +519,12 @@ async def acknowledge_alert(
     alert_id: str, current_user: Dict[str, Any] = Depends(get_current_user)
 ):
     """Reconhece alerta."""
-    require_permission(Permission.READ_LOGS, Resource.LOGS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.LOGS, Permission.READ_LOGS
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     success = alert_manager.acknowledge_alert(alert_id, current_user["user_id"])
 
@@ -487,7 +540,12 @@ async def acknowledge_alert(
 @app.get("/config")
 async def get_config(current_user: Dict[str, Any] = Depends(get_current_user)):
     """Obtém configurações do sistema."""
-    require_permission(Permission.READ_CONFIG, Resource.CONFIG)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.CONFIG, Permission.READ_CONFIG
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     return {
         "simulation": {"max_agents": 1000, "cycle_duration": 1.0, "auto_save": True},
@@ -501,7 +559,12 @@ async def update_config(
     current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     """Atualiza configurações do sistema."""
-    require_permission(Permission.UPDATE_CONFIG, Resource.CONFIG)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.CONFIG, Permission.UPDATE_CONFIG
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para atualizar configurações
     return {
@@ -518,7 +581,12 @@ async def list_events(
     current_user: Dict[str, Any] = Depends(get_current_user),
 ):
     """Lista eventos do sistema."""
-    require_permission(Permission.READ_LOGS, Resource.LOGS)
+    if not rbac_service.has_resource_permission(
+        current_user["user_id"], Resource.LOGS, Permission.READ_LOGS
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail="Permissão insuficiente"
+        )
 
     # Lógica para listar eventos
     events = [

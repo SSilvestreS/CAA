@@ -457,7 +457,7 @@ class InfrastructureAgent(BaseAgent):
             self.load_history = self.load_history[-50:]
 
         # Atualiza timestamp
-        self.state.last_update = datetime.now()
+        self.last_update = datetime.now()
 
     def _update_load(self, delta_time: float) -> None:
         """Atualiza carga do sistema"""
