@@ -28,48 +28,48 @@ Sistema de simulação de cidade inteligente onde múltiplos agentes de IA inter
 - 100% de funcionalidade preservada
 - Base sólida para futuras versões
 
-### Funcionalidades Principais
+## Funcionalidades Principais
 
-#### Agentes Inteligentes
+### Agentes Inteligentes
 - **Cidadãos**: Personalidades únicas com rotinas e necessidades
 - **Empresas**: Produtos/serviços com precificação dinâmica
 - **Governo**: Políticas públicas e fiscalização
 - **Infraestrutura**: Sistemas críticos (energia, trânsito, saneamento)
 
-#### Inteligência Artificial Avançada
+### Inteligência Artificial Avançada
 - **Reinforcement Learning**: DQN, PPO, A3C
 - **Transformers**: Análise de sentimento e predição
 - **LSTM/GRU**: Análise de séries temporais
 - **GANs**: Geração de dados sintéticos
 - **Aprendizado Coletivo**: Compartilhamento de conhecimento
 
-#### Segurança e Monitoramento
+### Segurança e Monitoramento
 - **Autenticação JWT**: Sistema seguro de acesso
 - **RBAC**: Controle de acesso baseado em funções
 - **Criptografia AES-256**: Proteção de dados
 - **Auditoria**: Logging completo de segurança
 - **Métricas**: Monitoramento em tempo real
 
-#### Comunicação e APIs
+### Comunicação e APIs
 - **WebSockets**: Comunicação em tempo real
 - **Event Sourcing**: Rastreamento de eventos
 - **API RESTful**: Interface padronizada
 - **Integrações**: APIs externas e IoT
 
-#### Analytics e Visualização
+### Analytics e Visualização
 - **Dashboard Interativo**: Métricas em tempo real
 - **Relatórios**: Geração automática
 - **Alertas**: Sistema de notificações
 - **Métricas**: Análise de performance
 
-#### Arquitetura Enterprise
+### Arquitetura Enterprise
 - **Microserviços**: Escalabilidade horizontal
 - **MLOps**: Pipeline completo de ML
 - **Kubernetes**: Orquestração em nuvem
 - **Docker**: Containerização
 - **Monitoramento**: Prometheus, Grafana, Jaeger
 
-#### Engine Rust de Alta Performance
+### Engine Rust de Alta Performance
 - **Simulação Física**: Cálculos de física da cidade em Rust
 - **Motor de Agentes**: Processamento paralelo de milhares de agentes
 - **Otimização**: Algoritmos de otimização críticos
